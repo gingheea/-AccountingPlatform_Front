@@ -10,7 +10,8 @@ import AdminLayout from './components/layout/AdminLayout'
 
 import HomePage from './pages/public/HomePage'
 import ServicesPage from './pages/public/ServicesPage'
-import ContactPage from './pages/public/ContactPage'
+import AboutMePage from './pages/public/AboutMePage.jsx'
+import BlogPage from './pages/public/BlogPage'
 import LoginPage from './pages/admin/LoginPage'
 import DashboardPage from './pages/admin/DashboardPage'
 import ServicesAdminPage from './pages/admin/ServicesAdminPage'
@@ -28,7 +29,8 @@ createRoot(document.getElementById('root')).render(
                     <Route element={<PublicLayout />}>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/services" element={<ServicesPage />} />
-                        <Route path="/contact" element={<ContactPage />} />
+                        <Route path="/about" element={<AboutMePage />} />
+                        <Route path="/blog" element={<BlogPage />} />
                     </Route>
 
                     {/* Логін без layout */}
