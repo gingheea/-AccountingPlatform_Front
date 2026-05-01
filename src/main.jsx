@@ -10,7 +10,7 @@ import AdminLayout from './components/layout/AdminLayout'
 
 import HomePage from './pages/public/HomePage'
 import ServicesPage from './pages/public/ServicesPage'
-import AboutMePage from './pages/public/AboutMePage.jsx'
+import AboutMePage from './pages/public/AboutPage.jsx'
 import BlogPage from './pages/public/BlogPage'
 import LoginPage from './pages/admin/LoginPage'
 import DashboardPage from './pages/admin/DashboardPage'

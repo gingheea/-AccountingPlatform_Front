@@ -6,7 +6,7 @@ import {Testimonial22} from "../../components/relume/home/Testimonial22.jsx";
 import {Cta51} from "../../components/relume/about/Cta51.jsx";
 import {Contact14} from "../../components/relume/home/Contact14.jsx";
 
-export default function Page() {
+export default function AboutPage() {
     return (
         <div>
             <Header62 />

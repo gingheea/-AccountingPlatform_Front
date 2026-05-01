@@ -6,7 +6,7 @@ import {Contact14} from "../../components/relume/services/Contact14.jsx";
 import {Cta51} from "../../components/relume/services/Cta51.jsx";
 import {Comparison13} from "../../components/relume/services/Comparison13.jsx";
 
-export default function Page() {
+export default function ServicesPage() {
     return (
         <div>
             <Header62 />

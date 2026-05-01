@@ -8,7 +8,7 @@ import { Cta52 } from "../../components/relume/home/Cta52.jsx";
 import { Contact14 } from "../../components/relume/home/Contact14.jsx";
 import { Comparison11 } from "../../components/relume/home/Comparison11.jsx";
 
-export default function Page() {
+export default function HomePage() {
     return (
         <div>
             <Header38 />
