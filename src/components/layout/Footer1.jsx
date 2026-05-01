@@ -12,13 +12,16 @@ import { FaXTwitter } from "react-icons/fa6";
 
 const useForm = () => {
   const [email, setEmail] = useState("");
+
   const handleSetEmail = (event) => {
     setEmail(event.target.value);
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log({ email });
   };
+
   return {
     email,
     handleSetEmail,
@@ -28,157 +31,216 @@ const useForm = () => {
 
 export function Footer1() {
   const formState = useForm();
+
+  const footerLinkClass =
+      "flex items-center gap-3 text-sm text-white/70 transition-colors hover:text-white";
+
+  const footerHeadingClass =
+      "mb-4 font-heading text-base font-bold text-white md:mb-5";
+
+  const legalLinkClass =
+      "text-sm text-white/60 underline-offset-4 transition-colors hover:text-white hover:underline";
+
   return (
-    <footer id="relume" className="px-[5%] py-12 md:py-18 lg:py-20">
-      <div className="container">
-        <div className="grid grid-cols-1 gap-x-[8vw] gap-y-12 pb-12 md:gap-y-16 md:pb-18 lg:grid-cols-[0.75fr_1fr] lg:gap-y-4 lg:pb-20">
-          <div className="flex flex-col">
-            <a href="#" className="mb-5 md:mb-6">
-              <img
-                src="https://d22po4pjz3o32e.cloudfront.net/logo-image.svg"
-                alt="Logo image"
-                className="inline-block"
-              />
-            </a>
-            <p className="mb-5 md:mb-6">
-              Отримуйте новини про облік та податки кожного тижня.
-            </p>
-            <div className="w-full max-w-md">
-              <form
-                className="mb-3 grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-[1fr_max-content] md:gap-y-4"
-                onSubmit={formState.handleSubmit}
-              >
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Ваша пошта"
-                  value={formState.email}
-                  onChange={formState.handleSetEmail}
-                />
-                <Button title="Підписатися" variant="secondary" size="sm">
-                  Підписатися
-                </Button>
-              </form>
-              <p className="text-xs">
-                Підписуючись, ви погоджуєтесь з нашою політикою конфіденційності
-                та даєте згоду на отримання оновлень.
+      <footer className="bg-[#242A30] px-[5%] py-12 text-white md:py-18 lg:py-20">
+        <div className="container">
+          <div className="grid grid-cols-1 gap-x-[8vw] gap-y-12 pb-12 md:gap-y-16 md:pb-18 lg:grid-cols-[0.8fr_1fr] lg:gap-y-4 lg:pb-20">
+            <div className="flex flex-col">
+              <a href="#" className="mb-6 flex items-center gap-3">
+                <div className="flex size-11 items-center justify-center rounded-button bg-white font-heading text-sm font-bold tracking-wide text-brand-madison shadow-soft">
+                  AP
+                </div>
+
+                <div className="flex flex-col leading-tight">
+                <span className="font-heading text-lg font-bold text-white">
+                  Accounting Platform
+                </span>
+                  <span className="text-xs font-medium text-white/55">
+                  Outsourced accounting
+                </span>
+                </div>
+              </a>
+
+              <p className="mb-6 max-w-md leading-7 text-white/70">
+                Отримуйте корисні оновлення про облік, податки, документи та
+                практичні рішення для підприємців.
               </p>
+
+              <div className="w-full max-w-md rounded-card border border-white/10 bg-white/5 p-4">
+                <form
+                    className="mb-3 grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-[1fr_max-content] md:gap-y-4"
+                    onSubmit={formState.handleSubmit}
+                >
+                  <Input
+                      id="email"
+                      type="email"
+                      placeholder="Ваша пошта"
+                      value={formState.email}
+                      onChange={formState.handleSetEmail}
+                      className="min-h-12 rounded-button border-white/10 bg-white px-4 text-brand-ink placeholder:text-brand-gothic focus:border-brand-tan focus:ring-brand-tan"
+                  />
+
+                  <Button
+                      title="Підписатися"
+                      variant="secondary"
+                      size="sm"
+                      className="min-h-12 rounded-button bg-brand-tan px-5 py-3 font-semibold text-brand-ink transition-colors hover:bg-white"
+                  >
+                    Підписатися
+                  </Button>
+                </form>
+
+                <p className="text-xs leading-5 text-white/50">
+                  Підписуючись, ви погоджуєтесь із політикою конфіденційності та
+                  даєте згоду на отримання оновлень.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 items-start gap-y-10 sm:grid-cols-3 sm:gap-x-6 md:gap-x-8 md:gap-y-4">
+              <div className="flex flex-col items-start justify-start">
+                <h2 className={footerHeadingClass}>Послуги</h2>
+
+                <ul>
+                  <li className="py-2">
+                    <a href="#" className={footerLinkClass}>
+                      <span>Послуги ФОП</span>
+                    </a>
+                  </li>
+
+                  <li className="py-2">
+                    <a href="#" className={footerLinkClass}>
+                      <span>Послуги для бізнесу</span>
+                    </a>
+                  </li>
+
+                  <li className="py-2">
+                    <a href="#" className={footerLinkClass}>
+                      <span>Консультації</span>
+                    </a>
+                  </li>
+
+                  <li className="py-2">
+                    <a href="#" className={footerLinkClass}>
+                      <span>Портал клієнта</span>
+                    </a>
+                  </li>
+
+                  <li className="py-2">
+                    <a href="#" className={footerLinkClass}>
+                      <span>Прайс-лист</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="flex flex-col items-start justify-start">
+                <h2 className={footerHeadingClass}>Навігація</h2>
+
+                <ul>
+                  <li className="py-2">
+                    <a href="#" className={footerLinkClass}>
+                      <span>Про мене</span>
+                    </a>
+                  </li>
+
+                  <li className="py-2">
+                    <a href="#" className={footerLinkClass}>
+                      <span>Блог</span>
+                    </a>
+                  </li>
+
+                  <li className="py-2">
+                    <a href="#" className={footerLinkClass}>
+                      <span>Контакти</span>
+                    </a>
+                  </li>
+
+                  <li className="py-2">
+                    <a href="#" className={footerLinkClass}>
+                      <span>Портал клієнта</span>
+                    </a>
+                  </li>
+
+                  <li className="py-2">
+                    <a href="#" className={footerLinkClass}>
+                      <span>FAQ</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="flex flex-col items-start justify-start">
+                <h2 className={footerHeadingClass}>Соцмережі</h2>
+
+                <ul className="flex flex-col items-start">
+                  <li className="py-2">
+                    <a href="#" className={footerLinkClass}>
+                      <BiLogoFacebookCircle className="size-6 text-white/50" />
+                      <span>Facebook</span>
+                    </a>
+                  </li>
+
+                  <li className="py-2">
+                    <a href="#" className={footerLinkClass}>
+                      <BiLogoInstagram className="size-6 text-white/50" />
+                      <span>Instagram</span>
+                    </a>
+                  </li>
+
+                  <li className="py-2">
+                    <a href="#" className={footerLinkClass}>
+                      <FaXTwitter className="size-6 p-0.5 text-white/50" />
+                      <span>X</span>
+                    </a>
+                  </li>
+
+                  <li className="py-2">
+                    <a href="#" className={footerLinkClass}>
+                      <BiLogoLinkedinSquare className="size-6 text-white/50" />
+                      <span>LinkedIn</span>
+                    </a>
+                  </li>
+
+                  <li className="py-2">
+                    <a href="#" className={footerLinkClass}>
+                      <BiLogoYoutube className="size-6 text-white/50" />
+                      <span>Telegram</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 items-start gap-y-10 sm:grid-cols-3 sm:gap-x-6 md:gap-x-8 md:gap-y-4">
-            <div className="flex flex-col items-start justify-start">
-              <h2 className="mb-3 font-semibold md:mb-4">Послуги</h2>
-              <ul>
-                <li className="py-2 text-sm">
-                  <a href="#" className="flex items-center gap-3">
-                    <span>Послуги ФОП</span>
-                  </a>
-                </li>
-                <li className="py-2 text-sm">
-                  <a href="#" className="flex items-center gap-3">
-                    <span>Послуги ПДВ</span>
-                  </a>
-                </li>
-                <li className="py-2 text-sm">
-                  <a href="#" className="flex items-center gap-3">
-                    <span>Консультації</span>
-                  </a>
-                </li>
-                <li className="py-2 text-sm">
-                  <a href="#" className="flex items-center gap-3">
-                    <span>Портал клієнта</span>
-                  </a>
-                </li>
-                <li className="py-2 text-sm">
-                  <a href="#" className="flex items-center gap-3">
-                    <span>Прайс-лист</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="flex flex-col items-start justify-start">
-              <h2 className="mb-3 font-semibold md:mb-4">Компанія</h2>
-              <ul>
-                <li className="py-2 text-sm">
-                  <a href="#" className="flex items-center gap-3">
-                    <span>Про мене</span>
-                  </a>
-                </li>
-                <li className="py-2 text-sm">
-                  <a href="#" className="flex items-center gap-3">
-                    <span>Блог</span>
-                  </a>
-                </li>
-                <li className="py-2 text-sm">
-                  <a href="#" className="flex items-center gap-3">
-                    <span>Контакти</span>
-                  </a>
-                </li>
-                <li className="py-2 text-sm">
-                  <a href="#" className="flex items-center gap-3">
-                    <span>Портал клієнта</span>
-                  </a>
-                </li>
-                <li className="py-2 text-sm">
-                  <a href="#" className="flex items-center gap-3">
-                    <span>Запитання та відповіді</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="flex flex-col items-start justify-start">
-              <h2 className="mb-3 font-semibold md:mb-4">Слідкуйте за нами</h2>
-              <ul className="flex flex-col items-start">
-                <li className="py-2 text-sm">
-                  <a href="#" className="flex items-center gap-3">
-                    <BiLogoFacebookCircle className="size-6" />
-                    <span>Facebook</span>
-                  </a>
-                </li>
-                <li className="py-2 text-sm">
-                  <a href="#" className="flex items-center gap-3">
-                    <BiLogoInstagram className="size-6" />
-                    <span>Instagram</span>
-                  </a>
-                </li>
-                <li className="py-2 text-sm">
-                  <a href="#" className="flex items-center gap-3">
-                    <FaXTwitter className="size-6 p-0.5" />
-                    <span>X</span>
-                  </a>
-                </li>
-                <li className="py-2 text-sm">
-                  <a href="#" className="flex items-center gap-3">
-                    <BiLogoLinkedinSquare className="size-6" />
-                    <span>LinkedIn</span>
-                  </a>
-                </li>
-                <li className="py-2 text-sm">
-                  <a href="#" className="flex items-center gap-3">
-                    <BiLogoYoutube className="size-6" />
-                    <span>Telegram</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
+
+          <div className="h-px w-full bg-white/10" />
+
+          <div className="flex flex-col-reverse items-start justify-between gap-6 pb-4 pt-6 md:flex-row md:items-center md:pb-0 md:pt-8">
+            <p className="text-sm text-white/50">
+              © 2026 Accounting Platform. Усі права захищені.
+            </p>
+
+            <ul className="grid grid-flow-row grid-cols-[max-content] justify-center gap-y-4 md:grid-flow-col md:gap-x-6 md:gap-y-0">
+              <li>
+                <a href="#" className={legalLinkClass}>
+                  Політика конфіденційності
+                </a>
+              </li>
+
+              <li>
+                <a href="#" className={legalLinkClass}>
+                  Умови використання
+                </a>
+              </li>
+
+              <li>
+                <a href="#" className={legalLinkClass}>
+                  Cookies
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
-        <div className="h-px w-full bg-black" />
-        <div className="flex flex-col-reverse items-start justify-between pb-4 pt-6 text-sm md:flex-row md:items-center md:pb-0 md:pt-8">
-          <p className="mt-6 md:mt-0">© 2024 Relume. All rights reserved.</p>
-          <ul className="grid grid-flow-row grid-cols-[max-content] justify-center gap-y-4 text-sm md:grid-flow-col md:gap-x-6 md:gap-y-0">
-            <li className="underline">
-              <a href="#">Політика конфіденційності</a>
-            </li>
-            <li className="underline">
-              <a href="#">Умови використання послуг</a>
-            </li>
-            <li className="underline">
-              <a href="#">Налаштування cookies</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </footer>
+      </footer>
   );
 }

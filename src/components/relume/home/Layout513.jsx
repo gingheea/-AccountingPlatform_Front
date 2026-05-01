@@ -16,35 +16,41 @@ const ConditionalRender = ({ condition, children }) => {
 
 const useRelume = ({ data }) => {
   const containerRef = useRef(null);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start center", "end center"],
   });
+
   const getStyles = (index) => {
     const startProgress = index / data.length;
     const endProgress = (index + 1) / data.length;
+
     const opacity = useTransform(
-      scrollYProgress,
-      [
-        Math.max(0, startProgress - 0.07),
-        startProgress,
-        endProgress - 0.07,
-        Math.min(1, endProgress),
-      ],
-      [0, 1, 1, 0],
+        scrollYProgress,
+        [
+          Math.max(0, startProgress - 0.07),
+          startProgress,
+          endProgress - 0.07,
+          Math.min(1, endProgress),
+        ],
+        [0, 1, 1, 0],
     );
+
     const y = useTransform(
-      scrollYProgress,
-      [
-        Math.max(0, startProgress - 0.1),
-        startProgress,
-        endProgress - 0.1,
-        Math.min(1, endProgress),
-      ],
-      [100, 0, 0, -100],
+        scrollYProgress,
+        [
+          Math.max(0, startProgress - 0.1),
+          startProgress,
+          endProgress - 0.1,
+          Math.min(1, endProgress),
+        ],
+        [100, 0, 0, -100],
     );
+
     return { opacity, y };
   };
+
   return { containerRef, getStyles };
 };
 
@@ -58,296 +64,452 @@ const useTablet = () => {
   return { isTablet };
 };
 
-export function Layout513() {
-  const tablet = useTablet();
-  const mobile = useMobile();
-  const render = {
-    ...tablet,
-    ...mobile,
-  };
-  const useSctoll = useRelume({
-    data: [
-      {
-        heading: "01 Feature one",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
-        image: {
-          src: "https://d22po4pjz3o32e.cloudfront.net/placeholder-image-1-portrait.svg",
-          alt: "Relume placeholder image 1",
-        },
-        imageMobile: {
-          src: "https://d22po4pjz3o32e.cloudfront.net/placeholder-image-1.svg",
-          alt: "Relume placeholder image 1",
-        },
-      },
-      {
-        heading: "02 Feature two",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
-        image: {
-          src: "https://d22po4pjz3o32e.cloudfront.net/placeholder-image-2-portrait.svg",
-          alt: "Relume placeholder image 2",
-        },
-        imageMobile: {
-          src: "https://d22po4pjz3o32e.cloudfront.net/placeholder-image-2.svg",
-          alt: "Relume placeholder image 2",
-        },
-      },
-      {
-        heading: "03 Feature three",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.",
-        image: {
-          src: "https://d22po4pjz3o32e.cloudfront.net/placeholder-image-3-portrait.svg",
-          alt: "Relume placeholder image 3",
-        },
-        imageMobile: {
-          src: "https://d22po4pjz3o32e.cloudfront.net/placeholder-image-3.svg",
-          alt: "Relume placeholder image 3",
-        },
-      },
-      {
-        heading: "04 Feature four",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.",
-        image: {
-          src: "https://d22po4pjz3o32e.cloudfront.net/placeholder-image-4-portrait.svg",
-          alt: "Relume placeholder image 4",
-        },
-        imageMobile: {
-          src: "https://d22po4pjz3o32e.cloudfront.net/placeholder-image-4.svg",
-          alt: "Relume placeholder image 4",
-        },
-      },
-    ],
-  });
+const ServiceVisual = ({ number, title, label, tone = "light" }) => {
+  const isDark = tone === "dark";
+
   return (
-    <section
-      ref={useSctoll.containerRef}
-      id="relume"
-      className="px-[5%] py-16 md:py-24 lg:py-28"
-    >
-      <div className="container">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:items-start md:gap-20">
-          <div className="flex flex-col gap-y-16 md:sticky md:top-20 md:mt-20 md:h-[calc(100vh_-10rem)] md:justify-center">
-            <div className="flex flex-col">
-              <p className="mb-3 font-semibold md:mb-4">Послуги</p>
-              <h2 className="mb-5 text-5xl font-bold md:mb-6 md:text-7xl lg:text-8xl">
-                Що я роблю для вашого бізнесу
-              </h2>
-              <p className="md:text-md">
-                Від ведення реєстрів до податкових деклараціій, я займаюся всім,
-                що потребує облік. Кожна послуга налаштована під ваші потреби.
+      <div
+          className={`flex size-full items-center justify-center rounded-card border p-6 shadow-card ${
+              isDark
+                  ? "border-white/15 bg-brand-madison text-white"
+                  : "border-brand-border bg-white text-brand-ink"
+          }`}
+      >
+        <div className="w-full max-w-md">
+          <div className="mb-8 flex items-center justify-between">
+            <div>
+              <p
+                  className={`text-sm font-semibold ${
+                      isDark ? "text-white/65" : "text-brand-gothic"
+                  }`}
+              >
+                {label}
               </p>
-              <div className="mt-6 flex flex-wrap items-center gap-4 md:mt-8">
-                <Button title="Переглянути" variant="secondary">
-                  Переглянути
-                </Button>
-                <Button
-                  title="Завантажити"
-                  variant="link"
-                  size="link"
-                  iconRight={<RxChevronRight />}
+
+              <h3
+                  className={`mt-1 font-heading text-3xl font-bold ${
+                      isDark ? "text-white" : "text-brand-ink"
+                  }`}
+              >
+                {title}
+              </h3>
+            </div>
+
+            <span
+                className={`flex size-12 items-center justify-center rounded-full font-heading text-lg font-bold ${
+                    isDark
+                        ? "bg-white/10 text-brand-tan"
+                        : "bg-brand-pampas text-brand-madison"
+                }`}
+            >
+            {number}
+          </span>
+          </div>
+
+          <div className="space-y-4">
+            <div
+                className={`rounded-2xl p-4 ${
+                    isDark ? "bg-white/10" : "bg-brand-pampas"
+                }`}
+            >
+              <div className="mb-3 flex items-center justify-between">
+              <span
+                  className={`text-sm font-medium ${
+                      isDark ? "text-white/70" : "text-brand-muted"
+                  }`}
+              >
+                Документи
+              </span>
+                <span
+                    className={`text-sm font-semibold ${
+                        isDark ? "text-white" : "text-brand-madison"
+                    }`}
                 >
-                  Завантажити
-                </Button>
+                Перевірено
+              </span>
+              </div>
+
+              <div
+                  className={`h-2 overflow-hidden rounded-full ${
+                      isDark ? "bg-white/15" : "bg-brand-soft"
+                  }`}
+              >
+                <div
+                    className={`h-full rounded-full ${
+                        isDark ? "w-[86%] bg-brand-tan" : "w-[86%] bg-brand-madison"
+                    }`}
+                />
               </div>
             </div>
-            <div className="flex flex-col justify-start gap-y-8">
-              <AnimatePresence>
-                <Fragment>
-                  <ConditionalRender condition={render.isMobile}>
-                    <div>
-                      <h5 className="mb-3 text-xl font-bold">Облік для ФОП</h5>
-                      <p>
-                        Ведення книг, управління витратами та підготовка
-                        фінансових звітів для компаній.
-                      </p>
-                      <div className="mt-4">
-                        <img
-                          src="https://d22po4pjz3o32e.cloudfront.net/placeholder-image-1.svg"
-                          alt="Relume placeholder image 1"
-                          className="size-full"
-                        />
-                      </div>
-                    </div>
-                  </ConditionalRender>
-                  <ConditionalRender condition={render.isTablet}>
-                    <motion.div
-                      style={{
-                        opacity: useSctoll.getStyles(0).opacity,
-                        y: useSctoll.getStyles(0).y,
-                      }}
-                      initial={{ opacity: 0, y: 100 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                      className="md:absolute first:md:relative"
-                    >
-                      <h5 className="font-bold md:mb-4 md:text-2xl">
-                        Облік для ФОП
-                      </h5>
-                      <p className="md:text-md">
-                        Ведення книг, управління витратами та підготовка
-                        фінансових звітів для компаній.
-                      </p>
-                    </motion.div>
-                  </ConditionalRender>
-                </Fragment>
-                <Fragment>
-                  <ConditionalRender condition={render.isMobile}>
-                    <div>
-                      <h5 className="mb-3 text-xl font-bold">
-                        Облік малого бізнесу
-                      </h5>
-                      <p>
-                        Ведення книг, управління витратами та підготовка
-                        фінансових звітів для компаній.
-                      </p>
-                      <div className="mt-4">
-                        <img
-                          src="https://d22po4pjz3o32e.cloudfront.net/placeholder-image-2.svg"
-                          alt="Relume placeholder image 2"
-                          className="size-full"
-                        />
-                      </div>
-                    </div>
-                  </ConditionalRender>
-                  <ConditionalRender condition={render.isTablet}>
-                    <motion.div
-                      style={{
-                        opacity: useSctoll.getStyles(1).opacity,
-                        y: useSctoll.getStyles(1).y,
-                      }}
-                      initial={false}
-                      animate={{}}
-                      transition={{}}
-                      className="md:absolute first:md:relative"
-                    >
-                      <h5 className="font-bold md:mb-4 md:text-2xl">
-                        Облік малого бізнесу
-                      </h5>
-                      <p className="md:text-md">
-                        Ведення книг, управління витратами та підготовка
-                        фінансових звітів для компаній.
-                      </p>
-                    </motion.div>
-                  </ConditionalRender>
-                </Fragment>
-                <Fragment>
-                  <ConditionalRender condition={render.isMobile}>
-                    <div>
-                      <h5 className="mb-3 text-xl font-bold">
-                        Податкове консультування
-                      </h5>
-                      <p>
-                        Підготовка квартальних та річних звітів, декларацій та
-                        всіх необхідних документів для органів влади.
-                      </p>
-                      <div className="mt-4">
-                        <img
-                          src="https://d22po4pjz3o32e.cloudfront.net/placeholder-image-3.svg"
-                          alt="Relume placeholder image 3"
-                          className="size-full"
-                        />
-                      </div>
-                    </div>
-                  </ConditionalRender>
-                  <ConditionalRender condition={render.isTablet}>
-                    <motion.div
-                      style={{
-                        opacity: useSctoll.getStyles(2).opacity,
-                        y: useSctoll.getStyles(2).y,
-                      }}
-                      initial={false}
-                      animate={{}}
-                      transition={{}}
-                      className="md:absolute first:md:relative"
-                    >
-                      <h5 className="font-bold md:mb-4 md:text-2xl">
-                        Податкове консультування
-                      </h5>
-                      <p className="md:text-md">
-                        Підготовка квартальних та річних звітів, декларацій та
-                        всіх необхідних документів для органів влади.
-                      </p>
-                    </motion.div>
-                  </ConditionalRender>
-                </Fragment>
-                <Fragment>
-                  <ConditionalRender condition={render.isMobile}>
-                    <div>
-                      <h5 className="mb-3 text-xl font-bold">
-                        Ведення звітності
-                      </h5>
-                      <p>
-                        Ведення книг, управління витратами та підготовка
-                        фінансових звітів для компаній.
-                      </p>
-                      <div className="mt-4">
-                        <img
-                          src="https://d22po4pjz3o32e.cloudfront.net/placeholder-image-4.svg"
-                          alt="Relume placeholder image 4"
-                          className="size-full"
-                        />
-                      </div>
-                    </div>
-                  </ConditionalRender>
-                  <ConditionalRender condition={render.isTablet}>
-                    <motion.div
-                      style={{
-                        opacity: useSctoll.getStyles(3).opacity,
-                        y: useSctoll.getStyles(3).y,
-                      }}
-                      initial={false}
-                      animate={{}}
-                      transition={{}}
-                      className="md:absolute first:md:relative"
-                    >
-                      <h5 className="font-bold md:mb-4 md:text-2xl">
-                        Ведення звітності
-                      </h5>
-                      <p className="md:text-md">
-                        Ведення книг, управління витратами та підготовка
-                        фінансових звітів для компаній.
-                      </p>
-                    </motion.div>
-                  </ConditionalRender>
-                </Fragment>
-              </AnimatePresence>
+
+            <div
+                className={`rounded-2xl p-4 ${
+                    isDark ? "bg-white/10" : "bg-brand-pampas"
+                }`}
+            >
+              <div className="mb-3 flex items-center justify-between">
+              <span
+                  className={`text-sm font-medium ${
+                      isDark ? "text-white/70" : "text-brand-muted"
+                  }`}
+              >
+                Звітність
+              </span>
+                <span
+                    className={`text-sm font-semibold ${
+                        isDark ? "text-white" : "text-brand-madison"
+                    }`}
+                >
+                В роботі
+              </span>
+              </div>
+
+              <div
+                  className={`h-2 overflow-hidden rounded-full ${
+                      isDark ? "bg-white/15" : "bg-brand-soft"
+                  }`}
+              >
+                <div
+                    className={`h-full rounded-full ${
+                        isDark ? "w-[64%] bg-white" : "w-[64%] bg-brand-tan"
+                    }`}
+                />
+              </div>
             </div>
-          </div>
-          <div className="hidden md:grid md:grid-cols-1 md:gap-4">
-            <div className="h-screen overflow-hidden">
-              <img
-                src="https://d22po4pjz3o32e.cloudfront.net/placeholder-image-1-portrait.svg"
-                alt="Relume placeholder image 1"
-                className="size-full"
-              />
-            </div>
-            <div className="h-screen overflow-hidden">
-              <img
-                src="https://d22po4pjz3o32e.cloudfront.net/placeholder-image-2-portrait.svg"
-                alt="Relume placeholder image 2"
-                className="size-full"
-              />
-            </div>
-            <div className="h-screen overflow-hidden">
-              <img
-                src="https://d22po4pjz3o32e.cloudfront.net/placeholder-image-3-portrait.svg"
-                alt="Relume placeholder image 3"
-                className="size-full"
-              />
-            </div>
-            <div className="h-screen overflow-hidden">
-              <img
-                src="https://d22po4pjz3o32e.cloudfront.net/placeholder-image-4-portrait.svg"
-                alt="Relume placeholder image 4"
-                className="size-full"
-              />
+
+            <div
+                className={`flex items-center justify-between rounded-2xl p-4 ${
+                    isDark ? "bg-white/10" : "bg-brand-pampas"
+                }`}
+            >
+            <span
+                className={`text-sm font-medium ${
+                    isDark ? "text-white/70" : "text-brand-muted"
+                }`}
+            >
+              Наступний дедлайн
+            </span>
+
+              <span
+                  className={`text-sm font-semibold ${
+                      isDark ? "text-brand-tan" : "text-brand-madison"
+                  }`}
+              >
+              Під контролем
+            </span>
             </div>
           </div>
         </div>
       </div>
-    </section>
+  );
+};
+
+export function Layout513() {
+  const tablet = useTablet();
+  const mobile = useMobile();
+
+  const render = {
+    ...tablet,
+    ...mobile,
+  };
+
+  const useSctoll = useRelume({
+    data: [
+      {
+        heading: "Облік для ФОП",
+        description:
+            "Регулярне ведення обліку, контроль платежів, підготовка документів і допомога з податковими питаннями для підприємців.",
+      },
+      {
+        heading: "Облік малого бізнесу",
+        description:
+            "Системний супровід для малого бізнесу: документи, звітність, платежі, контроль фінансових процесів і підтримка власника.",
+      },
+      {
+        heading: "Податкове консультування",
+        description:
+            "Пояснюю податкові ризики, допомагаю обрати правильний формат роботи й підготуватися до звітних періодів.",
+      },
+      {
+        heading: "Ведення звітності",
+        description:
+            "Підготовка квартальних та річних звітів, декларацій і необхідних документів для податкових органів.",
+      },
+    ],
+  });
+
+  return (
+      <section
+          ref={useSctoll.containerRef}
+          className="bg-white px-[5%] py-16 md:py-24 lg:py-28"
+      >
+        <div className="container">
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:items-start md:gap-20">
+            <div className="flex flex-col gap-y-16 md:sticky md:top-24 md:mt-20 md:h-[calc(100vh_-10rem)] md:justify-center">
+              <div className="flex flex-col">
+                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.16em] text-brand-madison md:mb-4">
+                  Послуги
+                </p>
+
+                <h2 className="mb-5 font-heading text-4xl font-bold leading-tight text-brand-ink md:mb-6 md:text-6xl lg:text-7xl">
+                  Що я роблю для вашого бізнесу
+                </h2>
+
+                <p className="max-w-xl text-base leading-7 text-brand-muted md:text-md">
+                  Від регулярного обліку до податкових декларацій — беру на себе
+                  процеси, які потребують точності, строків і уважності до
+                  деталей.
+                </p>
+
+                <div className="mt-8 flex flex-wrap items-center gap-4">
+                  <Button
+                      title="Переглянути"
+                      variant="secondary"
+                      className="rounded-button border border-brand-madison bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
+                  >
+                    Переглянути
+                  </Button>
+
+                  <Button
+                      title="Завантажити"
+                      variant="link"
+                      size="link"
+                      iconRight={<RxChevronRight />}
+                      className="font-semibold text-brand-madison transition-colors hover:text-brand-madisonDark"
+                  >
+                    Завантажити
+                  </Button>
+                </div>
+              </div>
+
+              <div className="flex flex-col justify-start gap-y-8">
+                <AnimatePresence>
+                  <Fragment>
+                    <ConditionalRender condition={render.isMobile}>
+                      <div className="rounded-card border border-brand-border bg-brand-pampas p-6">
+                        <h5 className="mb-3 font-heading text-2xl font-bold text-brand-ink">
+                          Облік для ФОП
+                        </h5>
+
+                        <p className="leading-7 text-brand-muted">
+                          Регулярне ведення обліку, контроль платежів, підготовка
+                          документів і допомога з податковими питаннями для
+                          підприємців.
+                        </p>
+
+                        <div className="mt-6 h-[360px]">
+                          <ServiceVisual
+                              number="01"
+                              title="ФОП"
+                              label="Individual business"
+                          />
+                        </div>
+                      </div>
+                    </ConditionalRender>
+
+                    <ConditionalRender condition={render.isTablet}>
+                      <motion.div
+                          style={{
+                            opacity: useSctoll.getStyles(0).opacity,
+                            y: useSctoll.getStyles(0).y,
+                          }}
+                          initial={{ opacity: 0, y: 100 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className="md:absolute first:md:relative"
+                      >
+                        <h5 className="font-heading font-bold text-brand-ink md:mb-4 md:text-3xl">
+                          Облік для ФОП
+                        </h5>
+
+                        <p className="max-w-xl leading-7 text-brand-muted md:text-md">
+                          Регулярне ведення обліку, контроль платежів, підготовка
+                          документів і допомога з податковими питаннями для
+                          підприємців.
+                        </p>
+                      </motion.div>
+                    </ConditionalRender>
+                  </Fragment>
+
+                  <Fragment>
+                    <ConditionalRender condition={render.isMobile}>
+                      <div className="rounded-card border border-brand-border bg-brand-pampas p-6">
+                        <h5 className="mb-3 font-heading text-2xl font-bold text-brand-ink">
+                          Облік малого бізнесу
+                        </h5>
+
+                        <p className="leading-7 text-brand-muted">
+                          Системний супровід для малого бізнесу: документи,
+                          звітність, платежі, контроль фінансових процесів і
+                          підтримка власника.
+                        </p>
+
+                        <div className="mt-6 h-[360px]">
+                          <ServiceVisual
+                              number="02"
+                              title="Бізнес"
+                              label="Small business"
+                              tone="dark"
+                          />
+                        </div>
+                      </div>
+                    </ConditionalRender>
+
+                    <ConditionalRender condition={render.isTablet}>
+                      <motion.div
+                          style={{
+                            opacity: useSctoll.getStyles(1).opacity,
+                            y: useSctoll.getStyles(1).y,
+                          }}
+                          initial={false}
+                          animate={{}}
+                          transition={{}}
+                          className="md:absolute first:md:relative"
+                      >
+                        <h5 className="font-heading font-bold text-brand-ink md:mb-4 md:text-3xl">
+                          Облік малого бізнесу
+                        </h5>
+
+                        <p className="max-w-xl leading-7 text-brand-muted md:text-md">
+                          Системний супровід для малого бізнесу: документи,
+                          звітність, платежі, контроль фінансових процесів і
+                          підтримка власника.
+                        </p>
+                      </motion.div>
+                    </ConditionalRender>
+                  </Fragment>
+
+                  <Fragment>
+                    <ConditionalRender condition={render.isMobile}>
+                      <div className="rounded-card border border-brand-border bg-brand-pampas p-6">
+                        <h5 className="mb-3 font-heading text-2xl font-bold text-brand-ink">
+                          Податкове консультування
+                        </h5>
+
+                        <p className="leading-7 text-brand-muted">
+                          Пояснюю податкові ризики, допомагаю обрати правильний
+                          формат роботи й підготуватися до звітних періодів.
+                        </p>
+
+                        <div className="mt-6 h-[360px]">
+                          <ServiceVisual
+                              number="03"
+                              title="Податки"
+                              label="Tax consulting"
+                          />
+                        </div>
+                      </div>
+                    </ConditionalRender>
+
+                    <ConditionalRender condition={render.isTablet}>
+                      <motion.div
+                          style={{
+                            opacity: useSctoll.getStyles(2).opacity,
+                            y: useSctoll.getStyles(2).y,
+                          }}
+                          initial={false}
+                          animate={{}}
+                          transition={{}}
+                          className="md:absolute first:md:relative"
+                      >
+                        <h5 className="font-heading font-bold text-brand-ink md:mb-4 md:text-3xl">
+                          Податкове консультування
+                        </h5>
+
+                        <p className="max-w-xl leading-7 text-brand-muted md:text-md">
+                          Пояснюю податкові ризики, допомагаю обрати правильний
+                          формат роботи й підготуватися до звітних періодів.
+                        </p>
+                      </motion.div>
+                    </ConditionalRender>
+                  </Fragment>
+
+                  <Fragment>
+                    <ConditionalRender condition={render.isMobile}>
+                      <div className="rounded-card border border-brand-border bg-brand-pampas p-6">
+                        <h5 className="mb-3 font-heading text-2xl font-bold text-brand-ink">
+                          Ведення звітності
+                        </h5>
+
+                        <p className="leading-7 text-brand-muted">
+                          Підготовка квартальних та річних звітів, декларацій і
+                          необхідних документів для податкових органів.
+                        </p>
+
+                        <div className="mt-6 h-[360px]">
+                          <ServiceVisual
+                              number="04"
+                              title="Звіти"
+                              label="Reporting"
+                              tone="dark"
+                          />
+                        </div>
+                      </div>
+                    </ConditionalRender>
+
+                    <ConditionalRender condition={render.isTablet}>
+                      <motion.div
+                          style={{
+                            opacity: useSctoll.getStyles(3).opacity,
+                            y: useSctoll.getStyles(3).y,
+                          }}
+                          initial={false}
+                          animate={{}}
+                          transition={{}}
+                          className="md:absolute first:md:relative"
+                      >
+                        <h5 className="font-heading font-bold text-brand-ink md:mb-4 md:text-3xl">
+                          Ведення звітності
+                        </h5>
+
+                        <p className="max-w-xl leading-7 text-brand-muted md:text-md">
+                          Підготовка квартальних та річних звітів, декларацій і
+                          необхідних документів для податкових органів.
+                        </p>
+                      </motion.div>
+                    </ConditionalRender>
+                  </Fragment>
+                </AnimatePresence>
+              </div>
+            </div>
+
+            <div className="hidden md:grid md:grid-cols-1 md:gap-6">
+              <div className="h-screen overflow-hidden rounded-card">
+                <ServiceVisual
+                    number="01"
+                    title="ФОП"
+                    label="Individual business"
+                />
+              </div>
+
+              <div className="h-screen overflow-hidden rounded-card">
+                <ServiceVisual
+                    number="02"
+                    title="Бізнес"
+                    label="Small business"
+                    tone="dark"
+                />
+              </div>
+
+              <div className="h-screen overflow-hidden rounded-card">
+                <ServiceVisual
+                    number="03"
+                    title="Податки"
+                    label="Tax consulting"
+                />
+              </div>
+
+              <div className="h-screen overflow-hidden rounded-card">
+                <ServiceVisual
+                    number="04"
+                    title="Звіти"
+                    label="Reporting"
+                    tone="dark"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
   );
 }
