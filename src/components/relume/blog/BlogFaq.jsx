@@ -5,14 +5,13 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Button,
 } from "@relume_io/relume-ui";
 import React from "react";
 import { RxPlus } from "react-icons/rx";
 
-export function Faq4() {
+export function BlogFaq() {
   return (
-      <section className="bg-white px-[5%] py-16 md:py-24 lg:py-28">
+      <section id="FAQ" className="bg-white px-[5%] py-16 md:py-24 lg:py-28">
         <div className="container max-w-4xl">
           <div className="rb-12 mx-auto mb-12 max-w-3xl text-center md:mb-18 lg:mb-20">
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.16em] text-brand-madison md:mb-4">
@@ -149,13 +148,13 @@ export function Faq4() {
             </p>
 
             <div className="mt-8">
-              <Button
+              <a
+                  href="/#contact"
                   title="Контакти"
-                  variant="secondary"
                   className="rounded-button border border-brand-madison bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
               >
                 Контакти
-              </Button>
+              </a>
             </div>
           </div>
         </div>

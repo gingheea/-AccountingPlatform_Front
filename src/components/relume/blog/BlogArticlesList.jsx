@@ -97,7 +97,7 @@ const BlogVisual = ({ number, category, tone = "light" }) => {
   );
 };
 
-export function Blog32() {
+export function BlogArticlesList() {
   const useActive = useRelume({
     defaultValue: "all-posts",
     selects: [

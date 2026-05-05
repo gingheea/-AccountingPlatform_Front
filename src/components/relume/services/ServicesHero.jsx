@@ -3,7 +3,7 @@
 import { Button } from "@relume_io/relume-ui";
 import React from "react";
 
-export function Header62() {
+export function ServicesHero() {
   return (
       <section className="relative overflow-hidden bg-brand-pampas px-[5%] py-16 md:py-24 lg:py-28">
         <div className="absolute right-0 top-0 h-72 w-72 rounded-bl-[6rem] bg-brand-madison/5" />
@@ -25,12 +25,13 @@ export function Header62() {
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <Button
+            <a
+                href="/#quick-consultation"
                 title="Консультація"
                 className="rounded-button bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
             >
               Консультація
-            </Button>
+            </a>
 
             <Button
                 title="Портал"

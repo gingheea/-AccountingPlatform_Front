@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@relume_io/relume-ui";
-import React from "react";
+
+
 
 export function AboutHeader() {
   return (
@@ -25,20 +25,21 @@ export function AboutHeader() {
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <Button
+            <a
                 title="Консультація"
+                href="/#quick-consultation"
                 className="rounded-button bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
             >
               Консультація
-            </Button>
+            </a>
 
-            <Button
+            <a
                 title="Дізнатися"
-                variant="secondary"
+                href="/services"
                 className="rounded-button border border-brand-border bg-white px-6 py-3 font-semibold text-brand-madison transition-colors hover:border-brand-madison hover:bg-white"
             >
               Дізнатися
-            </Button>
+            </a>
           </div>
 
           <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-3">

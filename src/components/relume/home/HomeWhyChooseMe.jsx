@@ -27,7 +27,7 @@ const useRelume = () => {
   };
 };
 
-export function Layout423() {
+export function HomeWhyChooseMe() {
   const hoverState = useRelume();
 
   return (

@@ -22,11 +22,11 @@ const useForm = () => {
   };
 };
 
-export function Header38() {
+export function HomeHero() {
   const formState = useForm();
 
   return (
-      <section className="relative overflow-hidden bg-brand-pampas">
+      <section id="quick-consultation" className="relative overflow-hidden bg-brand-pampas scroll-mt-28">
         <div className="absolute right-0 top-0 h-72 w-72 rounded-bl-[6rem] bg-brand-madison/5" />
         <div className="absolute bottom-0 left-0 h-64 w-64 rounded-tr-[6rem] bg-brand-tan/20" />
 

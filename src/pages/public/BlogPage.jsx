@@ -1,13 +1,13 @@
-import { Blog32 } from "../../components/relume/blog/Blog32.jsx";
-import { Cta40 } from "../../components/relume/blog/Cta40.jsx";
-import { Faq4 } from "../../components/relume/blog/Faq4.jsx";
+import { BlogArticlesList } from "../../components/relume/blog/BlogArticlesList.jsx";
+import { BlogNewsletterCta } from "../../components/relume/blog/BlogNewsletterCta.jsx";
+import { BlogFaq } from "../../components/relume/blog/BlogFaq.jsx";
 
 export default function BlogPage() {
     return (
         <div>
-            <Blog32 />
-            <Cta40 />
-            <Faq4 />
+            <BlogArticlesList />
+            <BlogNewsletterCta />
+            <BlogFaq />
         </div>
     );
 }

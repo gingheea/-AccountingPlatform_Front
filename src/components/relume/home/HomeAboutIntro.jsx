@@ -3,7 +3,7 @@
 import { Button } from "@relume_io/relume-ui";
 import React from "react";
 
-export function Header47() {
+export function HomeAboutIntro() {
   return (
       <section className="bg-white px-[5%] py-16 md:py-24 lg:py-28">
         <div className="container">

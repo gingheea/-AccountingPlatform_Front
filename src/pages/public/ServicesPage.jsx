@@ -1,21 +1,38 @@
-import {Header62} from "../../components/relume/services/Header62.jsx";
-import {Layout353} from "../../components/relume/services/Layout353.jsx";
-import {Pricing18} from "../../components/relume/services/Pricing18.jsx";
-import {Layout353_1} from "../../components/relume/services/Layout353_1.jsx";
-import {Contact14} from "../../components/relume/services/Contact14.jsx";
-import {Cta51} from "../../components/relume/services/Cta51.jsx";
-import {Comparison13} from "../../components/relume/services/Comparison13.jsx";
+import {ServicesHero} from "../../components/relume/services/ServicesHero.jsx";
+import {ServicesList} from "../../components/relume/services/ServicesList.jsx";
+import {ServicesPricing} from "../../components/relume/services/ServicesPricing.jsx";
+import {ServicesBenefits} from "../../components/relume/services/ServicesBenefits.jsx";
+import { ContactSection } from "../../components/shared/ContactSection.jsx";
+import {ServicesCta} from "../../components/relume/services/ServicesCta.jsx";
+import {ServicesPackagesComparison} from "../../components/relume/services/ServicesPackagesComparison.jsx";
 
 export default function ServicesPage() {
     return (
         <div>
-            <Header62 />
-            <Layout353 />
-            <Pricing18 />
-            <Layout353_1 />
-            <Cta51 />
-            <Contact14 />
-            <Comparison13 />
+            <ServicesHero />
+            <ServicesList />
+            <ServicesPricing />
+            <ServicesBenefits />
+            {/* <ServicesCta /> */}
+            <ContactSection
+                sectionId="services-contact"
+                title="Обговоримо ваш формат супроводу"
+                description="Розкажіть, які послуги вам потрібні: облік ФОП, супровід малого бізнесу, звітність, консультація або робота з документами."
+                thirdCardTitle="Онлайн-формат"
+                thirdCardDescription="Консультації та обмін документами можна вести дистанційно через пошту, месенджери або клієнтський портал."
+                accentLabel="Підбір послуг"
+                accentTitle="Допоможу зрозуміти, який пакет підходить саме вам"
+                accentDescription="Після короткого обговорення стане зрозуміло, чи вам потрібна разова консультація, базовий супровід або повне ведення обліку."
+                statOneLabel="Для кого"
+                statOneValue="ФОП / SMB"
+                statTwoLabel="Формат"
+                statTwoValue="Online"
+                statThreeLabel="Рішення"
+                statThreeValue="Пакет послуг"
+                actionText="Отримати консультацію"
+                actionHref="/#quick-consultation"
+            />
+            <ServicesPackagesComparison />
         </div>
     );
 }

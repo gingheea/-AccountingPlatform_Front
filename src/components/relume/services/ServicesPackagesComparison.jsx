@@ -3,7 +3,7 @@
 import React from "react";
 import { BiCheck, BiX } from "react-icons/bi";
 
-export function Comparison13() {
+export function ServicesPackagesComparison() {
   const priceRowClass =
       "flex justify-between gap-4 border-b border-brand-border py-5 first:border-t";
 

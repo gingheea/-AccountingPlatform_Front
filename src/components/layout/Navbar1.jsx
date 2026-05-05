@@ -50,19 +50,12 @@ export function Navbar1() {
       <section className="sticky top-0 z-50 flex w-full items-center border-b border-brand-border bg-white/95 backdrop-blur-md lg:min-h-[76px] lg:px-[5%]">
         <div className="size-full lg:flex lg:items-center lg:justify-between">
           <div className="flex min-h-16 items-center justify-between px-[5%] md:min-h-18 lg:min-h-full lg:px-0">
-            <a href="#" className="flex items-center gap-3">
-              <div className="flex size-10 items-center justify-center rounded-button bg-brand-madison font-heading text-sm font-bold tracking-wide text-white shadow-soft">
-                AP
-              </div>
-
-              <div className="flex flex-col leading-tight">
-              <span className="font-heading text-base font-bold text-brand-ink">
-                Accounting Platform
-              </span>
-                <span className="hidden text-xs font-medium text-brand-gothic sm:block">
-                Outsourced accounting
-              </span>
-              </div>
+            <a href="/" className="flex items-center gap-3">
+              <img
+                  src="public/logo-a.svg"
+                  alt="Accounting Platform logo"
+                  className="h-15 w-auto"
+              />
             </a>
 
             <button
@@ -121,15 +114,15 @@ export function Navbar1() {
               transition={{ duration: 0.4 }}
               className="overflow-hidden bg-white px-[5%] shadow-lg lg:flex lg:items-center lg:bg-transparent lg:px-0 lg:shadow-none lg:[--height-closed:auto] lg:[--height-open:auto]"
           >
-            <a href="#" className={navLinkClass}>
+            <a href="/about" className={navLinkClass}>
               Про мене
             </a>
 
-            <a href="#" className={navLinkClass}>
+            <a href="/services" className={navLinkClass}>
               Послуги
             </a>
 
-            <a href="#" className={navLinkClass}>
+            <a href="/blog" className={navLinkClass}>
               Блог
             </a>
 
@@ -189,22 +182,19 @@ export function Navbar1() {
             </div>
 
             <div className="flex flex-col items-center gap-3 border-t border-brand-border py-5 lg:ml-5 lg:flex-row lg:border-t-0 lg:py-0">
-              <Button
-                  title="Контакт"
-                  variant="secondary"
-                  size="sm"
-                  className="w-full rounded-button border border-brand-border bg-white px-5 py-2.5 font-semibold text-brand-madison transition-colors hover:border-brand-madison hover:bg-brand-pampas lg:w-auto"
+              <a
+                  href="/#contact"
+                  className="w-full rounded-button border border-brand-border bg-white px-5 py-2.5 text-center font-semibold text-brand-madison transition-colors hover:border-brand-madison hover:bg-brand-pampas lg:w-auto"
               >
                 Контакт
-              </Button>
+              </a>
 
-              <Button
-                  title="Консультація"
-                  size="sm"
-                  className="w-full rounded-button bg-brand-madison px-5 py-2.5 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark lg:w-auto"
+              <a
+                  href="/#quick-consultation"
+                  className="w-full rounded-button bg-brand-madison px-5 py-2.5 text-center font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark lg:w-auto"
               >
                 Консультація
-              </Button>
+              </a>
             </div>
           </motion.div>
         </div>

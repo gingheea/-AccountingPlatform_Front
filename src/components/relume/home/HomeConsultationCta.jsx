@@ -1,9 +1,8 @@
 "use client";
 
-import { Button } from "@relume_io/relume-ui";
 import React from "react";
 
-export function Cta31() {
+export function HomeConsultationCta() {
   return (
       <section className="bg-white px-[5%] py-16 md:py-24 lg:py-28">
         <div className="container">
@@ -24,20 +23,19 @@ export function Cta31() {
                 </p>
 
                 <div className="mt-8 flex flex-wrap items-center gap-4">
-                  <Button
-                      title="Записатися"
-                      className="rounded-button bg-white px-6 py-3 font-semibold text-brand-madison shadow-soft transition-colors hover:bg-brand-pampas"
+                  <a
+                      href="/#quick-consultation"
+                      className="inline-flex rounded-button bg-white px-6 py-3 font-semibold text-brand-madison shadow-soft transition-colors hover:bg-brand-pampas"
                   >
                     Записатися
-                  </Button>
+                  </a>
 
-                  <Button
-                      title="Дізнатися"
-                      variant="secondary"
-                      className="rounded-button border border-white/25 bg-white/10 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/15"
+                  <a
+                      href="/services"
+                      className="inline-flex rounded-button border border-white/25 bg-white/10 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/15"
                   >
                     Дізнатися
-                  </Button>
+                  </a>
                 </div>
               </div>
 

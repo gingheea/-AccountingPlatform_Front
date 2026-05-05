@@ -47,18 +47,11 @@ export function Footer1() {
           <div className="grid grid-cols-1 gap-x-[8vw] gap-y-12 pb-12 md:gap-y-16 md:pb-18 lg:grid-cols-[0.8fr_1fr] lg:gap-y-4 lg:pb-20">
             <div className="flex flex-col">
               <a href="#" className="mb-6 flex items-center gap-3">
-                <div className="flex size-11 items-center justify-center rounded-button bg-white font-heading text-sm font-bold tracking-wide text-brand-madison shadow-soft">
-                  AP
-                </div>
-
-                <div className="flex flex-col leading-tight">
-                <span className="font-heading text-lg font-bold text-white">
-                  Accounting Platform
-                </span>
-                  <span className="text-xs font-medium text-white/55">
-                  Outsourced accounting
-                </span>
-                </div>
+                <img
+                    src="public/logo-c.svg"
+                    alt="Accounting Platform logo"
+                    className="h-17 w-auto"
+                />
               </a>
 
               <p className="mb-6 max-w-md leading-7 text-white/70">
@@ -103,19 +96,19 @@ export function Footer1() {
 
                 <ul>
                   <li className="py-2">
-                    <a href="#" className={footerLinkClass}>
+                    <a href="/services" className={footerLinkClass}>
                       <span>Послуги ФОП</span>
                     </a>
                   </li>
 
                   <li className="py-2">
-                    <a href="#" className={footerLinkClass}>
+                    <a href="/services" className={footerLinkClass}>
                       <span>Послуги для бізнесу</span>
                     </a>
                   </li>
 
                   <li className="py-2">
-                    <a href="#" className={footerLinkClass}>
+                    <a href="/#quick-consultation" className={footerLinkClass}>
                       <span>Консультації</span>
                     </a>
                   </li>
@@ -127,7 +120,7 @@ export function Footer1() {
                   </li>
 
                   <li className="py-2">
-                    <a href="#" className={footerLinkClass}>
+                    <a href="/services#pricing" className={footerLinkClass}>
                       <span>Прайс-лист</span>
                     </a>
                   </li>
@@ -139,19 +132,19 @@ export function Footer1() {
 
                 <ul>
                   <li className="py-2">
-                    <a href="#" className={footerLinkClass}>
+                    <a href="/about" className={footerLinkClass}>
                       <span>Про мене</span>
                     </a>
                   </li>
 
                   <li className="py-2">
-                    <a href="#" className={footerLinkClass}>
+                    <a href="/blog" className={footerLinkClass}>
                       <span>Блог</span>
                     </a>
                   </li>
 
                   <li className="py-2">
-                    <a href="#" className={footerLinkClass}>
+                    <a href="/#contact" className={footerLinkClass}>
                       <span>Контакти</span>
                     </a>
                   </li>
@@ -163,7 +156,7 @@ export function Footer1() {
                   </li>
 
                   <li className="py-2">
-                    <a href="#" className={footerLinkClass}>
+                    <a href="/blog#FAQ" className={footerLinkClass}>
                       <span>FAQ</span>
                     </a>
                   </li>
@@ -217,24 +210,24 @@ export function Footer1() {
 
           <div className="flex flex-col-reverse items-start justify-between gap-6 pb-4 pt-6 md:flex-row md:items-center md:pb-0 md:pt-8">
             <p className="text-sm text-white/50">
-              © 2026 Accounting Platform. Усі права захищені.
+              © 2026 Stelmakh Accounting. Усі права захищені.
             </p>
 
             <ul className="grid grid-flow-row grid-cols-[max-content] justify-center gap-y-4 md:grid-flow-col md:gap-x-6 md:gap-y-0">
               <li>
-                <a href="#" className={legalLinkClass}>
+                <a href="/privacy" className={legalLinkClass}>
                   Політика конфіденційності
                 </a>
               </li>
 
               <li>
-                <a href="#" className={legalLinkClass}>
+                <a href="/terms" className={legalLinkClass}>
                   Умови використання
                 </a>
               </li>
 
               <li>
-                <a href="#" className={legalLinkClass}>
+                <a href="/cookies" className={legalLinkClass}>
                   Cookies
                 </a>
               </li>

@@ -1,16 +1,15 @@
 "use client";
 
 import { Button } from "@relume_io/relume-ui";
-import React from "react";
 import { BiCheck } from "react-icons/bi";
 
-export function Pricing18() {
+export function ServicesPricing() {
   const featureClass = "flex items-start gap-3";
   const checkClass =
       "mt-0.5 flex size-6 flex-none items-center justify-center rounded-full bg-brand-pampas text-brand-madison";
 
   return (
-      <section className="bg-white px-[5%] py-16 md:py-24 lg:py-28">
+      <section id="pricing" className="bg-white px-[5%] py-16 md:py-24 lg:py-28">
         <div className="container">
           <div className="mx-auto mb-12 max-w-3xl text-center md:mb-18 lg:mb-20">
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.16em] text-brand-madison md:mb-4">

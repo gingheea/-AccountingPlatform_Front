@@ -4,7 +4,7 @@ import { Button } from "@relume_io/relume-ui";
 import React from "react";
 import { RxChevronRight } from "react-icons/rx";
 
-export function Testimonial22() {
+export function HomeTestimonials() {
   return (
       <section className="bg-white px-[5%] py-16 md:py-24 lg:py-28">
         <div className="container">

@@ -5,7 +5,7 @@ import React, { Fragment } from "react";
 import { BiCheck, BiX } from "react-icons/bi";
 import { RxChevronRight } from "react-icons/rx";
 
-export function Comparison11() {
+export function HomeServicePackages() {
   return (
       <section className="bg-brand-pampas px-[5%] py-16 md:py-24 lg:py-28">
         <div className="container">

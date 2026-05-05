@@ -4,27 +4,27 @@ import { Button } from "@relume_io/relume-ui";
 import React from "react";
 import { RxChevronRight } from "react-icons/rx";
 
-export function Layout353_1() {
+export function ServicesList() {
   const cardNumberClass =
       "mb-5 flex size-12 items-center justify-center rounded-button bg-brand-pampas font-heading text-lg font-bold text-brand-madison";
 
   return (
-      <section className="bg-brand-pampas px-[5%] py-16 md:py-24 lg:py-28">
+      <section className="bg-white px-[5%] py-16 md:py-24 lg:py-28">
         <div className="container">
           <div className="grid grid-cols-1 items-start gap-y-12 md:grid-flow-row md:grid-cols-2 md:gap-x-12 lg:gap-x-20">
             <div className="static md:sticky md:top-[30%]">
               <p className="mb-3 text-sm font-semibold uppercase tracking-[0.16em] text-brand-madison md:mb-4">
-                Переваги
+                Послуги
               </p>
 
               <h2 className="rb-5 mb-5 font-heading text-4xl font-bold leading-tight text-brand-ink md:mb-6 md:text-6xl lg:text-7xl">
-                Чому обирають такий формат бухгалтерії
+                Повний спектр бухгалтерських рішень
               </h2>
 
               <p className="max-w-xl text-base leading-7 text-brand-muted md:text-md">
-                Ви отримуєте не просто підготовку звітів, а зрозумілу систему:
-                документи, дедлайни, консультації та підтримку без зайвої
-                бюрократії.
+                Кожна послуга підбирається під ваш формат роботи: ФОП, малий
+                бізнес, регулярна звітність, податкові питання або організація
+                документів.
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -50,28 +50,31 @@ export function Layout353_1() {
 
             <div>
               <div
-                  className="sticky mb-8 rounded-card border border-brand-border bg-white p-8 shadow-soft"
+                  className="sticky mb-8 rounded-card border border-brand-border bg-brand-pampas p-8 shadow-soft"
                   style={{ top: "30%" }}
               >
                 <div className={cardNumberClass}>01</div>
 
                 <h3 className="mb-3 font-heading text-2xl font-bold leading-tight text-brand-ink md:mb-4 md:text-3xl">
-                  Гнучкі тарифи
+                  Облік ФОП
                 </h3>
 
                 <p className="leading-7 text-brand-muted">
-                  Ви платите за той обсяг супроводу, який справді потрібен вашому
-                  бізнесу. Формат роботи можна адаптувати, коли змінюються задачі,
-                  документи або навантаження.
+                  Ведення обліку для фізичних осіб-підприємців: контроль платежів,
+                  підготовка документів, звітність, податкові питання та регулярна
+                  підтримка.
                 </p>
 
-                <div className="mt-6 rounded-2xl bg-brand-pampas p-4">
-                  <p className="text-sm font-semibold text-brand-madison">
-                    Підходить для:
-                  </p>
-                  <p className="mt-1 text-sm leading-6 text-brand-muted">
-                    ФОП, консультантів, онлайн-магазинів і малого бізнесу.
-                  </p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                <span className="rounded-full bg-white px-3 py-1 text-sm font-semibold text-brand-madison">
+                  Звітність
+                </span>
+                  <span className="rounded-full bg-white px-3 py-1 text-sm font-semibold text-brand-madison">
+                  Податки
+                </span>
+                  <span className="rounded-full bg-white px-3 py-1 text-sm font-semibold text-brand-madison">
+                  Документи
+                </span>
                 </div>
               </div>
 
@@ -82,24 +85,24 @@ export function Layout353_1() {
                 <div className={cardNumberClass}>02</div>
 
                 <h3 className="mb-3 font-heading text-2xl font-bold leading-tight text-brand-ink md:mb-4 md:text-3xl">
-                  Онлайн-супровід
+                  Облік малого бізнесу
                 </h3>
 
                 <p className="leading-7 text-brand-muted">
-                  Документи, питання, звіти та консультації можна вести
-                  дистанційно. Це зручно, якщо ви не хочете витрачати час на
-                  офлайн-зустрічі та пересилання файлів хаотично.
+                  Комплексний бухгалтерський супровід для малого бізнесу:
+                  документи, регулярні платежі, фінансові процеси, контроль
+                  дедлайнів і підтримка власника.
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-3">
                 <span className="rounded-full bg-brand-pampas px-3 py-1 text-sm font-semibold text-brand-madison">
-                  Email
+                  SMB
                 </span>
                   <span className="rounded-full bg-brand-pampas px-3 py-1 text-sm font-semibold text-brand-madison">
-                  Telegram
+                  Супровід
                 </span>
                   <span className="rounded-full bg-brand-pampas px-3 py-1 text-sm font-semibold text-brand-madison">
-                  Portal
+                  Контроль
                 </span>
                 </div>
               </div>
@@ -113,22 +116,25 @@ export function Layout353_1() {
                 </div>
 
                 <h3 className="mb-3 font-heading text-2xl font-bold leading-tight text-white md:mb-4 md:text-3xl">
-                  Персоналізований підхід
+                  Податкове консультування
                 </h3>
 
                 <p className="leading-7 text-white/75">
-                  Пакет послуг підбирається не “по шаблону”, а під вашу реальну
-                  ситуацію: тип діяльності, кількість документів, податкові
-                  обовʼязки та рівень потрібної підтримки.
+                  Допомагаю розібратися з податковими питаннями, оцінити ризики,
+                  підготуватися до звітних періодів і вибрати правильний формат
+                  роботи.
                 </p>
 
-                <div className="mt-6 rounded-2xl border border-white/15 bg-white/10 p-4">
-                  <p className="text-sm font-semibold text-brand-tan">
-                    Головна ідея:
-                  </p>
-                  <p className="mt-1 text-sm leading-6 text-white/70">
-                    Спочатку розбираємо задачу, потім підбираємо рішення.
-                  </p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                <span className="rounded-full bg-white/10 px-3 py-1 text-sm font-semibold text-brand-tan">
+                  Консультація
+                </span>
+                  <span className="rounded-full bg-white/10 px-3 py-1 text-sm font-semibold text-brand-tan">
+                  Планування
+                </span>
+                  <span className="rounded-full bg-white/10 px-3 py-1 text-sm font-semibold text-brand-tan">
+                  Ризики
+                </span>
                 </div>
               </div>
 
@@ -139,22 +145,25 @@ export function Layout353_1() {
                 <div className={cardNumberClass}>04</div>
 
                 <h3 className="mb-3 font-heading text-2xl font-bold leading-tight text-brand-ink md:mb-4 md:text-3xl">
-                  Швидкі відповіді
+                  Звітність та подання
                 </h3>
 
                 <p className="leading-7 text-brand-muted">
-                  Коли виникає питання щодо платежу, документа або звітності, ви
-                  отримуєте зрозумілу відповідь без складних пояснень і зайвого
-                  очікування.
+                  Підготовка квартальних і річних звітів, декларацій та необхідних
+                  документів. Контроль строків, щоб уникати штрафів і зайвого
+                  стресу.
                 </p>
 
-                <div className="mt-6 rounded-2xl bg-brand-pampas p-4">
-                  <p className="text-sm font-semibold text-brand-madison">
-                    Особливо важливо:
-                  </p>
-                  <p className="mt-1 text-sm leading-6 text-brand-muted">
-                    Перед дедлайнами, поданням звітів і змінами в документах.
-                  </p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                <span className="rounded-full bg-brand-pampas px-3 py-1 text-sm font-semibold text-brand-madison">
+                  Декларації
+                </span>
+                  <span className="rounded-full bg-brand-pampas px-3 py-1 text-sm font-semibold text-brand-madison">
+                  Дедлайни
+                </span>
+                  <span className="rounded-full bg-brand-pampas px-3 py-1 text-sm font-semibold text-brand-madison">
+                  Подання
+                </span>
                 </div>
               </div>
             </div>

@@ -15,8 +15,12 @@ import BlogPage from './pages/public/BlogPage'
 import LoginPage from './pages/admin/LoginPage'
 import DashboardPage from './pages/admin/DashboardPage'
 import ServicesAdminPage from './pages/admin/ServicesAdminPage'
+import PrivacyPage from "./pages/public/PrivacyPage.jsx";
+import TermsPage from "./pages/public/TermsPage.jsx";
+import CookiesPage from "./pages/public/CookiesPage.jsx";
 
 import './index.css'
+
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
@@ -31,6 +35,9 @@ createRoot(document.getElementById('root')).render(
                         <Route path="/services" element={<ServicesPage />} />
                         <Route path="/about" element={<AboutMePage />} />
                         <Route path="/blog" element={<BlogPage />} />
+                        <Route path="/privacy" element={<PrivacyPage />} />
+                        <Route path="/terms" element={<TermsPage />} />
+                        <Route path="/cookies" element={<CookiesPage />} />
                     </Route>
 
                     {/* Логін без layout */}

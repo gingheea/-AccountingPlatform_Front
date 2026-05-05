@@ -7,14 +7,43 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import React, { Fragment, useRef } from "react";
+import { Fragment, useRef } from "react";
 import { RxChevronRight } from "react-icons/rx";
 
 const ConditionalRender = ({ condition, children }) => {
   return condition ? <>{children}</> : null;
 };
 
-const useRelume = ({ data }) => {
+const useScrollItemStyle = (scrollYProgress, index, total) => {
+  const startProgress = index / total;
+  const endProgress = (index + 1) / total;
+
+  const opacity = useTransform(
+      scrollYProgress,
+      [
+        Math.max(0, startProgress - 0.07),
+        startProgress,
+        endProgress - 0.07,
+        Math.min(1, endProgress),
+      ],
+      [0, 1, 1, 0],
+  );
+
+  const y = useTransform(
+      scrollYProgress,
+      [
+        Math.max(0, startProgress - 0.1),
+        startProgress,
+        endProgress - 0.1,
+        Math.min(1, endProgress),
+      ],
+      [100, 0, 0, -100],
+  );
+
+  return { opacity, y };
+};
+
+const useServiceScrollStyles = () => {
   const containerRef = useRef(null);
 
   const { scrollYProgress } = useScroll({
@@ -22,36 +51,22 @@ const useRelume = ({ data }) => {
     offset: ["start center", "end center"],
   });
 
-  const getStyles = (index) => {
-    const startProgress = index / data.length;
-    const endProgress = (index + 1) / data.length;
+  const total = 4;
 
-    const opacity = useTransform(
-        scrollYProgress,
-        [
-          Math.max(0, startProgress - 0.07),
-          startProgress,
-          endProgress - 0.07,
-          Math.min(1, endProgress),
-        ],
-        [0, 1, 1, 0],
-    );
+  const firstItemStyle = useScrollItemStyle(scrollYProgress, 0, total);
+  const secondItemStyle = useScrollItemStyle(scrollYProgress, 1, total);
+  const thirdItemStyle = useScrollItemStyle(scrollYProgress, 2, total);
+  const fourthItemStyle = useScrollItemStyle(scrollYProgress, 3, total);
 
-    const y = useTransform(
-        scrollYProgress,
-        [
-          Math.max(0, startProgress - 0.1),
-          startProgress,
-          endProgress - 0.1,
-          Math.min(1, endProgress),
-        ],
-        [100, 0, 0, -100],
-    );
-
-    return { opacity, y };
+  return {
+    containerRef,
+    itemStyles: [
+      firstItemStyle,
+      secondItemStyle,
+      thirdItemStyle,
+      fourthItemStyle,
+    ],
   };
-
-  return { containerRef, getStyles };
 };
 
 const useMobile = () => {
@@ -120,6 +135,7 @@ const ServiceVisual = ({ number, title, label, tone = "light" }) => {
               >
                 Документи
               </span>
+
                 <span
                     className={`text-sm font-semibold ${
                         isDark ? "text-white" : "text-brand-madison"
@@ -155,6 +171,7 @@ const ServiceVisual = ({ number, title, label, tone = "light" }) => {
               >
                 Звітність
               </span>
+
                 <span
                     className={`text-sm font-semibold ${
                         isDark ? "text-white" : "text-brand-madison"
@@ -204,7 +221,7 @@ const ServiceVisual = ({ number, title, label, tone = "light" }) => {
   );
 };
 
-export function Layout513() {
+export function HomeServicesShowcase() {
   const tablet = useTablet();
   const mobile = useMobile();
 
@@ -213,34 +230,11 @@ export function Layout513() {
     ...mobile,
   };
 
-  const useSctoll = useRelume({
-    data: [
-      {
-        heading: "Облік для ФОП",
-        description:
-            "Регулярне ведення обліку, контроль платежів, підготовка документів і допомога з податковими питаннями для підприємців.",
-      },
-      {
-        heading: "Облік малого бізнесу",
-        description:
-            "Системний супровід для малого бізнесу: документи, звітність, платежі, контроль фінансових процесів і підтримка власника.",
-      },
-      {
-        heading: "Податкове консультування",
-        description:
-            "Пояснюю податкові ризики, допомагаю обрати правильний формат роботи й підготуватися до звітних періодів.",
-      },
-      {
-        heading: "Ведення звітності",
-        description:
-            "Підготовка квартальних та річних звітів, декларацій і необхідних документів для податкових органів.",
-      },
-    ],
-  });
+  const scrollState = useServiceScrollStyles();
 
   return (
       <section
-          ref={useSctoll.containerRef}
+          ref={scrollState.containerRef}
           className="bg-white px-[5%] py-16 md:py-24 lg:py-28"
       >
         <div className="container">
@@ -309,10 +303,7 @@ export function Layout513() {
 
                     <ConditionalRender condition={render.isTablet}>
                       <motion.div
-                          style={{
-                            opacity: useSctoll.getStyles(0).opacity,
-                            y: useSctoll.getStyles(0).y,
-                          }}
+                          style={scrollState.itemStyles[0]}
                           initial={{ opacity: 0, y: 100 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.5 }}
@@ -357,10 +348,7 @@ export function Layout513() {
 
                     <ConditionalRender condition={render.isTablet}>
                       <motion.div
-                          style={{
-                            opacity: useSctoll.getStyles(1).opacity,
-                            y: useSctoll.getStyles(1).y,
-                          }}
+                          style={scrollState.itemStyles[1]}
                           initial={false}
                           animate={{}}
                           transition={{}}
@@ -403,10 +391,7 @@ export function Layout513() {
 
                     <ConditionalRender condition={render.isTablet}>
                       <motion.div
-                          style={{
-                            opacity: useSctoll.getStyles(2).opacity,
-                            y: useSctoll.getStyles(2).y,
-                          }}
+                          style={scrollState.itemStyles[2]}
                           initial={false}
                           animate={{}}
                           transition={{}}
@@ -449,10 +434,7 @@ export function Layout513() {
 
                     <ConditionalRender condition={render.isTablet}>
                       <motion.div
-                          style={{
-                            opacity: useSctoll.getStyles(3).opacity,
-                            y: useSctoll.getStyles(3).y,
-                          }}
+                          style={scrollState.itemStyles[3]}
                           initial={false}
                           animate={{}}
                           transition={{}}

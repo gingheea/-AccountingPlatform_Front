@@ -1,25 +1,34 @@
-import { Header38 } from "../../components/relume/home/Header38.jsx";
-import { Header47 } from "../../components/relume/home/Header47.jsx";
-import { Layout513 } from "../../components/relume/home/Layout513.jsx";
-import { Layout423 } from "../../components/relume/home/Layout423.jsx";
-import { Testimonial22 } from "../../components/relume/home/Testimonial22.jsx";
-import { Cta31 } from "../../components/relume/home/Cta31.jsx";
-import { Cta52 } from "../../components/relume/home/Cta52.jsx";
-import { Contact14 } from "../../components/relume/home/Contact14.jsx";
-import { Comparison11 } from "../../components/relume/home/Comparison11.jsx";
+import { HomeHero } from "../../components/relume/home/HomeHero.jsx";
+import { HomeAboutIntro } from "../../components/relume/home/HomeAboutIntro.jsx";
+import { HomeServicesShowcase } from "../../components/relume/home/HomeServicesShowcase.jsx";
+import { HomeWhyChooseMe } from "../../components/relume/home/HomeWhyChooseMe.jsx";
+import { HomeTestimonials } from "../../components/relume/home/HomeTestimonials.jsx";
+import { HomeConsultationCta } from "../../components/relume/home/HomeConsultationCta.jsx";
+import { HomeNewsletterCta } from "../../components/relume/home/HomeNewsletterCta.jsx";
+import { ContactSection } from "../../components/shared/ContactSection.jsx";
+import { HomeServicePackages } from "../../components/relume/home/HomeServicePackages.jsx";
 
 export default function HomePage() {
     return (
         <div>
-            <Header38 />
-            <Header47 />
-            <Layout513 />
-            <Layout423 />
-            <Testimonial22 />
-            <Cta31 />
-            <Cta52 />
-            <Contact14 />
-            <Comparison11 />
+            <HomeHero />
+            <HomeAboutIntro />
+            <HomeServicesShowcase />
+            <HomeWhyChooseMe />
+            <HomeTestimonials />
+            <HomeConsultationCta />
+            <HomeNewsletterCta />
+            <ContactSection
+                sectionId="contact"
+                title="Звʼяжіться зі мною"
+                description="Маєте питання або готові почати роботу разом? Напишіть, зателефонуйте або залиште запит — я підкажу найкращий формат бухгалтерського супроводу."
+                accentLabel="Зручний формат звʼязку"
+                accentTitle="Оберіть канал, який вам зручний"
+                accentDescription="Можна написати на пошту, зателефонувати або звʼязатися через месенджер. Для короткого запиту достатньо email у формі зверху."
+                actionText="Форма консультації — у верхньому блоці"
+                actionHref="/#quick-consultation"
+            />
+            <HomeServicePackages />
         </div>
     );
 }
