@@ -52,7 +52,7 @@ export function Navbar1() {
           <div className="flex min-h-16 items-center justify-between px-[5%] md:min-h-18 lg:min-h-full lg:px-0">
             <a href="/" className="flex items-center gap-3">
               <img
-                  src="public/logo-a.svg"
+                  src="/logo-a.svg"
                   alt="Accounting Platform logo"
                   className="h-15 w-auto"
               />

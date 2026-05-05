@@ -48,7 +48,7 @@ export function Footer1() {
             <div className="flex flex-col">
               <a href="#" className="mb-6 flex items-center gap-3">
                 <img
-                    src="public/logo-c.svg"
+                    src="/logo-c.svg"
                     alt="Accounting Platform logo"
                     className="h-17 w-auto"
                 />
