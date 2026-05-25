@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Input } from "@relume_io/relume-ui";
-import React, { useState } from "react";
+import {useState} from "react";
 
 const useForm = () => {
   const [email, setEmail] = useState("");

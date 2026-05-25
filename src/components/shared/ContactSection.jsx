@@ -3,6 +3,7 @@
 import React from "react";
 import { BiEnvelope, BiMap, BiPhone } from "react-icons/bi";
 import { RxChevronRight } from "react-icons/rx";
+import { ClientRequestForm } from "./ClientRequestForm";
 
 export function ContactSection({
                                    eyebrow = "Контакти",
@@ -15,17 +16,6 @@ export function ContactSection({
                                    thirdCardDescription = "Пишіть у Telegram або WhatsApp для швидкої відповіді.",
                                    thirdCardButtonText = "Написати",
                                    thirdCardHref = "https://t.me/your_username",
-                                   accentLabel = "Перша консультація",
-                                   accentTitle = "Обговоримо ваш облік і підберемо правильний формат роботи",
-                                   accentDescription = "Коротко розберемо вашу ситуацію: ФОП, малий бізнес, звітність, документи, податки або потребу в регулярному супроводі.",
-                                   statOneLabel = "Формат",
-                                   statOneValue = "Online / phone",
-                                   statTwoLabel = "Відповідь",
-                                   statTwoValue = "У робочий день",
-                                   statThreeLabel = "Мова",
-                                   statThreeValue = "UA / IT / EN",
-                                   actionText = "Записатися на консультацію",
-                                   actionHref = "mailto:hello@example.com?subject=Запит%20на%20консультацію",
                                    sectionId = "contact",
                                }) {
     return (
@@ -117,58 +107,7 @@ export function ContactSection({
                         </div>
                     </div>
 
-                    <a
-                        href={actionHref}
-                        className="group relative overflow-hidden rounded-card border border-brand-border bg-brand-madison p-8 shadow-card md:min-h-[516px]"
-                    >
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(207,175,123,0.35),transparent_35%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent)]" />
-
-                        <div className="relative z-10 flex h-full flex-col justify-between">
-                            <div>
-                <span className="mb-6 inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-brand-tan">
-                  {accentLabel}
-                </span>
-
-                                <h3 className="mb-5 max-w-xl font-heading text-3xl font-bold leading-tight text-white md:text-5xl">
-                                    {accentTitle}
-                                </h3>
-
-                                <p className="max-w-lg leading-7 text-white/75">
-                                    {accentDescription}
-                                </p>
-                            </div>
-
-                            <div className="mt-10 grid gap-4 sm:grid-cols-3">
-                                <div className="rounded-2xl border border-white/15 bg-white/10 p-4">
-                                    <p className="text-sm text-white/65">{statOneLabel}</p>
-                                    <p className="mt-1 font-semibold text-white">
-                                        {statOneValue}
-                                    </p>
-                                </div>
-
-                                <div className="rounded-2xl border border-white/15 bg-white/10 p-4">
-                                    <p className="text-sm text-white/65">{statTwoLabel}</p>
-                                    <p className="mt-1 font-semibold text-white">
-                                        {statTwoValue}
-                                    </p>
-                                </div>
-
-                                <div className="rounded-2xl border border-white/15 bg-white/10 p-4">
-                                    <p className="text-sm text-white/65">{statThreeLabel}</p>
-                                    <p className="mt-1 font-semibold text-white">
-                                        {statThreeValue}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="mt-10">
-                <span className="inline-flex items-center gap-2 font-semibold text-white transition-transform group-hover:translate-x-1">
-                  {actionText}
-                    <RxChevronRight />
-                </span>
-                            </div>
-                        </div>
-                    </a>
+                    <ClientRequestForm />
                 </div>
             </div>
         </section>
