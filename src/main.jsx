@@ -1,34 +1,34 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
-import { AuthProvider } from './context/AuthContext'
-import ProtectedRoute from './components/ProtectedRoute'
-import PublicLayout from './components/layout/PublicLayout'
-import AdminLayout from './components/layout/AdminLayout'
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicLayout from "./components/layout/PublicLayout";
+import AdminLayout from "./components/layout/AdminLayout";
 
-import HomePage from './pages/public/HomePage'
-import ServicesPage from './pages/public/ServicesPage'
-import AboutMePage from './pages/public/AboutPage.jsx'
-import BlogPage from './pages/public/BlogPage'
-import LoginPage from './pages/admin/LoginPage'
-import DashboardPage from './pages/admin/DashboardPage'
-import ServicesAdminPage from './pages/admin/ServicesAdminPage'
+import HomePage from "./pages/public/HomePage";
+import ServicesPage from "./pages/public/ServicesPage";
+import AboutMePage from "./pages/public/AboutPage.jsx";
+import BlogPage from "./pages/public/BlogPage";
 import PrivacyPage from "./pages/public/PrivacyPage.jsx";
 import TermsPage from "./pages/public/TermsPage.jsx";
 import CookiesPage from "./pages/public/CookiesPage.jsx";
 
-import './index.css'
+import LoginPage from "./pages/admin/LoginPage";
+import DashboardPage from "./pages/admin/DashboardPage";
+import ServicesAdminPage from "./pages/admin/ServicesAdminPage";
 
+import "./index.css";
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
     <StrictMode>
-        <AuthProvider>
-            <BrowserRouter>
+        <BrowserRouter>
+            <AuthProvider>
                 <Toaster position="top-right" />
-                <Routes>
 
+                <Routes>
                     {/* Публічний сайт */}
                     <Route element={<PublicLayout />}>
                         <Route path="/" element={<HomePage />} />
@@ -54,9 +54,8 @@ createRoot(document.getElementById('root')).render(
                         <Route path="/admin" element={<DashboardPage />} />
                         <Route path="/admin/services" element={<ServicesAdminPage />} />
                     </Route>
-
                 </Routes>
-            </BrowserRouter>
-        </AuthProvider>
+            </AuthProvider>
+        </BrowserRouter>
     </StrictMode>
-)
+);

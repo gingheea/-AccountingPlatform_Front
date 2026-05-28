@@ -1,25 +1,31 @@
-import { createContext, useState } from 'react'
+import { createContext, useState } from "react";
+import {
+    getAccessToken,
+    saveAccessToken,
+    removeAccessToken,
+} from "../services/tokenStorage";
 
-export const AuthContext = createContext(null)
+// eslint-disable-next-line react-refresh/only-export-components
+export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-    const [token, setToken] = useState(() => localStorage.getItem('token'))
+    const [token, setToken] = useState(() => getAccessToken());
 
-    const isAuthenticated = !!token
+    const isAuthenticated = Boolean(token);
 
     const login = (newToken) => {
-        localStorage.setItem('token', newToken)
-        setToken(newToken)
-    }
+        saveAccessToken(newToken);
+        setToken(newToken);
+    };
 
     const logout = () => {
-        localStorage.removeItem('token')
-        setToken(null)
-    }
+        removeAccessToken();
+        setToken(null);
+    };
 
     return (
         <AuthContext.Provider value={{ token, isAuthenticated, login, logout }}>
             {children}
         </AuthContext.Provider>
-    )
+    );
 }
