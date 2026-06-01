@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicLayout from "./components/layout/PublicLayout";
-import AdminLayout from "./components/layout/AdminLayout";
+import AdminLayout from "./components/admin/AdminLayout.jsx";
 
 import HomePage from "./pages/public/HomePage";
 import ServicesPage from "./pages/public/ServicesPage";

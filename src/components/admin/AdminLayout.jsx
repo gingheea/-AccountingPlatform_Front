@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import AdminSidebar from "./AdminSidebar";
-import AdminTopbar from "./AdminTopbar";
+import AdminSidebar from "./AdminSidebar.jsx";
+import AdminTopbar from "./AdminTopbar.jsx";
 
 export default function AdminLayout() {
     return (

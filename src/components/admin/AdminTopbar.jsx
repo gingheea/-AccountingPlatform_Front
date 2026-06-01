@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { RxExit, RxHamburgerMenu } from "react-icons/rx";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth.js";
 
 const mobileLinks = [
     {
