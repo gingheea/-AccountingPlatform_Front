@@ -3,7 +3,7 @@ import {
     RxDashboard,
     RxFileText,
     RxGear,
-    RxLayers,
+    RxLayers, RxPerson,
 } from "react-icons/rx";
 
 const navItems = [
@@ -27,6 +27,11 @@ const navItems = [
         label: "Requests",
         href: "/admin/requests",
         icon: RxGear,
+    },
+    {
+        label: "Users",
+        href: "/admin/users",
+        icon: RxPerson,
     },
 ];
 

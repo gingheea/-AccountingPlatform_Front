@@ -21,6 +21,7 @@ import DashboardPage from "./pages/admin/DashboardPage";
 import ServicesAdminPage from "./pages/admin/ServicesAdminPage";
 import PricingPackagesAdminPage from "./pages/admin/PricingPackagesAdminPage";
 import RequestsAdminPage from "./pages/admin/RequestsAdminPage";
+import UsersAdminPage from "./pages/admin/UsersAdminPage";
 
 import "./index.css";
 
@@ -56,7 +57,8 @@ createRoot(document.getElementById("root")).render(
                         <Route path="/admin" element={<DashboardPage />} />
                         <Route path="/admin/services" element={<ServicesAdminPage />} />
                         <Route path="/admin/pricing-packages" element={<PricingPackagesAdminPage />} />
-                        <Route path="/admin/requests" element={<RequestsAdminPage />} />
+                        <Route path="/admin/requests" element={<RequestsAdminPage />}/>
+                        <Route path="/admin/users" element={<UsersAdminPage />} />
                     </Route>
                 </Routes>
             </AuthProvider>

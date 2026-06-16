@@ -115,7 +115,8 @@ export default function ServicesAdminPage() {
         if (!confirmed) return;
 
         try {
-            await deleteService(service.id);
+            await deleteServi
+            ce(service.id);
             toast.success("Послугу видалено.");
             await loadServices();
         } catch (error) {
