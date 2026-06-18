@@ -1,5 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import {
+    AUTH_TOKEN_CHANGED_EVENT,
     getAccessToken,
     saveAccessToken,
     removeAccessToken,
@@ -12,6 +13,18 @@ export function AuthProvider({ children }) {
     const [token, setToken] = useState(() => getAccessToken());
 
     const isAuthenticated = Boolean(token);
+
+    useEffect(() => {
+        const syncToken = () => {
+            setToken(getAccessToken());
+        };
+
+        window.addEventListener(AUTH_TOKEN_CHANGED_EVENT, syncToken);
+
+        return () => {
+            window.removeEventListener(AUTH_TOKEN_CHANGED_EVENT, syncToken);
+        };
+    }, []);
 
     const login = (newToken) => {
         saveAccessToken(newToken);
