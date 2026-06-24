@@ -23,6 +23,12 @@ import PricingPackagesAdminPage from "./pages/admin/PricingPackagesAdminPage";
 import RequestsAdminPage from "./pages/admin/RequestsAdminPage";
 import UsersAdminPage from "./pages/admin/UsersAdminPage";
 
+import PortalLayout from "./components/layout/PortalLayout.jsx";
+import PortalDashboardPage from "./pages/portal/PortalDashboardPage";
+import PortalRequestsPage from "./pages/portal/PortalRequestsPage";
+import PortalDocumentsPage from "./pages/portal/PortalDocumentsPage";
+import PortalProfilePage from "./pages/portal/PortalProfilePage";
+
 import "./index.css";
 
 createRoot(document.getElementById("root")).render(
@@ -46,7 +52,7 @@ createRoot(document.getElementById("root")).render(
                     {/* Логін без layout */}
                     <Route path="/login" element={<LoginPage />} />
 
-                    {/* Адмінка — захищена */}
+                    {/* Admin */}
                     <Route
                         element={
                             <ProtectedRoute>
@@ -59,6 +65,21 @@ createRoot(document.getElementById("root")).render(
                         <Route path="/admin/pricing-packages" element={<PricingPackagesAdminPage />} />
                         <Route path="/admin/requests" element={<RequestsAdminPage />}/>
                         <Route path="/admin/users" element={<UsersAdminPage />} />
+                    </Route>
+
+                    {/* Portal */}
+                    <Route
+                        path="/portal"
+                        element={
+                            <ProtectedRoute>
+                                <PortalLayout />
+                            </ProtectedRoute>
+                        }
+                    >
+                        <Route index element={<PortalDashboardPage />} />
+                        <Route path="requests" element={<PortalRequestsPage />} />
+                        <Route path="documents" element={<PortalDocumentsPage />} />
+                        <Route path="profile" element={<PortalProfilePage />} />
                     </Route>
                 </Routes>
             </AuthProvider>

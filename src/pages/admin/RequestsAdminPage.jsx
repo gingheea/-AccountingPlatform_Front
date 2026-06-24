@@ -3,26 +3,36 @@
 import React, { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import {
+    assignClientRequestToUser,
     changeClientRequestAdminNote,
     changeClientRequestStatus,
     completeClientRequest,
     getClientRequests,
     rejectClientRequest,
+    unassignClientRequestUser,
 } from "../../services/clientRequestsService";
 import { getServices } from "../../services/servicesService";
 import { getPricingPackages } from "../../services/pricingPackagesService";
+import { getUsers } from "../../services/usersService";
 import RequestsTable from "../../components/admin/requests/RequestsTable";
 import RequestDetailsModal from "../../components/admin/requests/RequestDetailsModal";
+import AssignRequestUserModal from "../../components/admin/requests/AssignRequestUserModal";
 
 export default function RequestsAdminPage() {
     const [requests, setRequests] = useState([]);
     const [services, setServices] = useState([]);
     const [pricingPackages, setPricingPackages] = useState([]);
+    const [users, setUsers] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [selectedRequest, setSelectedRequest] = useState(null);
+
+    const [assignModalState, setAssignModalState] = useState({
+        isOpen: false,
+        request: null,
+    });
 
     const servicesMap = useMemo(() => {
         return new Map(services.map((service) => [service.id, service]));
@@ -37,15 +47,21 @@ export default function RequestsAdminPage() {
         );
     }, [pricingPackages]);
 
+    const usersMap = useMemo(() => {
+        return new Map(users.map((user) => [user.id, user]));
+    }, [users]);
+
     async function loadData() {
         try {
             setIsLoading(true);
 
-            const [requestsData, servicesData, packagesData] = await Promise.all([
-                getClientRequests(),
-                getServices(),
-                getPricingPackages(),
-            ]);
+            const [requestsData, servicesData, packagesData, usersData] =
+                await Promise.all([
+                    getClientRequests(),
+                    getServices(),
+                    getPricingPackages(),
+                    getUsers(),
+                ]);
 
             setRequests(
                 [...requestsData].sort(
@@ -55,6 +71,7 @@ export default function RequestsAdminPage() {
 
             setServices(servicesData);
             setPricingPackages(packagesData);
+            setUsers(usersData);
         } catch (error) {
             console.error("Failed to load client requests:", error);
             toast.error("Не вдалося завантажити заявки.");
@@ -71,6 +88,20 @@ export default function RequestsAdminPage() {
         setSelectedRequest(null);
     };
 
+    const openAssignModal = (request) => {
+        setAssignModalState({
+            isOpen: true,
+            request,
+        });
+    };
+
+    const closeAssignModal = () => {
+        setAssignModalState({
+            isOpen: false,
+            request: null,
+        });
+    };
+
     const refreshSelectedRequest = (requestId, patch) => {
         setRequests((prev) =>
             prev.map((request) =>
@@ -81,6 +112,20 @@ export default function RequestsAdminPage() {
         setSelectedRequest((prev) =>
             prev && prev.id === requestId ? { ...prev, ...patch } : prev
         );
+
+        setAssignModalState((prev) => {
+            if (!prev.request || prev.request.id !== requestId) {
+                return prev;
+            }
+
+            return {
+                ...prev,
+                request: {
+                    ...prev.request,
+                    ...patch,
+                },
+            };
+        });
     };
 
     const handleStatusChange = async (id, status) => {
@@ -118,6 +163,60 @@ export default function RequestsAdminPage() {
         } catch (error) {
             console.error("Failed to change admin note:", error);
             toast.error("Не вдалося зберегти нотатку.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleAssignUser = async (requestId, userId) => {
+        try {
+            setIsSubmitting(true);
+
+            await assignClientRequestToUser(requestId, userId);
+
+            refreshSelectedRequest(requestId, {
+                userId,
+                updatedAtUtc: new Date().toISOString(),
+            });
+
+            toast.success("Заявку привʼязано до клієнта.");
+        } catch (error) {
+            console.error("Failed to assign request user:", error);
+            toast.error("Не вдалося привʼязати заявку до клієнта.");
+            throw error;
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleUnassignUser = async (request) => {
+        const assignedUser = request.userId ? usersMap.get(request.userId) : null;
+
+        const clientName =
+            assignedUser?.fullName ||
+            assignedUser?.email ||
+            "цього клієнта";
+
+        const confirmed = window.confirm(
+            `Відвʼязати заявку від ${clientName}? Клієнт більше не бачитиме цю заявку в порталі.`
+        );
+
+        if (!confirmed) return;
+
+        try {
+            setIsSubmitting(true);
+
+            await unassignClientRequestUser(request.id);
+
+            refreshSelectedRequest(request.id, {
+                userId: null,
+                updatedAtUtc: new Date().toISOString(),
+            });
+
+            toast.success("Заявку відвʼязано від клієнта.");
+        } catch (error) {
+            console.error("Failed to unassign request user:", error);
+            toast.error("Не вдалося відвʼязати заявку від клієнта.");
         } finally {
             setIsSubmitting(false);
         }
@@ -176,8 +275,9 @@ export default function RequestsAdminPage() {
                     </h1>
 
                     <p className="mt-4 max-w-2xl leading-7 text-brand-muted">
-                        Переглядайте заявки, змінюйте статуси та залишайте
-                        внутрішні нотатки для роботи з клієнтами.
+                        Переглядайте заявки, змінюйте статуси, залишайте
+                        внутрішні нотатки та привʼязуйте заявки до клієнтських
+                        акаунтів.
                     </p>
                 </div>
 
@@ -200,7 +300,11 @@ export default function RequestsAdminPage() {
                     requests={requests}
                     servicesMap={servicesMap}
                     packagesMap={packagesMap}
+                    usersMap={usersMap}
                     onView={setSelectedRequest}
+                    onAssignUser={openAssignModal}
+                    onUnassignUser={handleUnassignUser}
+                    isSubmitting={isSubmitting}
                 />
             )}
 
@@ -214,6 +318,15 @@ export default function RequestsAdminPage() {
                 onAdminNoteSave={handleAdminNoteSave}
                 onComplete={handleComplete}
                 onReject={handleReject}
+                isSubmitting={isSubmitting}
+            />
+
+            <AssignRequestUserModal
+                isOpen={assignModalState.isOpen}
+                request={assignModalState.request}
+                users={users}
+                onClose={closeAssignModal}
+                onAssign={handleAssignUser}
                 isSubmitting={isSubmitting}
             />
         </section>

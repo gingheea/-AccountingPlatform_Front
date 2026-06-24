@@ -1,0 +1,89 @@
+"use client";
+
+import React from "react";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import {useAuth} from "../../hooks/useAuth.js";
+
+const navItems = [
+    {
+        label: "Огляд",
+        to: "/portal",
+        end: true,
+    },
+    {
+        label: "Заявки",
+        to: "/portal/requests",
+    },
+    {
+        label: "Документи",
+        to: "/portal/documents",
+    },
+    {
+        label: "Профіль",
+        to: "/portal/profile",
+    },
+];
+
+export default function PortalLayout() {
+    const navigate = useNavigate();
+    const { logout } = useAuth();
+
+    const handleLogout = () => {
+        logout();
+        navigate("/login");
+    };
+
+    return (
+        <div className="min-h-screen bg-brand-pampas">
+            <header className="border-b border-brand-border bg-white">
+                <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+                    <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-tan">
+                            Client portal
+                        </p>
+
+                        <h1 className="font-heading text-2xl font-bold text-brand-ink">
+                            Кабінет клієнта
+                        </h1>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={handleLogout}
+                        className="rounded-button border border-brand-border px-4 py-2 text-sm font-semibold text-brand-ink transition hover:bg-brand-pampas"
+                    >
+                        Вийти
+                    </button>
+                </div>
+            </header>
+
+            <div className="mx-auto grid max-w-7xl gap-6 px-6 py-8 lg:grid-cols-[260px_1fr]">
+                <aside className="h-fit rounded-card border border-brand-border bg-white p-4 shadow-soft">
+                    <nav className="space-y-2">
+                        {navItems.map((item) => (
+                            <NavLink
+                                key={item.to}
+                                to={item.to}
+                                end={item.end}
+                                className={({ isActive }) =>
+                                    [
+                                        "block rounded-button px-4 py-3 text-sm font-semibold transition",
+                                        isActive
+                                            ? "bg-brand-madison text-white"
+                                            : "text-brand-muted hover:bg-brand-pampas hover:text-brand-ink",
+                                    ].join(" ")
+                                }
+                            >
+                                {item.label}
+                            </NavLink>
+                        ))}
+                    </nav>
+                </aside>
+
+                <main>
+                    <Outlet />
+                </main>
+            </div>
+        </div>
+    );
+}
