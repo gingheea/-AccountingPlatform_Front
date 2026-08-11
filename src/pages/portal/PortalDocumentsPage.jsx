@@ -1,57 +1,312 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import { Button } from "@relume_io/relume-ui";
+import { RxDownload } from "react-icons/rx";
+import {
+    getMyDocumentDownloadUrl,
+    getMyDocuments,
+    triggerDownload,
+    uploadMyDocument,
+} from "../../services/documentsService";
+import UploadDocumentModal from "../../components/documents/UploadDocumentModal";
+import {
+    DOCUMENT_CATEGORIES,
+    DOCUMENT_STATUS_CLASSES,
+    categoryLabel,
+    formatDocumentDate,
+    formatFileSize,
+    statusLabel,
+} from "../../constants/documents";
+
+const directionTabs = [
+    { value: "", label: "Усі" },
+    { value: 1, label: "Від бухгалтера" },
+    { value: 0, label: "Мої завантаження" },
+];
 
 export default function PortalDocumentsPage() {
+    const [documents, setDocuments] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isUploading, setIsUploading] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [downloadingId, setDownloadingId] = useState(null);
+
+    const [direction, setDirection] = useState("");
+    const [category, setCategory] = useState("");
+
+    async function loadDocuments() {
+        try {
+            setIsLoading(true);
+
+            const data = await getMyDocuments({ direction, category });
+
+            setDocuments(data);
+        } catch (error) {
+            console.error("Failed to load documents:", error);
+            toast.error("Не вдалося завантажити документи.");
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        loadDocuments();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [direction, category]);
+
+    const counts = useMemo(
+        () => ({
+            fromAccountant: documents.filter((doc) => doc.direction === 1).length,
+            fromClient: documents.filter((doc) => doc.direction === 0).length,
+        }),
+        [documents],
+    );
+
+    const handleUpload = async (payload) => {
+        try {
+            setIsUploading(true);
+
+            await uploadMyDocument(payload);
+
+            toast.success("Документ завантажено.");
+            setIsModalOpen(false);
+            await loadDocuments();
+
+            return true;
+        } catch (error) {
+            console.error("Failed to upload document:", error);
+            toast.error(
+                error.response?.data?.errors?.[0]?.message ||
+                    error.response?.data?.title ||
+                    "Не вдалося завантажити документ.",
+            );
+
+            return false;
+        } finally {
+            setIsUploading(false);
+        }
+    };
+
+    const handleDownload = async (document) => {
+        try {
+            setDownloadingId(document.id);
+
+            const { url } = await getMyDocumentDownloadUrl(document.id);
+
+            triggerDownload(url);
+        } catch (error) {
+            console.error("Failed to get download url:", error);
+            toast.error("Не вдалося отримати файл.");
+        } finally {
+            setDownloadingId(null);
+        }
+    };
+
     return (
         <div className="space-y-6">
             <section className="rounded-card border border-brand-border bg-white p-8 shadow-soft">
-                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.16em] text-brand-madison">
-                    Documents
-                </p>
+                <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+                    <div>
+                        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.16em] text-brand-madison">
+                            Documents
+                        </p>
 
-                <h2 className="font-heading text-4xl font-bold text-brand-ink">
-                    Документи
-                </h2>
+                        <h2 className="font-heading text-4xl font-bold text-brand-ink">
+                            Документи
+                        </h2>
 
-                <p className="mt-4 max-w-2xl leading-7 text-brand-muted">
-                    Тут будуть документи, які ви завантажили бухгалтеру, і
-                    документи, які бухгалтер передав вам: звітність, рахунки,
-                    акти, договори та інші файли.
-                </p>
+                        <p className="mt-4 max-w-2xl leading-7 text-brand-muted">
+                            Файли, які ви передали бухгалтеру, і документи, які бухгалтер
+                            підготував для вас: звітність, рахунки, акти, договори.
+                        </p>
+                    </div>
+
+                    <Button
+                        onClick={() => setIsModalOpen(true)}
+                        className="rounded-button bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
+                    >
+                        Завантажити документ
+                    </Button>
+                </div>
             </section>
 
             <section className="grid gap-5 md:grid-cols-3">
                 <div className="rounded-card border border-brand-border bg-white p-6 shadow-soft">
-                    <p className="text-sm font-semibold text-brand-muted">
-                        Податкова звітність
-                    </p>
+                    <p className="text-sm font-semibold text-brand-muted">Усього документів</p>
 
-                    <p className="mt-3 text-sm leading-6 text-brand-muted">
-                        Декларації, звіти та документи, підготовлені бухгалтером.
+                    <p className="mt-3 font-heading text-4xl font-bold text-brand-madison">
+                        {documents.length}
                     </p>
                 </div>
 
                 <div className="rounded-card border border-brand-border bg-white p-6 shadow-soft">
-                    <p className="text-sm font-semibold text-brand-muted">
-                        Рахунки та акти
-                    </p>
+                    <p className="text-sm font-semibold text-brand-muted">Від бухгалтера</p>
 
-                    <p className="mt-3 text-sm leading-6 text-brand-muted">
-                        Документи для оплат, актів виконаних робіт і договорів.
+                    <p className="mt-3 font-heading text-4xl font-bold text-brand-madison">
+                        {counts.fromAccountant}
                     </p>
                 </div>
 
                 <div className="rounded-card border border-brand-border bg-white p-6 shadow-soft">
-                    <p className="text-sm font-semibold text-brand-muted">
-                        Завантаження файлів
-                    </p>
+                    <p className="text-sm font-semibold text-brand-muted">Мої завантаження</p>
 
-                    <p className="mt-3 text-sm leading-6 text-brand-muted">
-                        Клієнт зможе передавати бухгалтеру первинні документи.
+                    <p className="mt-3 font-heading text-4xl font-bold text-brand-madison">
+                        {counts.fromClient}
                     </p>
                 </div>
             </section>
+
+            <section className="rounded-card border border-brand-border bg-white p-5 shadow-soft">
+                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                    <div className="flex flex-wrap gap-2">
+                        {directionTabs.map((tab) => (
+                            <button
+                                key={tab.label}
+                                type="button"
+                                onClick={() => setDirection(tab.value)}
+                                className={`rounded-button px-4 py-2 text-sm font-semibold transition ${
+                                    direction === tab.value
+                                        ? "bg-brand-madison text-white"
+                                        : "border border-brand-border text-brand-muted hover:bg-brand-pampas"
+                                }`}
+                            >
+                                {tab.label}
+                            </button>
+                        ))}
+                    </div>
+
+                    <select
+                        value={category}
+                        onChange={(event) => setCategory(event.target.value)}
+                        className="min-h-11 rounded-button border border-brand-border bg-brand-pampas px-4 text-sm text-brand-ink outline-none focus:border-brand-madison"
+                    >
+                        <option value="">Усі категорії</option>
+
+                        {DOCUMENT_CATEGORIES.map((item) => (
+                            <option key={item.value} value={item.value}>
+                                {item.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </section>
+
+            {isLoading ? (
+                <div className="rounded-card border border-brand-border bg-white p-8 shadow-soft">
+                    <p className="text-brand-muted">Завантаження документів...</p>
+                </div>
+            ) : documents.length === 0 ? (
+                <div className="rounded-card border border-brand-border bg-white p-8 text-center shadow-soft">
+                    <h3 className="font-heading text-2xl font-bold text-brand-ink">
+                        Документів ще немає
+                    </h3>
+
+                    <p className="mt-2 text-brand-muted">
+                        Завантажте первинні документи для бухгалтера — або зачекайте, поки
+                        він додасть готові файли для вас.
+                    </p>
+                </div>
+            ) : (
+                <div className="overflow-hidden rounded-card border border-brand-border bg-white shadow-soft">
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-brand-border">
+                            <thead className="bg-brand-pampas">
+                            <tr>
+                                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-[0.14em] text-brand-muted">
+                                    Документ
+                                </th>
+
+                                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-[0.14em] text-brand-muted">
+                                    Категорія
+                                </th>
+
+                                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-[0.14em] text-brand-muted">
+                                    Статус
+                                </th>
+
+                                <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-[0.14em] text-brand-muted">
+                                    Дата
+                                </th>
+
+                                <th className="px-5 py-4 text-right text-xs font-semibold uppercase tracking-[0.14em] text-brand-muted">
+                                    Дія
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody className="divide-y divide-brand-border bg-white">
+                            {documents.map((document) => (
+                                <tr key={document.id} className="transition hover:bg-brand-pampas/40">
+                                    <td className="px-5 py-5">
+                                        <p className="font-semibold text-brand-ink">
+                                            {document.title}
+                                        </p>
+
+                                        <p className="mt-1 text-sm text-brand-muted">
+                                            {document.fileName} · {formatFileSize(document.sizeBytes)}
+                                            {" · "}
+                                            {document.direction === 1
+                                                ? "від бухгалтера"
+                                                : "ваш файл"}
+                                        </p>
+
+                                        {document.note && (
+                                            <p className="mt-2 max-w-xl text-sm leading-6 text-brand-muted">
+                                                {document.note}
+                                            </p>
+                                        )}
+                                    </td>
+
+                                    <td className="px-5 py-5">
+                                        <span className="inline-flex rounded-full bg-brand-soft px-3 py-1 text-xs font-semibold text-brand-madison">
+                                            {categoryLabel(document.category)}
+                                        </span>
+                                    </td>
+
+                                    <td className="px-5 py-5">
+                                        <span
+                                            className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
+                                                DOCUMENT_STATUS_CLASSES[document.status] ||
+                                                "bg-brand-soft text-brand-muted"
+                                            }`}
+                                        >
+                                            {statusLabel(document.status)}
+                                        </span>
+                                    </td>
+
+                                    <td className="px-5 py-5 text-sm text-brand-muted">
+                                        {formatDocumentDate(document.createdAtUtc)}
+                                    </td>
+
+                                    <td className="px-5 py-5 text-right">
+                                        <button
+                                            type="button"
+                                            onClick={() => handleDownload(document)}
+                                            disabled={downloadingId === document.id}
+                                            className="inline-flex items-center gap-2 rounded-button border border-brand-border px-4 py-2 text-sm font-semibold text-brand-ink transition hover:bg-brand-pampas disabled:cursor-not-allowed disabled:opacity-60"
+                                        >
+                                            <RxDownload className="size-4" />
+                                            {downloadingId === document.id
+                                                ? "Готуємо..."
+                                                : "Завантажити"}
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
+
+            <UploadDocumentModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSubmit={handleUpload}
+                isSubmitting={isUploading}
+            />
         </div>
     );
 }

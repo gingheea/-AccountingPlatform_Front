@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { getMyClientRequests, getPortalMe } from "../../services/portalService";
+import { getMyDocuments } from "../../services/documentsService";
 
 const statusLabels = {
     0: "Нова",
@@ -16,6 +17,7 @@ const statusLabels = {
 export default function PortalDashboardPage() {
     const [me, setMe] = useState(null);
     const [requests, setRequests] = useState([]);
+    const [documents, setDocuments] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const sortedRequests = useMemo(() => {
@@ -39,13 +41,15 @@ export default function PortalDashboardPage() {
             try {
                 setIsLoading(true);
 
-                const [meData, requestsData] = await Promise.all([
+                const [meData, requestsData, documentsData] = await Promise.all([
                     getPortalMe(),
                     getMyClientRequests(),
+                    getMyDocuments(),
                 ]);
 
                 setMe(meData);
                 setRequests(requestsData);
+                setDocuments(documentsData);
             } catch (error) {
                 console.error("Failed to load portal dashboard:", error);
                 toast.error("Не вдалося завантажити портал.");
@@ -109,11 +113,12 @@ export default function PortalDashboardPage() {
                     </p>
 
                     <p className="mt-3 font-heading text-4xl font-bold text-brand-madison">
-                        —
+                        {documents.length}
                     </p>
 
                     <p className="mt-2 text-sm text-brand-muted">
-                        Підключимо після backend документів.
+                        {documents.filter((document) => document.direction === 1).length} від
+                        бухгалтера
                     </p>
                 </div>
             </section>

@@ -22,6 +22,7 @@ import ServicesAdminPage from "./pages/admin/ServicesAdminPage";
 import PricingPackagesAdminPage from "./pages/admin/PricingPackagesAdminPage";
 import RequestsAdminPage from "./pages/admin/RequestsAdminPage";
 import UsersAdminPage from "./pages/admin/UsersAdminPage";
+import DocumentsAdminPage from "./pages/admin/DocumentsAdminPage";
 
 import PortalLayout from "./components/layout/PortalLayout.jsx";
 import PortalDashboardPage from "./pages/portal/PortalDashboardPage";
@@ -65,6 +66,7 @@ createRoot(document.getElementById("root")).render(
                         <Route path="/admin/pricing-packages" element={<PricingPackagesAdminPage />} />
                         <Route path="/admin/requests" element={<RequestsAdminPage />}/>
                         <Route path="/admin/users" element={<UsersAdminPage />} />
+                        <Route path="/admin/documents" element={<DocumentsAdminPage />} />
                     </Route>
 
                     {/* Portal */}
