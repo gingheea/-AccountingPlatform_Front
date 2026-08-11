@@ -1,5 +1,5 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { RxExit, RxHamburgerMenu } from "react-icons/rx";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { RxExit, RxHome } from "react-icons/rx";
 import { useAuth } from "../../hooks/useAuth.js";
 
 const mobileLinks = [
@@ -43,14 +43,24 @@ export default function AdminTopbar() {
                     </h2>
                 </div>
 
-                <button
-                    type="button"
-                    onClick={handleLogout}
-                    className="inline-flex items-center gap-2 rounded-button border border-brand-border bg-white px-4 py-2.5 text-sm font-semibold text-brand-madison transition-colors hover:border-brand-madison hover:bg-brand-pampas"
-                >
-                    <RxExit className="size-4" />
-                    Logout
-                </button>
+                <div className="flex items-center gap-2">
+                    <Link
+                        to="/"
+                        className="inline-flex items-center gap-2 rounded-button border border-brand-border bg-white px-4 py-2.5 text-sm font-semibold text-brand-ink transition-colors hover:border-brand-madison hover:bg-brand-pampas"
+                    >
+                        <RxHome className="size-4" />
+                        <span className="hidden sm:inline">На головну</span>
+                    </Link>
+
+                    <button
+                        type="button"
+                        onClick={handleLogout}
+                        className="inline-flex items-center gap-2 rounded-button border border-brand-border bg-white px-4 py-2.5 text-sm font-semibold text-brand-madison transition-colors hover:border-brand-madison hover:bg-brand-pampas"
+                    >
+                        <RxExit className="size-4" />
+                        <span className="hidden sm:inline">Вийти</span>
+                    </button>
+                </div>
             </div>
 
             <nav className="mt-4 flex gap-2 overflow-x-auto lg:hidden">

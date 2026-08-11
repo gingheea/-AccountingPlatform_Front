@@ -53,10 +53,10 @@ createRoot(document.getElementById("root")).render(
                     {/* Логін без layout */}
                     <Route path="/login" element={<LoginPage />} />
 
-                    {/* Admin */}
+                    {/* Admin — лише для ролі Admin, клієнта відкидає в його кабінет */}
                     <Route
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={["Admin"]}>
                                 <AdminLayout />
                             </ProtectedRoute>
                         }

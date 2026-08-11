@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { RxExit, RxHome } from "react-icons/rx";
 import {useAuth} from "../../hooks/useAuth.js";
 
 const navItems = [
@@ -47,13 +48,24 @@ export default function PortalLayout() {
                         </h1>
                     </div>
 
-                    <button
-                        type="button"
-                        onClick={handleLogout}
-                        className="rounded-button border border-brand-border px-4 py-2 text-sm font-semibold text-brand-ink transition hover:bg-brand-pampas"
-                    >
-                        Вийти
-                    </button>
+                    <div className="flex items-center gap-2">
+                        <Link
+                            to="/"
+                            className="inline-flex items-center gap-2 rounded-button border border-brand-border px-4 py-2 text-sm font-semibold text-brand-ink transition hover:bg-brand-pampas"
+                        >
+                            <RxHome className="size-4" />
+                            <span className="hidden sm:inline">На головну</span>
+                        </Link>
+
+                        <button
+                            type="button"
+                            onClick={handleLogout}
+                            className="inline-flex items-center gap-2 rounded-button border border-brand-border px-4 py-2 text-sm font-semibold text-brand-ink transition hover:bg-brand-pampas"
+                        >
+                            <RxExit className="size-4" />
+                            <span className="hidden sm:inline">Вийти</span>
+                        </button>
+                    </div>
                 </div>
             </header>
 

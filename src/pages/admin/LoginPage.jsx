@@ -2,13 +2,15 @@
 
 import { Button, Input } from "@relume_io/relume-ui";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { RxArrowLeft } from "react-icons/rx";
 import {loginRequest} from "../../services/authService.js";
 import {useAuth} from "../../hooks/useAuth.js";
+import { getHomeRouteForRoles, getRolesFromToken } from "../../utils/jwt";
 
 export default function LoginPage() {
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const { login, isAuthenticated, roles } = useAuth();
 
     const [form, setForm] = useState({
         email: "",
@@ -17,6 +19,11 @@ export default function LoginPage() {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+
+    // Показувати форму входу тому, хто вже увійшов, немає сенсу — ведемо в кабінет.
+    if (isAuthenticated) {
+        return <Navigate to={getHomeRouteForRoles(roles)} replace />;
+    }
 
     const handleChange = (field) => (event) => {
         setForm((prev) => ({
@@ -40,7 +47,10 @@ export default function LoginPage() {
 
             login(accessToken);
 
-            navigate("/admin", { replace: true });
+            // Клієнта ведемо в його кабінет, адміна — в адмінку.
+            navigate(getHomeRouteForRoles(getRolesFromToken(accessToken)), {
+                replace: true,
+            });
         } catch (error) {
             console.error("Login failed:", error);
 
@@ -59,18 +69,26 @@ export default function LoginPage() {
         <section className="min-h-screen bg-brand-pampas px-[5%] py-16 md:py-24">
             <div className="container flex min-h-[calc(100vh-8rem)] items-center justify-center">
                 <div className="w-full max-w-md rounded-card border border-brand-border bg-white p-8 shadow-card md:p-10">
+                    <Link
+                        to="/"
+                        className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-muted transition-colors hover:text-brand-madison"
+                    >
+                        <RxArrowLeft className="size-4" />
+                        На головну
+                    </Link>
+
                     <div className="mb-8 text-center">
                         <p className="mb-4 text-sm font-semibold uppercase tracking-[0.16em] text-brand-madison">
-                            Admin
+                            Вхід
                         </p>
 
                         <h1 className="font-heading text-4xl font-bold leading-tight text-brand-ink md:text-5xl">
-                            Вхід в адмін-панель
+                            Вхід в кабінет
                         </h1>
 
                         <p className="mt-4 leading-7 text-brand-muted">
-                            Увійдіть, щоб керувати послугами, тарифами та заявками
-                            клієнтів.
+                            Увійдіть, щоб переглядати свої заявки й документи. Для
+                            бухгалтера тут же відкривається панель керування.
                         </p>
                     </div>
 
@@ -121,7 +139,8 @@ export default function LoginPage() {
                     </form>
 
                     <p className="mt-6 text-center text-xs leading-5 text-brand-muted">
-                        Доступ лише для адміністратора сайту.
+                        Доступ за запрошенням. Якщо у вас ще немає облікового запису —
+                        залиште заявку, і бухгалтер створить його для вас.
                     </p>
                 </div>
             </div>

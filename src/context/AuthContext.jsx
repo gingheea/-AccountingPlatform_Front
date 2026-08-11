@@ -1,18 +1,17 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import {
     AUTH_TOKEN_CHANGED_EVENT,
     getAccessToken,
     saveAccessToken,
     removeAccessToken,
 } from "../services/tokenStorage";
+import { ROLES, decodeToken, getRolesFromToken, isTokenExpired } from "../utils/jwt";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
     const [token, setToken] = useState(() => getAccessToken());
-
-    const isAuthenticated = Boolean(token);
 
     useEffect(() => {
         const syncToken = () => {
@@ -26,19 +25,28 @@ export function AuthProvider({ children }) {
         };
     }, []);
 
-    const login = (newToken) => {
-        saveAccessToken(newToken);
-        setToken(newToken);
-    };
+    const value = useMemo(() => {
+        // Протермінований токен — це не автентифікація: інакше користувач
+        // потрапляв би в кабінет, де кожен запит одразу віддає 401.
+        const isValid = Boolean(token) && !isTokenExpired(token);
+        const roles = isValid ? getRolesFromToken(token) : [];
 
-    const logout = () => {
-        removeAccessToken();
-        setToken(null);
-    };
+        return {
+            token,
+            isAuthenticated: isValid,
+            roles,
+            isAdmin: roles.includes(ROLES.admin),
+            email: isValid ? decodeToken(token)?.email ?? null : null,
+            login: (newToken) => {
+                saveAccessToken(newToken);
+                setToken(newToken);
+            },
+            logout: () => {
+                removeAccessToken();
+                setToken(null);
+            },
+        };
+    }, [token]);
 
-    return (
-        <AuthContext.Provider value={{ token, isAuthenticated, login, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

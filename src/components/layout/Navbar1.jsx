@@ -1,50 +1,59 @@
 "use client";
 
-import {  useMediaQuery } from "@relume_io/relume-ui";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RxChevronDown } from "react-icons/rx";
+import { useAuth } from "../../hooks/useAuth";
+import { getHomeRouteForRoles } from "../../utils/jwt";
 
-const useRelume = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const isMobile = useMediaQuery("(max-width: 991px)");
-  const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
-  const openOnMobileDropdownMenu = () => {
-    setIsDropdownOpen((prev) => !prev);
-  };
-  const openOnDesktopDropdownMenu = () => {
-    !isMobile && setIsDropdownOpen(true);
-  };
-  const closeOnDesktopDropdownMenu = () => {
-    !isMobile && setIsDropdownOpen(false);
-  };
-  const animateMobileMenu = isMobileMenuOpen ? "open" : "close";
-  const animateMobileMenuButtonSpan = isMobileMenuOpen
-      ? ["open", "rotatePhase"]
-      : "closed";
-  const animateDropdownMenu = isDropdownOpen ? "open" : "close";
-  const animateDropdownMenuIcon = isDropdownOpen ? "rotated" : "initial";
-  return {
-    toggleMobileMenu,
-    openOnDesktopDropdownMenu,
-    closeOnDesktopDropdownMenu,
-    openOnMobileDropdownMenu,
-    animateMobileMenu,
-    animateMobileMenuButtonSpan,
-    animateDropdownMenu,
-    animateDropdownMenuIcon,
-  };
-};
+const navLinkClass =
+    "block py-3 text-base font-medium text-brand-muted transition-colors hover:text-brand-madison lg:px-4 lg:py-2";
+
+const dropdownLinkClass =
+    "block rounded-xl px-4 py-2.5 text-base font-medium text-brand-muted transition-colors hover:bg-brand-pampas hover:text-brand-madison";
+
+/**
+ * Гостю показуємо вхід, залогіненому — його власний кабінет. Інакше клік по
+ * «Вхід» відправляв на форму логіну людину, яка вже увійшла.
+ */
+function buildPortalLinks({ isAuthenticated, isAdmin, roles }) {
+  if (!isAuthenticated) {
+    return [{ label: "Вхід", href: "/login" }];
+  }
+
+  return [
+    {
+      label: isAdmin ? "Панель керування" : "Мій кабінет",
+      href: getHomeRouteForRoles(roles),
+    },
+    { label: "Документи", href: "/portal/documents" },
+    { label: "Мої заявки", href: "/portal/requests" },
+  ];
+}
 
 export function Navbar1() {
-  const useActive = useRelume();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const navLinkClass =
-      "block py-3 text-base font-medium text-brand-muted transition-colors hover:text-brand-madison lg:px-4 lg:py-2";
+  const { isAuthenticated, isAdmin, roles } = useAuth();
+  const portalLinks = buildPortalLinks({ isAuthenticated, isAdmin, roles });
 
-  const dropdownLinkClass =
-      "block rounded-xl px-4 py-2.5 text-base font-medium text-brand-muted transition-colors hover:bg-brand-pampas hover:text-brand-madison";
+  const dropdownRef = useRef(null);
+
+  // На тач-екранах меню відкривається кліком, тож потрібен спосіб його закрити.
+  useEffect(() => {
+    if (!isDropdownOpen) return;
+
+    const handleClickOutside = (event) => {
+      if (!dropdownRef.current?.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isDropdownOpen]);
 
   return (
       <section className="sticky top-0 z-50 flex w-full items-center border-b border-brand-border bg-white/95 backdrop-blur-md lg:min-h-[76px] lg:px-[5%]">
@@ -60,59 +69,44 @@ export function Navbar1() {
 
             <button
                 className="-mr-2 flex size-12 flex-col items-center justify-center rounded-xl transition-colors hover:bg-brand-pampas lg:hidden"
-                onClick={useActive.toggleMobileMenu}
+                onClick={() => setIsMobileMenuOpen((prev) => !prev)}
                 aria-label="Open menu"
+                aria-expanded={isMobileMenuOpen}
             >
               <motion.span
                   className="my-[3px] h-0.5 w-6 rounded-full bg-brand-ink"
-                  animate={useActive.animateMobileMenuButtonSpan}
-                  variants={{
-                    open: { translateY: 8, transition: { delay: 0.1 } },
-                    rotatePhase: { rotate: -45, transition: { delay: 0.2 } },
-                    closed: {
-                      translateY: 0,
-                      rotate: 0,
-                      transition: { duration: 0.2 },
-                    },
+                  animate={{
+                    translateY: isMobileMenuOpen ? 8 : 0,
+                    rotate: isMobileMenuOpen ? -45 : 0,
                   }}
+                  transition={{ duration: 0.25 }}
+              />
+              <motion.span
+                  className="my-[3px] h-0.5 rounded-full bg-brand-ink"
+                  animate={{ width: isMobileMenuOpen ? 0 : 24 }}
+                  transition={{ duration: 0.2 }}
               />
               <motion.span
                   className="my-[3px] h-0.5 w-6 rounded-full bg-brand-ink"
-                  animate={useActive.animateMobileMenu}
-                  variants={{
-                    open: { width: 0, transition: { duration: 0.1 } },
-                    closed: {
-                      width: "1.5rem",
-                      transition: { delay: 0.3, duration: 0.2 },
-                    },
+                  animate={{
+                    translateY: isMobileMenuOpen ? -8 : 0,
+                    rotate: isMobileMenuOpen ? 45 : 0,
                   }}
-              />
-              <motion.span
-                  className="my-[3px] h-0.5 w-6 rounded-full bg-brand-ink"
-                  animate={useActive.animateMobileMenuButtonSpan}
-                  variants={{
-                    open: { translateY: -8, transition: { delay: 0.1 } },
-                    rotatePhase: { rotate: 45, transition: { delay: 0.2 } },
-                    closed: {
-                      translateY: 0,
-                      rotate: 0,
-                      transition: { duration: 0.2 },
-                    },
-                  }}
+                  transition={{ duration: 0.25 }}
               />
             </button>
           </div>
 
+          {/*
+            overflow-hidden потрібен лише для анімації висоти на мобільному.
+            На lg його треба зняти, інакше він обріже випадайку «Портал»,
+            а inline-висоту від motion перебиває lg:!h-auto.
+          */}
           <motion.div
-              variants={{
-                open: { height: "var(--height-open, 100dvh)" },
-                close: { height: "var(--height-closed, 0)" },
-              }}
-              initial="close"
-              exit="close"
-              animate={useActive.animateMobileMenu}
-              transition={{ duration: 0.4 }}
-              className="overflow-hidden bg-white px-[5%] shadow-lg lg:flex lg:items-center lg:bg-transparent lg:px-0 lg:shadow-none lg:[--height-closed:auto] lg:[--height-open:auto]"
+              initial={false}
+              animate={{ height: isMobileMenuOpen ? "auto" : 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="overflow-hidden bg-white px-[5%] shadow-lg lg:!h-auto lg:flex lg:items-center lg:overflow-visible lg:bg-transparent lg:px-0 lg:shadow-none"
           >
             <a href="/about" className={navLinkClass}>
               Про мене
@@ -127,57 +121,45 @@ export function Navbar1() {
             </a>
 
             <div
+                ref={dropdownRef}
                 className="relative"
-                onMouseEnter={useActive.openOnDesktopDropdownMenu}
-                onMouseLeave={useActive.closeOnDesktopDropdownMenu}
+                onMouseEnter={() => setIsDropdownOpen(true)}
+                onMouseLeave={() => setIsDropdownOpen(false)}
             >
               <button
+                  type="button"
                   className="flex w-full items-center justify-between gap-2 py-3 text-left text-base font-medium text-brand-muted transition-colors hover:text-brand-madison lg:flex-none lg:justify-start lg:px-4 lg:py-2"
-                  onClick={useActive.openOnMobileDropdownMenu}
+                  onClick={() => setIsDropdownOpen((prev) => !prev)}
+                  aria-expanded={isDropdownOpen}
               >
                 <span>Портал</span>
+
                 <motion.span
-                    variants={{ rotated: { rotate: 180 }, initial: { rotate: 0 } }}
-                    animate={useActive.animateDropdownMenuIcon}
-                    transition={{ duration: 0.3 }}
                     className="text-lg"
+                    animate={{ rotate: isDropdownOpen ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
                 >
                   <RxChevronDown />
                 </motion.span>
               </button>
 
               <AnimatePresence>
-                <motion.nav
-                    variants={{
-                      open: {
-                        visibility: "visible",
-                        opacity: "var(--opacity-open, 100%)",
-                        display: "block",
-                        y: 0,
-                      },
-                      close: {
-                        visibility: "hidden",
-                        opacity: "var(--opacity-close, 0)",
-                        display: "none",
-                        y: "var(--y-close, 0%)",
-                      },
-                    }}
-                    animate={useActive.animateDropdownMenu}
-                    initial="close"
-                    exit="close"
-                    transition={{ duration: 0.2 }}
-                    className="mb-4 rounded-card border border-brand-border bg-white p-2 shadow-card lg:absolute lg:left-0 lg:top-full lg:z-50 lg:mb-0 lg:mt-3 lg:min-w-52 lg:[--y-close:16px]"
-                >
-                  <a href="#" className={dropdownLinkClass}>
-                    Вхід
-                  </a>
-                  <a href="#" className={dropdownLinkClass}>
-                    Документи
-                  </a>
-                  <a href="#" className={dropdownLinkClass}>
-                    Звіти
-                  </a>
-                </motion.nav>
+                {isDropdownOpen && (
+                    <motion.nav
+                        key="portal-dropdown"
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="mb-4 rounded-card border border-brand-border bg-white p-2 shadow-card lg:absolute lg:left-0 lg:top-full lg:z-50 lg:mb-0 lg:mt-3 lg:min-w-52"
+                    >
+                      {portalLinks.map((link) => (
+                          <a key={link.href} href={link.href} className={dropdownLinkClass}>
+                            {link.label}
+                          </a>
+                      ))}
+                    </motion.nav>
+                )}
               </AnimatePresence>
             </div>
 
