@@ -13,6 +13,7 @@ import {
 } from "../../services/servicesService";
 import ServicesTable from "../../components/admin/services/ServicesTable";
 import ServiceFormModal from "../../components/admin/services/ServiceFormModal";
+import { getApiErrorMessage } from "../../utils/apiError";
 
 export default function ServicesAdminPage() {
     const [services, setServices] = useState([]);
@@ -84,7 +85,7 @@ export default function ServicesAdminPage() {
             await loadServices();
         } catch (error) {
             console.error("Failed to save service:", error);
-            toast.error("Не вдалося зберегти послугу.");
+            toast.error(getApiErrorMessage(error, "Не вдалося зберегти послугу."));
         } finally {
             setIsSubmitting(false);
         }
@@ -115,13 +116,12 @@ export default function ServicesAdminPage() {
         if (!confirmed) return;
 
         try {
-            await deleteServi
-            ce(service.id);
+            await deleteService(service.id);
             toast.success("Послугу видалено.");
             await loadServices();
         } catch (error) {
             console.error("Failed to delete service:", error);
-            toast.error("Не вдалося видалити послугу.");
+            toast.error(getApiErrorMessage(error, "Не вдалося видалити послугу."));
         }
     };
 

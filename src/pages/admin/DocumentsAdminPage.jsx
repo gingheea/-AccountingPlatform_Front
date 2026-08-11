@@ -20,6 +20,7 @@ import {
     DOCUMENT_DIRECTIONS,
     DOCUMENT_STATUSES,
 } from "../../constants/documents";
+import { getApiErrorMessage } from "../../utils/apiError";
 
 const REJECTED_STATUS = 3;
 
@@ -96,11 +97,7 @@ export default function DocumentsAdminPage() {
             return true;
         } catch (error) {
             console.error("Failed to upload document:", error);
-            toast.error(
-                error.response?.data?.errors?.[0]?.message ||
-                    error.response?.data?.title ||
-                    "Не вдалося завантажити документ.",
-            );
+            toast.error(getApiErrorMessage(error, "Не вдалося завантажити документ."));
 
             return false;
         } finally {
@@ -137,9 +134,7 @@ export default function DocumentsAdminPage() {
             await loadDocuments();
         } catch (error) {
             console.error("Failed to change document status:", error);
-            toast.error(
-                error.response?.data?.title || "Не вдалося змінити статус документа.",
-            );
+            toast.error(getApiErrorMessage(error, "Не вдалося змінити статус документа."));
         }
     };
 

@@ -11,6 +11,7 @@ import {
     uploadMyDocument,
 } from "../../services/documentsService";
 import UploadDocumentModal from "../../components/documents/UploadDocumentModal";
+import { getApiErrorMessage } from "../../utils/apiError";
 import {
     DOCUMENT_CATEGORIES,
     DOCUMENT_STATUS_CLASSES,
@@ -77,11 +78,7 @@ export default function PortalDocumentsPage() {
             return true;
         } catch (error) {
             console.error("Failed to upload document:", error);
-            toast.error(
-                error.response?.data?.errors?.[0]?.message ||
-                    error.response?.data?.title ||
-                    "Не вдалося завантажити документ.",
-            );
+            toast.error(getApiErrorMessage(error, "Не вдалося завантажити документ."));
 
             return false;
         } finally {
