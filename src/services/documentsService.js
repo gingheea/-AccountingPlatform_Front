@@ -1,5 +1,13 @@
 import api from "../api/axiosInstance";
 
+/**
+ * axiosInstance виставляє Content-Type: application/json для всіх запитів, а
+ * transformRequest в axios при JSON-заголовку серіалізує FormData у JSON —
+ * файл при цьому втрачається. Тому для завантажень заголовок треба перебити:
+ * побачивши FormData, axios далі сам підставить boundary.
+ */
+const multipart = { headers: { "Content-Type": "multipart/form-data" } };
+
 function buildParams(filters = {}) {
     const params = {};
 
@@ -33,9 +41,7 @@ export async function uploadMyDocument({ file, title, category, note }) {
         formData.append("Note", note);
     }
 
-    // axios strips the JSON default Content-Type for FormData so the browser
-    // can add the multipart boundary itself.
-    const response = await api.post("/portal/documents", formData);
+    const response = await api.post("/portal/documents", formData, multipart);
 
     return response.data;
 }
@@ -68,7 +74,7 @@ export async function uploadDocument({ file, userId, title, category, direction,
         formData.append("Note", note);
     }
 
-    const response = await api.post("/client-documents", formData);
+    const response = await api.post("/client-documents", formData, multipart);
 
     return response.data;
 }
