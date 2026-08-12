@@ -2,9 +2,31 @@
 
 import { Button, Input } from "@relume_io/relume-ui";
 import { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
 import { getServices } from "../../services/servicesService";
 import { getPricingPackages } from "../../services/pricingPackagesService";
 import { createClientRequest } from "../../services/clientRequestsService";
+import { getApiErrorMessage } from "../../utils/apiError";
+
+function Spinner() {
+    return (
+        <svg className="size-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+            />
+            <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            />
+        </svg>
+    );
+}
 
 const REQUEST_TYPES = {
     Service: "0",
@@ -149,6 +171,7 @@ export function ClientRequestForm() {
 
             await createClientRequest(payload);
 
+            toast.success("Заявку надіслано! Я звʼяжуся з вами найближчим часом.");
             setSuccessMessage("Заявку надіслано. Я звʼяжуся з вами найближчим часом.");
 
             setForm({
@@ -163,9 +186,13 @@ export function ClientRequestForm() {
         } catch (error) {
             console.error("Failed to create client request:", error);
 
-            setErrorMessage(
+            const message = getApiErrorMessage(
+                error,
                 "Не вдалося надіслати заявку. Перевірте дані або спробуйте пізніше.",
             );
+
+            toast.error(message);
+            setErrorMessage(message);
         } finally {
             setIsSubmitting(false);
         }
@@ -311,8 +338,9 @@ export function ClientRequestForm() {
             <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-6 w-full rounded-button bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-6 flex w-full items-center justify-center gap-2 rounded-button bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark disabled:cursor-not-allowed disabled:opacity-60"
             >
+                {isSubmitting && <Spinner />}
                 {isSubmitting ? "Надсилання..." : "Надіслати заявку"}
             </Button>
 
