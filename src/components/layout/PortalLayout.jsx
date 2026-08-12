@@ -92,7 +92,9 @@ export default function PortalLayout() {
                     </nav>
                 </aside>
 
-                <main>
+                {/* min-w-0 — без нього grid-колонка не може стиснутись вужче
+                    за таблицю, і сторінка виїжджає за екран на мобільному. */}
+                <main className="min-w-0">
                     <Outlet />
                 </main>
             </div>

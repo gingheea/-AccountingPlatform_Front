@@ -56,9 +56,11 @@ export function Navbar1() {
   }, [isDropdownOpen]);
 
   return (
-      <section className="sticky top-0 z-50 flex w-full items-center border-b border-brand-border bg-white/95 backdrop-blur-md lg:min-h-[76px] lg:px-[5%]">
-        <div className="size-full lg:flex lg:items-center lg:justify-between">
-          <div className="flex min-h-16 items-center justify-between px-[5%] md:min-h-18 lg:min-h-full lg:px-0">
+      <section className="sticky top-0 z-50 flex w-full items-center border-b border-brand-border bg-white/95 backdrop-blur-md lg:min-h-[76px]">
+        {/* container + px-[5%] — та сама сітка, що й у секцій сторінки,
+            інакше на широких екранах шапка розповзається на всю ширину. */}
+        <div className="container px-[5%] lg:flex lg:items-center lg:justify-between">
+          <div className="flex min-h-16 items-center justify-between md:min-h-18 lg:min-h-full">
             <a href="/" className="flex items-center gap-3">
               <img
                   src="/logo-a.svg"
@@ -106,7 +108,7 @@ export function Navbar1() {
               initial={false}
               animate={{ height: isMobileMenuOpen ? "auto" : 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="overflow-hidden bg-white px-[5%] shadow-lg lg:!h-auto lg:flex lg:items-center lg:overflow-visible lg:bg-transparent lg:px-0 lg:shadow-none"
+              className="overflow-hidden bg-white shadow-lg lg:!h-auto lg:flex lg:items-center lg:overflow-visible lg:bg-transparent lg:shadow-none"
           >
             <a href="/about" className={navLinkClass}>
               Про мене

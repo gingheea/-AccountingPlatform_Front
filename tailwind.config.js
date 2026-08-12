@@ -23,6 +23,19 @@ module.exports = {
       },
     },
     extend: {
+      // Preset Relume замінює всю шкалу maxWidth власною (xxs…xxl), через що
+      // стандартні класи Tailwind max-w-2xl…max-w-7xl не генеруються взагалі
+      // і мовчки нічого не роблять — а їх у проєкті 67 штук. Повертаємо саме
+      // відсутні значення: ті, що вже є в preset (xs, sm, md, lg, xl, xxl),
+      // лишаються зі значеннями Relume, щоб не зсунути наявну верстку.
+      maxWidth: {
+        "2xl": "42rem",
+        "3xl": "48rem",
+        "4xl": "56rem",
+        "5xl": "64rem",
+        "6xl": "72rem",
+        "7xl": "80rem",
+      },
       fontFamily: {
         heading: ["Raleway", "sans-serif"],
         body: ["Inter", "sans-serif"],
