@@ -4,27 +4,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { getMyClientRequests } from "../../services/portalService";
 
-const statusLabels = {
-    0: "Нова",
-    1: "В роботі",
-    2: "Очікує відповіді",
-    3: "Завершена",
-    4: "Відхилена",
-};
-
-const statusClasses = {
-    0: "bg-blue-50 text-blue-700",
-    1: "bg-yellow-50 text-yellow-700",
-    2: "bg-purple-50 text-purple-700",
-    3: "bg-green-50 text-green-700",
-    4: "bg-red-50 text-red-700",
-};
-
-const typeLabels = {
-    0: "Послуга",
-    1: "Пакет",
-    2: "Консультація",
-};
+import { statusClass, statusLabel, typeLabel } from "../../constants/requests";
 
 function formatDate(value) {
     if (!value) return "—";
@@ -138,20 +118,17 @@ export default function PortalRequestsPage() {
 
                                     <td className="px-5 py-5">
                                             <span className="inline-flex rounded-full bg-brand-soft px-3 py-1 text-xs font-semibold text-brand-madison">
-                                                {typeLabels[request.requestType] ||
-                                                    "Невідомо"}
+                                                {typeLabel(request.requestType)}
                                             </span>
                                     </td>
 
                                     <td className="px-5 py-5">
                                             <span
-                                                className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
-                                                    statusClasses[request.status] ||
-                                                    "bg-brand-soft text-brand-muted"
-                                                }`}
+                                                className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${statusClass(
+                                                    request.status,
+                                                )}`}
                                             >
-                                                {statusLabels[request.status] ||
-                                                    "Невідомо"}
+                                                {statusLabel(request.status)}
                                             </span>
                                     </td>
 

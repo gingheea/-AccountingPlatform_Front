@@ -1,28 +1,7 @@
 "use client";
 
 import React from "react";
-
-const requestStatusLabels = {
-    0: "Нова",
-    1: "В роботі",
-    2: "Очікує відповіді",
-    3: "Завершена",
-    4: "Відхилена",
-};
-
-const requestStatusClasses = {
-    0: "bg-blue-50 text-blue-700",
-    1: "bg-yellow-50 text-yellow-700",
-    2: "bg-purple-50 text-purple-700",
-    3: "bg-green-50 text-green-700",
-    4: "bg-red-50 text-red-700",
-};
-
-const requestTypeLabels = {
-    0: "Послуга",
-    1: "Пакет",
-    2: "Консультація",
-};
+import { statusClass, statusLabel, typeLabel } from "../../../constants/requests";
 
 function formatDate(value) {
     if (!value) return "—";
@@ -58,6 +37,7 @@ export default function RequestsTable({
                                           onView,
                                           onAssignUser,
                                           onUnassignUser,
+                                          onDelete,
                                           isSubmitting,
                                       }) {
     if (!requests.length) {
@@ -155,8 +135,7 @@ export default function RequestsTable({
                                 <td className="px-5 py-5">
                                     <div className="space-y-2">
                                             <span className="inline-flex rounded-full bg-brand-soft px-3 py-1 text-xs font-semibold text-brand-madison">
-                                                {requestTypeLabels[request.requestType] ??
-                                                    "Невідомо"}
+                                                {typeLabel(request.requestType)}
                                             </span>
 
                                         <p className="text-sm font-medium text-brand-ink">
@@ -204,13 +183,11 @@ export default function RequestsTable({
 
                                 <td className="px-5 py-5">
                                         <span
-                                            className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
-                                                requestStatusClasses[request.status] ??
-                                                "bg-brand-soft text-brand-muted"
-                                            }`}
+                                            className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${statusClass(
+                                                request.status,
+                                            )}`}
                                         >
-                                            {requestStatusLabels[request.status] ??
-                                                "Невідомо"}
+                                            {statusLabel(request.status)}
                                         </span>
                                 </td>
 
@@ -252,6 +229,15 @@ export default function RequestsTable({
                                                 Відвʼязати
                                             </button>
                                         )}
+
+                                        <button
+                                            type="button"
+                                            onClick={() => onDelete(request)}
+                                            disabled={isSubmitting}
+                                            className="rounded-button border border-red-300 px-3 py-2 text-xs font-semibold text-red-700 transition hover:bg-red-50 disabled:opacity-60"
+                                        >
+                                            Видалити
+                                        </button>
                                     </div>
                                 </td>
                             </tr>

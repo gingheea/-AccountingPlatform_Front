@@ -38,3 +38,7 @@ export async function assignClientRequestToUser(id, userId) {
 export async function unassignClientRequestUser(id) {
     await api.patch(`/client-requests/${id}/unassign-user`);
 }
+
+export async function deleteClientRequest(id) {
+    await api.delete(`/client-requests/${id}`);
+}

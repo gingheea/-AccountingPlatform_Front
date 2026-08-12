@@ -7,20 +7,11 @@ import { getServices } from "../../services/servicesService";
 import { getPricingPackages } from "../../services/pricingPackagesService";
 import RequestStatusBadge from "../../components/admin/requests/RequestStatusBadge";
 import RequestTypeBadge from "../../components/admin/requests/RequestTypeBadge";
-
-function normalizeStatus(status) {
-    if (typeof status === "number") return status;
-
-    const map = {
-        New: 0,
-        InProgress: 1,
-        WaitingForClient: 2,
-        Completed: 3,
-        Rejected: 4,
-    };
-
-    return map[status] ?? status;
-}
+import {
+    REQUEST_STATUS,
+    isActiveRequest,
+    normalizeStatus,
+} from "../../constants/requests";
 
 function formatDate(date) {
     if (!date) return "—";
@@ -75,19 +66,19 @@ export default function DashboardPage() {
         return {
             totalRequests: requests.length,
             newRequests: normalizedRequests.filter(
-                (request) => request.normalizedStatus === 0
+                (request) => request.normalizedStatus === REQUEST_STATUS.New
             ).length,
             inProgressRequests: normalizedRequests.filter(
-                (request) => request.normalizedStatus === 1
+                (request) => request.normalizedStatus === REQUEST_STATUS.InProgress
             ).length,
             waitingRequests: normalizedRequests.filter(
-                (request) => request.normalizedStatus === 2
+                (request) => request.normalizedStatus === REQUEST_STATUS.WaitingForClient
             ).length,
             completedRequests: normalizedRequests.filter(
-                (request) => request.normalizedStatus === 3
+                (request) => request.normalizedStatus === REQUEST_STATUS.Completed
             ).length,
             rejectedRequests: normalizedRequests.filter(
-                (request) => request.normalizedStatus === 4
+                (request) => request.normalizedStatus === REQUEST_STATUS.Rejected
             ).length,
             activeServices: services.filter((service) => service.isActive).length,
             totalServices: services.length,
@@ -96,8 +87,11 @@ export default function DashboardPage() {
         };
     }, [requests, services, pricingPackages]);
 
+    // Завершені й відхилені сюди не потрапляють: дешборд показує те,
+    // що ще потребує уваги, а не весь архів.
     const latestRequests = useMemo(() => {
         return [...requests]
+            .filter((request) => isActiveRequest(request.status))
             .sort(
                 (a, b) =>
                     new Date(b.createdAtUtc).getTime() -
@@ -178,11 +172,11 @@ export default function DashboardPage() {
                     <div className="mt-8 overflow-hidden rounded-card border border-brand-border bg-white shadow-soft">
                         <div className="border-b border-brand-border bg-brand-pampas px-6 py-5">
                             <h2 className="font-heading text-2xl font-bold text-brand-ink">
-                                Останні заявки
+                                Заявки в роботі
                             </h2>
 
                             <p className="mt-1 text-sm text-brand-muted">
-                                Найновіші заявки з форми на сайті.
+                                Нові та незавершені. Відхилені й завершені сюди не потрапляють.
                             </p>
                         </div>
 

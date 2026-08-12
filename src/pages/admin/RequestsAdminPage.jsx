@@ -7,10 +7,13 @@ import {
     changeClientRequestAdminNote,
     changeClientRequestStatus,
     completeClientRequest,
+    deleteClientRequest,
     getClientRequests,
     rejectClientRequest,
     unassignClientRequestUser,
 } from "../../services/clientRequestsService";
+import { REQUEST_STATUS } from "../../constants/requests";
+import { getApiErrorMessage } from "../../utils/apiError";
 import { getServices } from "../../services/servicesService";
 import { getPricingPackages } from "../../services/pricingPackagesService";
 import { getUsers } from "../../services/usersService";
@@ -229,7 +232,7 @@ export default function RequestsAdminPage() {
             await completeClientRequest(id);
 
             refreshSelectedRequest(id, {
-                status: 3,
+                status: REQUEST_STATUS.Completed,
                 updatedAtUtc: new Date().toISOString(),
             });
 
@@ -249,14 +252,36 @@ export default function RequestsAdminPage() {
             await rejectClientRequest(id);
 
             refreshSelectedRequest(id, {
-                status: 4,
+                status: REQUEST_STATUS.Rejected,
                 updatedAtUtc: new Date().toISOString(),
             });
 
             toast.success("Заявку відхилено.");
         } catch (error) {
             console.error("Failed to reject request:", error);
-            toast.error("Не вдалося відхилити заявку.");
+            toast.error(getApiErrorMessage(error, "Не вдалося відхилити заявку."));
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleDelete = async (request) => {
+        const confirmed = window.confirm(
+            `Видалити заявку від «${request.fullName}»? Цю дію не можна скасувати.`,
+        );
+
+        if (!confirmed) return;
+
+        try {
+            setIsSubmitting(true);
+
+            await deleteClientRequest(request.id);
+
+            toast.success("Заявку видалено.");
+            await loadData();
+        } catch (error) {
+            console.error("Failed to delete request:", error);
+            toast.error(getApiErrorMessage(error, "Не вдалося видалити заявку."));
         } finally {
             setIsSubmitting(false);
         }
@@ -304,6 +329,7 @@ export default function RequestsAdminPage() {
                     onView={setSelectedRequest}
                     onAssignUser={openAssignModal}
                     onUnassignUser={handleUnassignUser}
+                    onDelete={handleDelete}
                     isSubmitting={isSubmitting}
                 />
             )}

@@ -6,13 +6,12 @@ import { Link } from "react-router-dom";
 import { getMyClientRequests, getPortalMe } from "../../services/portalService";
 import { getMyDocuments } from "../../services/documentsService";
 
-const statusLabels = {
-    0: "Нова",
-    1: "В роботі",
-    2: "Очікує відповіді",
-    3: "Завершена",
-    4: "Відхилена",
-};
+import {
+    REQUEST_STATUS,
+    isActiveRequest,
+    normalizeStatus,
+    statusLabel,
+} from "../../constants/requests";
 
 export default function PortalDashboardPage() {
     const [me, setMe] = useState(null);
@@ -29,11 +28,13 @@ export default function PortalDashboardPage() {
     const latestRequest = sortedRequests[0];
 
     const activeRequestsCount = useMemo(() => {
-        return requests.filter((request) => [0, 1, 2].includes(request.status)).length;
+        return requests.filter((request) => isActiveRequest(request.status)).length;
     }, [requests]);
 
     const completedRequestsCount = useMemo(() => {
-        return requests.filter((request) => request.status === 3).length;
+        return requests.filter(
+            (request) => normalizeStatus(request.status) === REQUEST_STATUS.Completed,
+        ).length;
     }, [requests]);
 
     useEffect(() => {
@@ -158,7 +159,7 @@ export default function PortalDashboardPage() {
                                 </div>
 
                                 <span className="w-fit rounded-full bg-white px-3 py-1 text-xs font-semibold text-brand-madison">
-                                    {statusLabels[latestRequest.status] || "Невідомо"}
+                                    {statusLabel(latestRequest.status)}
                                 </span>
                             </div>
                         </div>
