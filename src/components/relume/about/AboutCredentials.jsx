@@ -1,5 +1,6 @@
 "use client";
 
+import { SOCIAL_LINKS } from "../../../constants/site";
 import { Button } from "@relume_io/relume-ui";
 import { RxChevronRight } from "react-icons/rx";
 
@@ -34,15 +35,17 @@ export function AboutCredentials() {
                   Переглянути
                 </Button>
 
-                <Button
-                    title="LinkedIn"
-                    variant="link"
-                    size="link"
-                    iconRight={<RxChevronRight />}
-                    className="font-semibold text-brand-madison transition-colors hover:text-brand-madisonDark"
-                >
-                  LinkedIn
-                </Button>
+                {SOCIAL_LINKS.linkedin && (
+                    <a
+                        href={SOCIAL_LINKS.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 font-semibold text-brand-madison transition-colors hover:text-brand-madisonDark"
+                    >
+                      LinkedIn
+                      <RxChevronRight className="size-5" />
+                    </a>
+                )}
               </div>
             </div>
 

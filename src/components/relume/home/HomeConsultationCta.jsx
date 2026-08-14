@@ -1,6 +1,7 @@
 "use client";
 
 
+import { Link } from "react-router-dom";
 export function HomeConsultationCta() {
   return (
       <section className="bg-white px-[5%] py-16 md:py-24 lg:py-28">
@@ -22,19 +23,19 @@ export function HomeConsultationCta() {
                 </p>
 
                 <div className="mt-8 flex flex-wrap items-center gap-4">
-                  <a
-                      href="/#quick-consultation"
+                  <Link
+                      to="/#quick-consultation"
                       className="inline-flex rounded-button bg-white px-6 py-3 font-semibold text-brand-madison shadow-soft transition-colors hover:bg-brand-pampas"
                   >
                     Записатися
-                  </a>
+                  </Link>
 
-                  <a
-                      href="/services"
+                  <Link
+                      to="/services"
                       className="inline-flex rounded-button border border-white/25 bg-white/10 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/15"
                   >
                     Дізнатися
-                  </a>
+                  </Link>
                 </div>
               </div>
 

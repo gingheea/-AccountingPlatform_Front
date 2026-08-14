@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "react-router-dom";
 import { Button, Input } from "@relume_io/relume-ui";
 import React, { useState } from "react";
 import {
@@ -9,6 +10,15 @@ import {
   BiLogoYoutube,
 } from "react-icons/bi";
 import { FaXTwitter } from "react-icons/fa6";
+import { activeSocialLinks } from "../../constants/site";
+
+const SOCIAL_META = {
+  facebook: { Icon: BiLogoFacebookCircle, label: "Facebook" },
+  instagram: { Icon: BiLogoInstagram, label: "Instagram" },
+  x: { Icon: FaXTwitter, label: "X" },
+  linkedin: { Icon: BiLogoLinkedinSquare, label: "LinkedIn" },
+  telegram: { Icon: BiLogoYoutube, label: "Telegram" },
+};
 
 const useForm = () => {
   const [email, setEmail] = useState("");
@@ -30,6 +40,9 @@ const useForm = () => {
 };
 
 export function Footer1() {
+  // Показуємо лише ті соцмережі, які реально заповнені в constants/site.js.
+  const socialLinks = activeSocialLinks();
+
   const formState = useForm();
 
   const footerLinkClass =
@@ -46,13 +59,13 @@ export function Footer1() {
         <div className="container">
           <div className="grid grid-cols-1 gap-x-[8vw] gap-y-12 pb-12 md:gap-y-16 md:pb-18 lg:grid-cols-[0.8fr_1fr] lg:gap-y-4 lg:pb-20">
             <div className="flex flex-col">
-              <a href="#" className="mb-6 flex items-center gap-3">
+              <Link to="/" className="mb-6 flex items-center gap-3">
                 <img
                     src="/logo-c.svg"
                     alt="Accounting Platform logo"
                     className="h-17 w-auto"
                 />
-              </a>
+              </Link>
 
               <p className="mb-6 max-w-md leading-7 text-white/70">
                 Отримуйте корисні оновлення про облік, податки, документи та
@@ -96,33 +109,33 @@ export function Footer1() {
 
                 <ul>
                   <li className="py-2">
-                    <a href="/services" className={footerLinkClass}>
+                    <Link to="/services" className={footerLinkClass}>
                       <span>Послуги ФОП</span>
-                    </a>
+                    </Link>
                   </li>
 
                   <li className="py-2">
-                    <a href="/services" className={footerLinkClass}>
+                    <Link to="/services" className={footerLinkClass}>
                       <span>Послуги для бізнесу</span>
-                    </a>
+                    </Link>
                   </li>
 
                   <li className="py-2">
-                    <a href="/#quick-consultation" className={footerLinkClass}>
+                    <Link to="/#quick-consultation" className={footerLinkClass}>
                       <span>Консультації</span>
-                    </a>
+                    </Link>
                   </li>
 
                   <li className="py-2">
-                    <a href="#" className={footerLinkClass}>
+                    <Link to="/portal" className={footerLinkClass}>
                       <span>Портал клієнта</span>
-                    </a>
+                    </Link>
                   </li>
 
                   <li className="py-2">
-                    <a href="/services#pricing" className={footerLinkClass}>
+                    <Link to="/services#pricing" className={footerLinkClass}>
                       <span>Прайс-лист</span>
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -132,77 +145,62 @@ export function Footer1() {
 
                 <ul>
                   <li className="py-2">
-                    <a href="/about" className={footerLinkClass}>
+                    <Link to="/about" className={footerLinkClass}>
                       <span>Про мене</span>
-                    </a>
+                    </Link>
                   </li>
 
                   <li className="py-2">
-                    <a href="/blog" className={footerLinkClass}>
+                    <Link to="/blog" className={footerLinkClass}>
                       <span>Блог</span>
-                    </a>
+                    </Link>
                   </li>
 
                   <li className="py-2">
-                    <a href="/#contact" className={footerLinkClass}>
+                    <Link to="/#contact" className={footerLinkClass}>
                       <span>Контакти</span>
-                    </a>
+                    </Link>
                   </li>
 
                   <li className="py-2">
-                    <a href="#" className={footerLinkClass}>
+                    <Link to="/portal" className={footerLinkClass}>
                       <span>Портал клієнта</span>
-                    </a>
+                    </Link>
                   </li>
 
                   <li className="py-2">
-                    <a href="/blog#FAQ" className={footerLinkClass}>
+                    <Link to="/blog#FAQ" className={footerLinkClass}>
                       <span>FAQ</span>
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
 
-              <div className="flex flex-col items-start justify-start">
-                <h2 className={footerHeadingClass}>Соцмережі</h2>
+              {socialLinks.length > 0 && (
+                  <div className="flex flex-col items-start justify-start">
+                    <h2 className={footerHeadingClass}>Соцмережі</h2>
 
-                <ul className="flex flex-col items-start">
-                  <li className="py-2">
-                    <a href="#" className={footerLinkClass}>
-                      <BiLogoFacebookCircle className="size-6 text-white/50" />
-                      <span>Facebook</span>
-                    </a>
-                  </li>
+                    <ul className="flex flex-col items-start">
+                      {socialLinks.map(({ key, url }) => {
+                        const { Icon, label } = SOCIAL_META[key];
 
-                  <li className="py-2">
-                    <a href="#" className={footerLinkClass}>
-                      <BiLogoInstagram className="size-6 text-white/50" />
-                      <span>Instagram</span>
-                    </a>
-                  </li>
-
-                  <li className="py-2">
-                    <a href="#" className={footerLinkClass}>
-                      <FaXTwitter className="size-6 p-0.5 text-white/50" />
-                      <span>X</span>
-                    </a>
-                  </li>
-
-                  <li className="py-2">
-                    <a href="#" className={footerLinkClass}>
-                      <BiLogoLinkedinSquare className="size-6 text-white/50" />
-                      <span>LinkedIn</span>
-                    </a>
-                  </li>
-
-                  <li className="py-2">
-                    <a href="#" className={footerLinkClass}>
-                      <BiLogoYoutube className="size-6 text-white/50" />
-                      <span>Telegram</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
+                        return (
+                            <li key={key} className="py-2">
+                              <a
+                                  href={url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className={footerLinkClass}
+                              >
+                                <Icon className="size-6 text-white/50" />
+                                <span>{label}</span>
+                              </a>
+                            </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+              )}
             </div>
           </div>
 
@@ -215,21 +213,21 @@ export function Footer1() {
 
             <ul className="grid grid-flow-row grid-cols-[max-content] justify-center gap-y-4 md:grid-flow-col md:gap-x-6 md:gap-y-0">
               <li>
-                <a href="/privacy" className={legalLinkClass}>
+                <Link to="/privacy" className={legalLinkClass}>
                   Політика конфіденційності
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a href="/terms" className={legalLinkClass}>
+                <Link to="/terms" className={legalLinkClass}>
                   Умови використання
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a href="/cookies" className={legalLinkClass}>
+                <Link to="/cookies" className={legalLinkClass}>
                   Cookies
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

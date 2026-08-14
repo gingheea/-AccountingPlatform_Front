@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "react-router-dom";
 import { Button } from "@relume_io/relume-ui";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
@@ -49,8 +50,8 @@ export function HomeWhyChooseMe() {
           </div>
 
           <div className="flex flex-col justify-between gap-6 md:gap-8 lg:flex-row">
-            <a
-                href="#"
+            <Link
+                to="/services"
                 className="relative flex w-full flex-col overflow-hidden rounded-card border border-white/15 bg-brand-madison shadow-card lg:h-full lg:w-1/2 lg:transition-all lg:duration-200 lg:hover:w-[70%]"
                 onMouseOver={hoverState.handleMouseEnter(0)}
                 onMouseLeave={hoverState.handleMouseLeave}
@@ -124,10 +125,10 @@ export function HomeWhyChooseMe() {
                   </motion.div>
                 </AnimatePresence>
               </div>
-            </a>
+            </Link>
 
-            <a
-                href="#"
+            <Link
+                to="/services"
                 className="relative flex w-full flex-col overflow-hidden rounded-card border border-brand-border bg-white shadow-card lg:h-full lg:w-1/2 lg:transition-all lg:duration-200 lg:hover:w-[70%]"
                 onMouseOver={hoverState.handleMouseEnter(1)}
                 onMouseLeave={hoverState.handleMouseLeave}
@@ -201,10 +202,10 @@ export function HomeWhyChooseMe() {
                   </motion.div>
                 </AnimatePresence>
               </div>
-            </a>
+            </Link>
 
-            <a
-                href="#"
+            <Link
+                to="/services"
                 className="relative flex w-full flex-col overflow-hidden rounded-card border border-brand-border bg-white shadow-card lg:h-full lg:w-1/2 lg:transition-all lg:duration-200 lg:hover:w-[70%]"
                 onMouseOver={hoverState.handleMouseEnter(2)}
                 onMouseLeave={hoverState.handleMouseLeave}
@@ -278,7 +279,7 @@ export function HomeWhyChooseMe() {
                   </motion.div>
                 </AnimatePresence>
               </div>
-            </a>
+            </Link>
           </div>
         </div>
       </section>

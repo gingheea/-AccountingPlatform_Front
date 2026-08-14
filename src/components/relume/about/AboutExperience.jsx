@@ -1,5 +1,7 @@
 "use client";
 
+import { SOCIAL_LINKS } from "../../../constants/site";
+import { Link } from "react-router-dom";
 import { Button } from "@relume_io/relume-ui";
 import { RxChevronRight } from "react-icons/rx";
 
@@ -56,23 +58,24 @@ export function AboutExperience() {
               </div>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
-                <Button
-                    title="Дізнатися"
-                    variant="secondary"
+                <Link
+                    to="/services"
                     className="rounded-button border border-brand-madison bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
                 >
-                  Дізнатися
-                </Button>
+                  Переглянути послуги
+                </Link>
 
-                <Button
-                    title="LinkedIn"
-                    variant="link"
-                    size="link"
-                    iconRight={<RxChevronRight />}
-                    className="font-semibold text-brand-madison transition-colors hover:text-brand-madisonDark"
-                >
-                  LinkedIn
-                </Button>
+                {SOCIAL_LINKS.linkedin && (
+                    <a
+                        href={SOCIAL_LINKS.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 font-semibold text-brand-madison transition-colors hover:text-brand-madisonDark"
+                    >
+                      LinkedIn
+                      <RxChevronRight className="size-5" />
+                    </a>
+                )}
               </div>
             </div>
 

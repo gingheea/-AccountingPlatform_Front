@@ -4,6 +4,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Плавна прокрутка до якорів (посилання виду /#contact) замість ривка. */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Якщо в системі увімкнено «зменшити анімацію» — поважаємо вибір
+   користувача й вимикаємо плавність. Для декого рух викликає нудоту. */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
 body {
     margin: 0;
     font-family: "Inter", sans-serif;

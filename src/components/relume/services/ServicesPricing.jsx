@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { BiCheck } from "react-icons/bi";
 import { getPricingPackages } from "../../../services/pricingPackagesService";
@@ -275,12 +276,12 @@ export function ServicesPricing() {
                       )}
                     </div>
 
-                    <a
-                        href="/#quick-consultation"
+                    <Link
+                        to="/#quick-consultation"
                         className={getButtonClass(pricingPackage)}
                     >
                       Обрати
-                    </a>
+                    </Link>
                   </div>
               );
             })}

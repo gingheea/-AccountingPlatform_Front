@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "react-router-dom";
 import { Button } from "@relume_io/relume-ui";
 
 export function HomeAboutIntro() {
@@ -55,20 +56,19 @@ export function HomeAboutIntro() {
               </div>
 
               <div className="mt-8 flex flex-wrap gap-4">
-                <Button
-                    title="Дізнатися"
+                <Link
+                    to="/about"
                     className="rounded-button bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
                 >
-                  Дізнатися
-                </Button>
+                  Дізнатися більше
+                </Link>
 
-                <Button
-                    title="Портал"
-                    variant="secondary"
+                <Link
+                    to="/portal"
                     className="rounded-button border border-brand-border bg-white px-6 py-3 font-semibold text-brand-madison transition-colors hover:border-brand-madison hover:bg-brand-pampas"
                 >
-                  Портал
-                </Button>
+                  Кабінет клієнта
+                </Link>
               </div>
             </div>
           </div>

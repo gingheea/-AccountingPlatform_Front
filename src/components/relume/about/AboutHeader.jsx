@@ -3,6 +3,7 @@
 
 
 
+import { Link } from "react-router-dom";
 export function AboutHeader() {
   return (
       <section className="relative overflow-hidden bg-brand-pampas px-[5%] py-16 md:py-24 lg:py-28">
@@ -25,21 +26,21 @@ export function AboutHeader() {
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <a
+            <Link
                 title="Консультація"
-                href="/#quick-consultation"
+                to="/#quick-consultation"
                 className="rounded-button bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
             >
               Консультація
-            </a>
+            </Link>
 
-            <a
+            <Link
                 title="Дізнатися"
-                href="/services"
+                to="/services"
                 className="rounded-button border border-brand-border bg-white px-6 py-3 font-semibold text-brand-madison transition-colors hover:border-brand-madison hover:bg-white"
             >
               Дізнатися
-            </a>
+            </Link>
           </div>
 
           <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-3">

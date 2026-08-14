@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "react-router-dom";
 import { Button } from "@relume_io/relume-ui";
 import React from "react";
 
@@ -25,21 +26,20 @@ export function ServicesHero() {
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <a
-                href="/#quick-consultation"
+            <Link
+                to="/#quick-consultation"
                 title="Консультація"
                 className="rounded-button bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
             >
               Консультація
-            </a>
+            </Link>
 
-            <Button
-                title="Портал"
-                variant="secondary"
+            <Link
+                to="/portal"
                 className="rounded-button border border-brand-border bg-white px-6 py-3 font-semibold text-brand-madison transition-colors hover:border-brand-madison hover:bg-white"
             >
-              Портал
-            </Button>
+              Кабінет клієнта
+            </Link>
           </div>
 
           <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-3">

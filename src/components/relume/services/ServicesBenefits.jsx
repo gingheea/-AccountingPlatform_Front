@@ -3,6 +3,7 @@
 import { Button } from "@relume_io/relume-ui";
 import React from "react";
 import { RxChevronRight } from "react-icons/rx";
+import { Link } from "react-router-dom";
 
 export function ServicesBenefits() {
   const cardNumberClass =
@@ -28,23 +29,13 @@ export function ServicesBenefits() {
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
-                <Button
-                    title="Портал"
-                    variant="secondary"
-                    className="rounded-button border border-brand-madison bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
+                <Link
+                    to="/portal"
+                    className="inline-flex items-center gap-2 rounded-button border border-brand-madison bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
                 >
-                  Портал
-                </Button>
-
-                <Button
-                    title="Завантажити"
-                    variant="link"
-                    size="link"
-                    iconRight={<RxChevronRight />}
-                    className="font-semibold text-brand-madison transition-colors hover:text-brand-madisonDark"
-                >
-                  Завантажити
-                </Button>
+                  Кабінет клієнта
+                  <RxChevronRight className="size-5" />
+                </Link>
               </div>
             </div>
 

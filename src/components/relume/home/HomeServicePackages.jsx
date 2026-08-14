@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "react-router-dom";
 import { Button } from "@relume_io/relume-ui";
 import React, { Fragment } from "react";
 import { BiCheck, BiX } from "react-icons/bi";
@@ -200,23 +201,20 @@ export function HomeServicePackages() {
             </div>
 
             <div className="mt-12 flex flex-wrap items-center justify-center gap-4 md:mt-18 lg:mt-20">
-              <Button
-                  title="Обрати"
-                  variant="secondary"
+              <Link
+                  to="/#quick-consultation"
                   className="rounded-button border border-brand-madison bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
               >
-                Обрати
-              </Button>
+                Обрати пакет
+              </Link>
 
-              <Button
-                  title="Дізнатися"
-                  variant="link"
-                  size="link"
-                  iconRight={<RxChevronRight />}
-                  className="font-semibold text-brand-madison transition-colors hover:text-brand-madisonDark"
+              <Link
+                  to="/services"
+                  className="inline-flex items-center gap-1 font-semibold text-brand-madison transition-colors hover:text-brand-madisonDark"
               >
-                Дізнатися
-              </Button>
+                Дізнатися більше
+                <RxChevronRight className="size-5" />
+              </Link>
             </div>
           </div>
         </div>

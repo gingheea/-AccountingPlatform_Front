@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { RxChevronRight } from "react-icons/rx";
 import { getServices } from "../../../services/servicesService";
@@ -82,12 +83,12 @@ export function ServicesList() {
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
-                <a
-                    href="/#quick-consultation"
+                <Link
+                    to="/#quick-consultation"
                     className="rounded-button border border-brand-madison bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
                 >
                   Отримати консультацію
-                </a>
+                </Link>
 
                 <a
                     href="#pricing"

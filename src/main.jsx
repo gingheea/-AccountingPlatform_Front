@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ScrollManager from "./components/layout/ScrollManager";
 import PublicLayout from "./components/layout/PublicLayout";
 import AdminLayout from "./components/admin/AdminLayout.jsx";
 
@@ -36,6 +37,10 @@ createRoot(document.getElementById("root")).render(
     <StrictMode>
         <BrowserRouter>
             <AuthProvider>
+                {/* Стежить за прокруткою при зміні сторінки — потрібен усім
+                    розділам, тому стоїть тут, а не в конкретному layout. */}
+                <ScrollManager />
+
                 <Toaster position="top-right" />
 
                 <Routes>

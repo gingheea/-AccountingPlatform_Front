@@ -9,6 +9,7 @@ import {
 } from "framer-motion";
 import { Fragment, useRef } from "react";
 import { RxChevronRight } from "react-icons/rx";
+import { Link } from "react-router-dom";
 
 const ConditionalRender = ({ condition, children }) => {
   return condition ? <>{children}</> : null;
@@ -255,24 +256,16 @@ export function HomeServicesShowcase() {
                   деталей.
                 </p>
 
+                {/* Було два <Button> без дії: перший тепер веде на послуги,
+                    другий прибрано — завантажувати поки нема чого. */}
                 <div className="mt-8 flex flex-wrap items-center gap-4">
-                  <Button
-                      title="Переглянути"
-                      variant="secondary"
-                      className="rounded-button border border-brand-madison bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
+                  <Link
+                      to="/services"
+                      className="inline-flex items-center gap-2 rounded-button border border-brand-madison bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
                   >
-                    Переглянути
-                  </Button>
-
-                  <Button
-                      title="Завантажити"
-                      variant="link"
-                      size="link"
-                      iconRight={<RxChevronRight />}
-                      className="font-semibold text-brand-madison transition-colors hover:text-brand-madisonDark"
-                  >
-                    Завантажити
-                  </Button>
+                    Переглянути послуги
+                    <RxChevronRight className="size-5" />
+                  </Link>
                 </div>
               </div>
 

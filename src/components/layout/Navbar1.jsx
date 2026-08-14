@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { RxChevronDown } from "react-icons/rx";
@@ -61,13 +62,13 @@ export function Navbar1() {
             інакше на широких екранах шапка розповзається на всю ширину. */}
         <div className="container px-[5%] lg:flex lg:items-center lg:justify-between">
           <div className="flex min-h-16 items-center justify-between md:min-h-18 lg:min-h-full">
-            <a href="/" className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3">
               <img
                   src="/logo-a.svg"
                   alt="Accounting Platform logo"
                   className="h-15 w-auto"
               />
-            </a>
+            </Link>
 
             <button
                 className="-mr-2 flex size-12 flex-col items-center justify-center rounded-xl transition-colors hover:bg-brand-pampas lg:hidden"
@@ -110,17 +111,17 @@ export function Navbar1() {
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="overflow-hidden bg-white shadow-lg lg:!h-auto lg:flex lg:items-center lg:overflow-visible lg:bg-transparent lg:shadow-none"
           >
-            <a href="/about" className={navLinkClass}>
+            <Link to="/about" className={navLinkClass}>
               Про мене
-            </a>
+            </Link>
 
-            <a href="/services" className={navLinkClass}>
+            <Link to="/services" className={navLinkClass}>
               Послуги
-            </a>
+            </Link>
 
-            <a href="/blog" className={navLinkClass}>
+            <Link to="/blog" className={navLinkClass}>
               Блог
-            </a>
+            </Link>
 
             <div
                 ref={dropdownRef}
@@ -156,9 +157,14 @@ export function Navbar1() {
                         className="mb-4 rounded-card border border-brand-border bg-white p-2 shadow-card lg:absolute lg:left-0 lg:top-full lg:z-50 lg:mb-0 lg:mt-3 lg:min-w-52"
                     >
                       {portalLinks.map((link) => (
-                          <a key={link.href} href={link.href} className={dropdownLinkClass}>
+                          <Link
+                              key={link.href}
+                              to={link.href}
+                              className={dropdownLinkClass}
+                              onClick={() => setIsDropdownOpen(false)}
+                          >
                             {link.label}
-                          </a>
+                          </Link>
                       ))}
                     </motion.nav>
                 )}
@@ -166,19 +172,19 @@ export function Navbar1() {
             </div>
 
             <div className="flex flex-col items-center gap-3 border-t border-brand-border py-5 lg:ml-5 lg:flex-row lg:border-t-0 lg:py-0">
-              <a
-                  href="/#contact"
+              <Link
+                  to="/#contact"
                   className="w-full rounded-button border border-brand-border bg-white px-5 py-2.5 text-center font-semibold text-brand-madison transition-colors hover:border-brand-madison hover:bg-brand-pampas lg:w-auto"
               >
                 Контакт
-              </a>
+              </Link>
 
-              <a
-                  href="/#quick-consultation"
+              <Link
+                  to="/#quick-consultation"
                   className="w-full rounded-button bg-brand-madison px-5 py-2.5 text-center font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark lg:w-auto"
               >
                 Консультація
-              </a>
+              </Link>
             </div>
           </motion.div>
         </div>

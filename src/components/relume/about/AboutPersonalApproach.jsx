@@ -4,6 +4,7 @@ import { Button } from "@relume_io/relume-ui";
 import React from "react";
 import { BiLogoLinkedinSquare } from "react-icons/bi";
 import { FaXTwitter } from "react-icons/fa6";
+import { SOCIAL_LINKS } from "../../../constants/site";
 
 export function AboutPersonalApproach() {
   return (
@@ -49,20 +50,29 @@ export function AboutPersonalApproach() {
                   </p>
                 </div>
 
+                {/* Іконка зʼявляється лише коли акаунт заданий у constants/site.js */}
                 <div className="mt-10 flex items-center gap-4">
-                  <a
-                      href="#"
-                      className="flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition-colors hover:bg-white hover:text-brand-madison"
-                  >
-                    <BiLogoLinkedinSquare className="size-6" />
-                  </a>
+                  {SOCIAL_LINKS.linkedin && (
+                      <a
+                          href={SOCIAL_LINKS.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition-colors hover:bg-white hover:text-brand-madison"
+                      >
+                        <BiLogoLinkedinSquare className="size-6" />
+                      </a>
+                  )}
 
-                  <a
-                      href="#"
-                      className="flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition-colors hover:bg-white hover:text-brand-madison"
-                  >
-                    <FaXTwitter className="size-5" />
-                  </a>
+                  {SOCIAL_LINKS.x && (
+                      <a
+                          href={SOCIAL_LINKS.x}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex size-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition-colors hover:bg-white hover:text-brand-madison"
+                      >
+                        <FaXTwitter className="size-5" />
+                      </a>
+                  )}
                 </div>
               </div>
             </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "react-router-dom";
 import {
   Accordion,
   AccordionContent,
@@ -148,13 +149,13 @@ export function BlogFaq() {
             </p>
 
             <div className="mt-8">
-              <a
-                  href="/#contact"
+              <Link
+                  to="/#contact"
                   title="Контакти"
                   className="rounded-button border border-brand-madison bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
               >
                 Контакти
-              </a>
+              </Link>
             </div>
           </div>
         </div>
