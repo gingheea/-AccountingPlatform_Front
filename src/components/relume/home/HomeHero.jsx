@@ -1,32 +1,11 @@
 "use client";
 
-import { Button, Input } from "@relume_io/relume-ui";
-import {useState} from "react";
-
-const useForm = () => {
-  const [email, setEmail] = useState("");
-
-  const handleSetEmail = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log({ email });
-  };
-
-  return {
-    email,
-    handleSetEmail,
-    handleSubmit,
-  };
-};
+import { Link } from "react-router-dom";
+import { RxArrowRight, RxCheck } from "react-icons/rx";
 
 export function HomeHero() {
-  const formState = useForm();
-
   return (
-      <section id="quick-consultation" className="relative overflow-hidden bg-brand-pampas scroll-mt-28">
+      <section className="relative overflow-hidden bg-brand-pampas scroll-mt-28">
         <div className="absolute right-0 top-0 h-72 w-72 rounded-bl-[6rem] bg-brand-madison/5" />
         <div className="absolute bottom-0 left-0 h-64 w-64 rounded-tr-[6rem] bg-brand-tan/20" />
 
@@ -46,34 +25,38 @@ export function HomeHero() {
               і без зайвої бюрократії.
             </p>
 
+            {/* Раніше тут було поле пошти, яке нікуди не вело. Заявку приймає
+                повноцінна форма нижче — тому шапка просто веде до неї. */}
             <div className="mt-8 max-w-xl md:mt-10">
-              <form
-                  className="rb-4 mb-4 grid grid-cols-1 gap-y-3 rounded-card border border-brand-border bg-white p-3 shadow-soft sm:grid-cols-[1fr_max-content] sm:gap-3"
-                  onSubmit={formState.handleSubmit}
-              >
-                <Input
-                    id="email"
-                    type="email"
-                    placeholder="Введіть вашу пошту"
-                    value={formState.email}
-                    onChange={formState.handleSetEmail}
-                    className="min-h-12 rounded-button border-transparent bg-brand-pampas px-4 text-brand-ink placeholder:text-brand-gothic focus:border-brand-madison focus:ring-brand-madison"
-                />
-
-                <Button
-                    title="Записатися"
-                    variant="primary"
-                    size="sm"
-                    className="min-h-12 items-center justify-center rounded-button bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <Link
+                    to="/#contact"
+                    className="inline-flex min-h-12 items-center justify-center gap-2 rounded-button bg-brand-madison px-7 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
                 >
-                  Записатися
-                </Button>
-              </form>
+                  Залишити заявку
+                  <RxArrowRight className="size-5" />
+                </Link>
 
-              <p className="text-xs leading-5 text-brand-muted">
-                Залиште email — я звʼяжуся з вами для короткої консультації щодо
-                формату супроводу.
-              </p>
+                <Link
+                    to="/services"
+                    className="inline-flex min-h-12 items-center justify-center rounded-button border border-brand-border bg-white px-7 py-3 font-semibold text-brand-madison transition-colors hover:border-brand-madison hover:bg-white"
+                >
+                  Переглянути послуги
+                </Link>
+              </div>
+
+              <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-brand-muted">
+                {[
+                  "Відповідь того ж дня",
+                  "Без передоплати за консультацію",
+                  "Зрозумілі умови",
+                ].map((item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <RxCheck className="size-4 text-brand-madison" />
+                      {item}
+                    </li>
+                ))}
+              </ul>
             </div>
 
             <div className="mt-8 grid max-w-xl grid-cols-1 gap-4 sm:grid-cols-3">

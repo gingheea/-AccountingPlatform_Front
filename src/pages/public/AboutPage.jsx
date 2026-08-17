@@ -20,7 +20,7 @@ export default function AboutPage() {
                 thirdCardTitle="Онлайн-зустріч"
                 thirdCardDescription="Консультацію можна провести дистанційно: через дзвінок, месенджер або відеозустріч."
                 thirdCardButtonText="Записатися"
-                thirdCardHref="/#quick-consultation"
+                thirdCardHref="/#contact"
                 accentLabel="Персональна консультація"
                 accentTitle="Розберемо вашу ситуацію і визначимо найкращий формат роботи"
                 accentDescription="Під час першого контакту можна коротко обговорити вашу форму діяльності, обсяг документів, звітність, податкові питання та потребу в регулярному супроводі."
@@ -31,7 +31,7 @@ export default function AboutPage() {
                 statThreeLabel="Результат"
                 statThreeValue="План дій"
                 actionText="Обговорити співпрацю"
-                actionHref="/#quick-consultation"
+                actionHref="/#contact"
             />
         </div>
     );

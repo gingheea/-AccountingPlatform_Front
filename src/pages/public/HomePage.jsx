@@ -26,7 +26,7 @@ export default function HomePage() {
                 accentTitle="Оберіть канал, який вам зручний"
                 accentDescription="Можна написати на пошту, зателефонувати або звʼязатися через месенджер. Для короткого запиту достатньо email у формі зверху."
                 actionText="Форма консультації — у верхньому блоці"
-                actionHref="/#quick-consultation"
+                actionHref="/#contact"
             />
             <HomeServicePackages />
         </div>

@@ -30,7 +30,7 @@ export default function ServicesPage() {
                 statThreeLabel="Рішення"
                 statThreeValue="Пакет послуг"
                 actionText="Отримати консультацію"
-                actionHref="/#quick-consultation"
+                actionHref="/#contact"
             />
             <ServicesPackagesComparison />
         </div>

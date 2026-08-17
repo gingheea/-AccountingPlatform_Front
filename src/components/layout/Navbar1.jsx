@@ -180,7 +180,7 @@ export function Navbar1() {
               </Link>
 
               <Link
-                  to="/#quick-consultation"
+                  to="/#contact"
                   className="w-full rounded-button bg-brand-madison px-5 py-2.5 text-center font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark lg:w-auto"
               >
                 Консультація

@@ -28,7 +28,7 @@ export function AboutHeader() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link
                 title="Консультація"
-                to="/#quick-consultation"
+                to="/#contact"
                 className="rounded-button bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
             >
               Консультація

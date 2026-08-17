@@ -11,6 +11,7 @@ import {
 } from "react-icons/bi";
 import { FaXTwitter } from "react-icons/fa6";
 import { activeSocialLinks } from "../../constants/site";
+import { useNewsletterForm } from "../../hooks/useNewsletterForm";
 
 const SOCIAL_META = {
   facebook: { Icon: BiLogoFacebookCircle, label: "Facebook" },
@@ -20,30 +21,12 @@ const SOCIAL_META = {
   telegram: { Icon: BiLogoYoutube, label: "Telegram" },
 };
 
-const useForm = () => {
-  const [email, setEmail] = useState("");
-
-  const handleSetEmail = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log({ email });
-  };
-
-  return {
-    email,
-    handleSetEmail,
-    handleSubmit,
-  };
-};
 
 export function Footer1() {
   // Показуємо лише ті соцмережі, які реально заповнені в constants/site.js.
   const socialLinks = activeSocialLinks();
 
-  const formState = useForm();
+  const formState = useNewsletterForm("footer");
 
   const footerLinkClass =
       "flex items-center gap-3 text-sm text-white/70 transition-colors hover:text-white";
@@ -87,12 +70,14 @@ export function Footer1() {
                   />
 
                   <Button
+                      type="submit"
                       title="Підписатися"
                       variant="secondary"
                       size="sm"
-                      className="min-h-12 rounded-button bg-brand-tan px-5 py-3 font-semibold text-brand-ink transition-colors hover:bg-white"
+                      disabled={formState.isSubmitting}
+                      className="min-h-12 rounded-button bg-brand-tan px-5 py-3 font-semibold text-brand-ink transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    Підписатися
+                    {formState.isSubmitting ? "Надсилання..." : "Підписатися"}
                   </Button>
                 </form>
 
@@ -121,7 +106,7 @@ export function Footer1() {
                   </li>
 
                   <li className="py-2">
-                    <Link to="/#quick-consultation" className={footerLinkClass}>
+                    <Link to="/#contact" className={footerLinkClass}>
                       <span>Консультації</span>
                     </Link>
                   </li>

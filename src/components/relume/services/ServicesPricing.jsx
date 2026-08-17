@@ -277,7 +277,7 @@ export function ServicesPricing() {
                     </div>
 
                     <Link
-                        to="/#quick-consultation"
+                        to="/#contact"
                         className={getButtonClass(pricingPackage)}
                     >
                       Обрати

@@ -202,7 +202,7 @@ export function HomeServicePackages() {
 
             <div className="mt-12 flex flex-wrap items-center justify-center gap-4 md:mt-18 lg:mt-20">
               <Link
-                  to="/#quick-consultation"
+                  to="/#contact"
                   className="rounded-button border border-brand-madison bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
               >
                 Обрати пакет

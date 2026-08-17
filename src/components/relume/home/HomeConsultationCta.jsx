@@ -24,7 +24,7 @@ export function HomeConsultationCta() {
 
                 <div className="mt-8 flex flex-wrap items-center gap-4">
                   <Link
-                      to="/#quick-consultation"
+                      to="/#contact"
                       className="inline-flex rounded-button bg-white px-6 py-3 font-semibold text-brand-madison shadow-soft transition-colors hover:bg-brand-pampas"
                   >
                     Записатися

@@ -1,9 +1,12 @@
 "use client";
 
+import { useNewsletterForm } from "../../../hooks/useNewsletterForm";
 import { Button, Input } from "@relume_io/relume-ui";
 import React from "react";
 
 export function BlogNewsletterCta() {
+  const formState = useNewsletterForm("blog");
+
   return (
       <section className="bg-brand-pampas px-[5%] py-16 md:py-24 lg:py-28">
         <div className="container">
@@ -24,21 +27,28 @@ export function BlogNewsletterCta() {
                 </p>
 
                 <div className="mt-8 w-full max-w-xl">
-                  <form className="rb-4 mb-4 grid w-full grid-cols-1 gap-y-3 rounded-card border border-brand-border bg-brand-pampas p-3 sm:grid-cols-[1fr_max-content] sm:gap-3">
+                  <form
+                      className="rb-4 mb-4 grid w-full grid-cols-1 gap-y-3 rounded-card border border-brand-border bg-brand-pampas p-3 sm:grid-cols-[1fr_max-content] sm:gap-3"
+                      onSubmit={formState.handleSubmit}
+                  >
                     <Input
                         id="email"
                         type="email"
                         placeholder="Введіть вашу пошту"
+                        value={formState.email}
+                        onChange={formState.handleSetEmail}
                         className="min-h-12 rounded-button border-transparent bg-white px-4 text-brand-ink placeholder:text-brand-gothic focus:border-brand-madison focus:ring-brand-madison"
                     />
 
                     <Button
+                        type="submit"
                         title="Підписатися"
                         variant="primary"
                         size="sm"
-                        className="min-h-12 items-center justify-center rounded-button bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
+                        disabled={formState.isSubmitting}
+                        className="min-h-12 items-center justify-center rounded-button bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                      Підписатися
+                      {formState.isSubmitting ? "Надсилання..." : "Підписатися"}
                     </Button>
                   </form>
 
