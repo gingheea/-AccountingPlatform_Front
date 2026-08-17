@@ -129,6 +129,15 @@ export default function LoginPage() {
                             </p>
                         )}
 
+                        <div className="text-right">
+                            <Link
+                                to="/forgot-password"
+                                className="text-sm font-semibold text-brand-madison underline-offset-4 transition-colors hover:underline"
+                            >
+                                Забули пароль?
+                            </Link>
+                        </div>
+
                         <Button
                             type="submit"
                             disabled={isSubmitting}

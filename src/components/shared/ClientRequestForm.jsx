@@ -35,13 +35,20 @@ const REQUEST_TYPES = {
     GeneralConsultation: "2",
 };
 
-export function ClientRequestForm() {
+/**
+ * @param initialContact  дані залогіненого клієнта — щоб у кабінеті не вводити
+ *                        імʼя й пошту вдруге. Поля лишаються редагованими.
+ * @param onCreated       викликається після успішної відправки: кабінету треба
+ *                        оновити список заявок і закрити вікно.
+ * @param compact         у кабінеті великий заголовок форми зайвий.
+ */
+export function ClientRequestForm({ initialContact, onCreated, compact = false }) {
     const [services, setServices] = useState([]);
     const [pricingPackages, setPricingPackages] = useState([]);
 
     const [form, setForm] = useState({
-        fullName: "",
-        email: "",
+        fullName: initialContact?.fullName ?? "",
+        email: initialContact?.email ?? "",
         phone: "",
         requestType: REQUEST_TYPES.GeneralConsultation,
         serviceId: "",
@@ -175,9 +182,11 @@ export function ClientRequestForm() {
             toast.success("Заявку надіслано! Я звʼяжуся з вами найближчим часом.");
             setSuccessMessage("Заявку надіслано. Я звʼяжуся з вами найближчим часом.");
 
+            onCreated?.();
+
             setForm({
-                fullName: "",
-                email: "",
+                fullName: initialContact?.fullName ?? "",
+                email: initialContact?.email ?? "",
                 phone: "",
                 requestType: REQUEST_TYPES.GeneralConsultation,
                 serviceId: "",
@@ -204,20 +213,22 @@ export function ClientRequestForm() {
             onSubmit={handleSubmit}
             className="rounded-card border border-brand-border bg-white p-6 shadow-card md:p-8"
         >
-            <div className="mb-8">
-                <p className="mb-4 text-sm font-semibold uppercase tracking-[0.16em] text-brand-madison">
-                    Форма заявки
-                </p>
+            {!compact && (
+                <div className="mb-8">
+                    <p className="mb-4 text-sm font-semibold uppercase tracking-[0.16em] text-brand-madison">
+                        Форма заявки
+                    </p>
 
-                <h3 className="font-heading text-3xl font-bold leading-tight text-brand-ink md:text-4xl">
-                    Залиште запит на консультацію
-                </h3>
+                    <h3 className="font-heading text-3xl font-bold leading-tight text-brand-ink md:text-4xl">
+                        Залиште запит на консультацію
+                    </h3>
 
-                <p className="mt-4 leading-7 text-brand-muted">
-                    Оберіть послугу або пакет, залиште контакти — я уточню деталі та
-                    підкажу найкращий формат супроводу.
-                </p>
-            </div>
+                    <p className="mt-4 leading-7 text-brand-muted">
+                        Оберіть послугу або пакет, залиште контакти — я уточню деталі та
+                        підкажу найкращий формат супроводу.
+                    </p>
+                </div>
+            )}
 
             <div className="grid gap-4">
                 <div>

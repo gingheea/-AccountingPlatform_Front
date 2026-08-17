@@ -1,8 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { getMyClientRequests } from "../../services/portalService";
+import { Button } from "@relume_io/relume-ui";
+import { RxCross2 } from "react-icons/rx";
+import { getMyClientRequests, getPortalMe } from "../../services/portalService";
+import { ClientRequestForm } from "../../components/shared/ClientRequestForm";
 
 import { statusClass, statusLabel, typeLabel } from "../../constants/requests";
 
@@ -19,47 +22,99 @@ function formatDate(value) {
 export default function PortalRequestsPage() {
     const [requests, setRequests] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [me, setMe] = useState(null);
+
+    const loadRequests = useCallback(async () => {
+        try {
+            setIsLoading(true);
+
+            const data = await getMyClientRequests();
+
+            setRequests(
+                [...data].sort(
+                    (a, b) => new Date(b.createdAtUtc) - new Date(a.createdAtUtc)
+                )
+            );
+        } catch (error) {
+            console.error("Failed to load portal requests:", error);
+            toast.error("Не вдалося завантажити ваші заявки.");
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
     useEffect(() => {
-        async function loadRequests() {
-            try {
-                setIsLoading(true);
-
-                const data = await getMyClientRequests();
-
-                setRequests(
-                    [...data].sort(
-                        (a, b) =>
-                            new Date(b.createdAtUtc) - new Date(a.createdAtUtc)
-                    )
-                );
-            } catch (error) {
-                console.error("Failed to load portal requests:", error);
-                toast.error("Не вдалося завантажити ваші заявки.");
-            } finally {
-                setIsLoading(false);
-            }
-        }
-
         loadRequests();
-    }, []);
+
+        // Імʼя й пошту підставимо у форму, щоб клієнт не вводив їх удруге.
+        getPortalMe()
+            .then(setMe)
+            .catch((error) => console.error("Failed to load portal profile:", error));
+    }, [loadRequests]);
 
     return (
         <div className="space-y-6">
             <section className="rounded-card border border-brand-border bg-white p-8 shadow-soft">
-                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.16em] text-brand-madison">
-                    Requests
-                </p>
+                <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+                    <div>
+                        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.16em] text-brand-madison">
+                            Requests
+                        </p>
 
-                <h2 className="font-heading text-4xl font-bold text-brand-ink">
-                    Мої заявки
-                </h2>
+                        <h2 className="font-heading text-4xl font-bold text-brand-ink">
+                            Мої заявки
+                        </h2>
 
-                <p className="mt-4 max-w-2xl leading-7 text-brand-muted">
-                    Тут відображаються заявки, які привʼязані до вашого
-                    клієнтського акаунта.
-                </p>
+                        <p className="mt-4 max-w-2xl leading-7 text-brand-muted">
+                            Тут відображаються заявки, які привʼязані до вашого
+                            клієнтського акаунта.
+                        </p>
+                    </div>
+
+                    <Button
+                        onClick={() => setIsFormOpen(true)}
+                        className="w-fit rounded-button bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
+                    >
+                        Нова заявка
+                    </Button>
+                </div>
             </section>
+
+            {isFormOpen && (
+                <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-brand-ink/40 px-4 py-8">
+                    <div className="w-full max-w-2xl rounded-card border border-brand-border bg-white p-6 shadow-card md:p-8">
+                        <div className="mb-6 flex items-start justify-between gap-4">
+                            <div>
+                                <p className="mb-2 text-sm font-semibold uppercase tracking-[0.16em] text-brand-madison">
+                                    Requests
+                                </p>
+
+                                <h3 className="font-heading text-3xl font-bold text-brand-ink">
+                                    Нова заявка
+                                </h3>
+                            </div>
+
+                            <button
+                                type="button"
+                                onClick={() => setIsFormOpen(false)}
+                                className="flex size-10 items-center justify-center rounded-button bg-brand-pampas text-brand-madison transition-colors hover:bg-brand-soft"
+                            >
+                                <RxCross2 className="size-5" />
+                            </button>
+                        </div>
+
+                        <ClientRequestForm
+                            compact
+                            initialContact={{ fullName: me?.fullName, email: me?.email }}
+                            onCreated={() => {
+                                setIsFormOpen(false);
+                                loadRequests();
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
 
             {isLoading ? (
                 <div className="rounded-card border border-brand-border bg-white p-8 shadow-soft">

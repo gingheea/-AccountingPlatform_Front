@@ -18,6 +18,8 @@ import TermsPage from "./pages/public/TermsPage.jsx";
 import CookiesPage from "./pages/public/CookiesPage.jsx";
 
 import LoginPage from "./pages/admin/LoginPage";
+import ForgotPasswordPage from "./pages/public/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/public/ResetPasswordPage";
 import DashboardPage from "./pages/admin/DashboardPage";
 import ServicesAdminPage from "./pages/admin/ServicesAdminPage";
 import PricingPackagesAdminPage from "./pages/admin/PricingPackagesAdminPage";
@@ -59,6 +61,8 @@ createRoot(document.getElementById("root")).render(
 
                     {/* Логін без layout */}
                     <Route path="/login" element={<LoginPage />} />
+                    <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                    <Route path="/reset-password" element={<ResetPasswordPage />} />
 
                     {/* Admin — лише для ролі Admin, клієнта відкидає в його кабінет */}
                     <Route
