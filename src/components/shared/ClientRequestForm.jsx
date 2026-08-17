@@ -1,5 +1,6 @@
 "use client";
 
+import SelectField from "../ui/SelectField";
 import { Button, Input } from "@relume_io/relume-ui";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
@@ -268,17 +269,17 @@ export function ClientRequestForm() {
                         Що вас цікавить? *
                     </label>
 
-                    <select
+                    <SelectField
                         value={form.requestType}
                         onChange={handleRequestTypeChange}
-                        className="min-h-12 w-full rounded-button border border-brand-border bg-brand-pampas px-4 text-brand-ink outline-none transition-colors focus:border-brand-madison focus:ring-2 focus:ring-brand-madison/20"
+                        className="min-h-12"
                     >
                         <option value={REQUEST_TYPES.GeneralConsultation}>
                             Не знаю, потрібна консультація
                         </option>
                         <option value={REQUEST_TYPES.Service}>Конкретна послуга</option>
                         <option value={REQUEST_TYPES.Package}>Пакет супроводу</option>
-                    </select>
+                    </SelectField>
                 </div>
 
                 {form.requestType !== REQUEST_TYPES.GeneralConsultation && (
@@ -289,11 +290,11 @@ export function ClientRequestForm() {
                                 : "Оберіть пакет *"}
                         </label>
 
-                        <select
+                        <SelectField
                             value={selectedOptionValue}
                             onChange={handleSelectedOptionChange}
                             disabled={isLoadingOptions}
-                            className="min-h-12 w-full rounded-button border border-brand-border bg-brand-pampas px-4 text-brand-ink outline-none transition-colors focus:border-brand-madison focus:ring-2 focus:ring-brand-madison/20 disabled:cursor-not-allowed disabled:opacity-60"
+                            className="min-h-12 disabled:cursor-not-allowed disabled:opacity-"
                         >
                             <option value="">
                                 {isLoadingOptions ? "Завантаження..." : "Оберіть варіант"}
@@ -304,7 +305,7 @@ export function ClientRequestForm() {
                                     {option.name}
                                 </option>
                             ))}
-                        </select>
+                        </SelectField>
                     </div>
                 )}
 

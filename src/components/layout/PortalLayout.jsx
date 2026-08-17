@@ -12,6 +12,10 @@ const navItems = [
         end: true,
     },
     {
+        label: "Мої послуги",
+        to: "/portal/services",
+    },
+    {
         label: "Заявки",
         to: "/portal/requests",
     },

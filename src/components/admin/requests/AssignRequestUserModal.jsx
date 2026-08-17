@@ -1,5 +1,6 @@
 "use client";
 
+import SelectField from "../../ui/SelectField";
 import React, { useEffect, useMemo, useState } from "react";
 
 export default function AssignRequestUserModal({
@@ -120,13 +121,13 @@ export default function AssignRequestUserModal({
                             Клієнт
                         </label>
 
-                        <select
+                        <SelectField
                             value={selectedUserId}
                             onChange={(event) =>
                                 setSelectedUserId(event.target.value)
                             }
                             disabled={isSubmitting}
-                            className="w-full rounded-button border border-brand-border bg-white px-4 py-3 text-sm text-brand-ink outline-none transition focus:border-brand-madison"
+                            className=""
                         >
                             <option value="">Оберіть клієнта</option>
 
@@ -136,7 +137,7 @@ export default function AssignRequestUserModal({
                                     {user.taxId ? ` · ${user.taxId}` : ""}
                                 </option>
                             ))}
-                        </select>
+                        </SelectField>
 
                         {filteredUsers.length === 0 && (
                             <p className="mt-2 text-sm text-brand-muted">

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { RxDownload, RxTrash } from "react-icons/rx";
+import ActionMenu from "../../ui/ActionMenu";
 import {
     DOCUMENT_STATUSES,
     DOCUMENT_STATUS_CLASSES,
@@ -116,27 +117,20 @@ export default function DocumentsTable({
                                         {statusLabel(document.status)}
                                     </span>
 
-                                    <select
-                                        value=""
-                                        onChange={(event) => {
-                                            if (event.target.value === "") return;
-
-                                            onChangeStatus(document, Number(event.target.value));
-                                            event.target.value = "";
-                                        }}
-                                        className="mt-2 block min-h-9 w-full rounded-button border border-brand-border bg-white px-2 text-xs text-brand-ink outline-none focus:border-brand-madison"
-                                    >
-                                        <option value="">Змінити статус…</option>
-
-                                        {DOCUMENT_STATUSES.filter(
-                                            (status) =>
-                                                status.value !== 0 && status.value !== document.status,
-                                        ).map((status) => (
-                                            <option key={status.value} value={status.value}>
-                                                {status.label}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    <div className="mt-2">
+                                        <ActionMenu
+                                            label="Змінити статус"
+                                            items={DOCUMENT_STATUSES.filter(
+                                                (status) =>
+                                                    status.value !== 0 &&
+                                                    status.value !== document.status,
+                                            ).map((status) => ({
+                                                label: status.label,
+                                                tone: status.value === 3 ? "danger" : undefined,
+                                                onSelect: () => onChangeStatus(document, status.value),
+                                            }))}
+                                        />
+                                    </div>
                                 </td>
 
                                 <td className="px-5 py-5 text-sm text-brand-muted">

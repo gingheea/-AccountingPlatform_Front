@@ -1,5 +1,6 @@
 "use client";
 
+import SelectField from "../../ui/SelectField";
 import React, { useEffect, useState } from "react";
 import { Button } from "@relume_io/relume-ui";
 import { RxCross2 } from "react-icons/rx";
@@ -159,17 +160,17 @@ export default function RequestDetailsModal({
                             Статус заявки
                         </label>
 
-                        <select
+                        <SelectField
                             value={status}
                             onChange={(event) => setStatus(Number(event.target.value))}
-                            className="min-h-12 w-full rounded-button border border-brand-border bg-brand-pampas px-4 text-brand-ink outline-none transition-colors focus:border-brand-madison focus:ring-2 focus:ring-brand-madison/20"
+                            className="min-h-12"
                         >
                             {STATUS_OPTIONS.map((option) => (
                                 <option key={option.value} value={option.value}>
                                     {option.label}
                                 </option>
                             ))}
-                        </select>
+                        </SelectField>
 
                         <Button
                             type="button"

@@ -1,5 +1,6 @@
 "use client";
 
+import SelectField from "../../components/ui/SelectField";
 import React, { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "@relume_io/relume-ui";
@@ -174,10 +175,10 @@ export default function PortalDocumentsPage() {
                         ))}
                     </div>
 
-                    <select
+                    <SelectField
                         value={category}
                         onChange={(event) => setCategory(event.target.value)}
-                        className="min-h-11 rounded-button border border-brand-border bg-brand-pampas px-4 text-sm text-brand-ink outline-none focus:border-brand-madison"
+                        className="min-h-11"
                     >
                         <option value="">Усі категорії</option>
 
@@ -186,7 +187,7 @@ export default function PortalDocumentsPage() {
                                 {item.label}
                             </option>
                         ))}
-                    </select>
+                    </SelectField>
                 </div>
             </section>
 

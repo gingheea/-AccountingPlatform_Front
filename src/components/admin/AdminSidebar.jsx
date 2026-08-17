@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import {
     RxArchive,
     RxDashboard,
+    RxIdCard,
     RxFileText,
     RxGear,
     RxLayers, RxPerson,
@@ -38,6 +39,11 @@ const navItems = [
         label: "Documents",
         href: "/admin/documents",
         icon: RxArchive,
+    },
+    {
+        label: "Subscriptions",
+        href: "/admin/subscriptions",
+        icon: RxIdCard,
     },
 ];
 

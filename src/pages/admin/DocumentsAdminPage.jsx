@@ -1,5 +1,6 @@
 "use client";
 
+import SelectField from "../../components/ui/SelectField";
 import React, { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "@relume_io/relume-ui";
@@ -24,8 +25,7 @@ import { getApiErrorMessage } from "../../utils/apiError";
 
 const REJECTED_STATUS = 3;
 
-const filterClass =
-    "min-h-11 rounded-button border border-brand-border bg-brand-pampas px-4 text-sm text-brand-ink outline-none focus:border-brand-madison";
+const filterClass = "min-h-11";
 
 export default function DocumentsAdminPage() {
     const [documents, setDocuments] = useState([]);
@@ -203,7 +203,7 @@ export default function DocumentsAdminPage() {
 
             <div className="mb-6 rounded-card border border-brand-border bg-white p-5 shadow-soft">
                 <div className="grid gap-3 md:grid-cols-4">
-                    <select
+                    <SelectField
                         value={filters.userId}
                         onChange={handleFilterChange("userId")}
                         className={filterClass}
@@ -215,9 +215,9 @@ export default function DocumentsAdminPage() {
                                 {user.fullName || user.email}
                             </option>
                         ))}
-                    </select>
+                    </SelectField>
 
-                    <select
+                    <SelectField
                         value={filters.category}
                         onChange={handleFilterChange("category")}
                         className={filterClass}
@@ -229,9 +229,9 @@ export default function DocumentsAdminPage() {
                                 {item.label}
                             </option>
                         ))}
-                    </select>
+                    </SelectField>
 
-                    <select
+                    <SelectField
                         value={filters.direction}
                         onChange={handleFilterChange("direction")}
                         className={filterClass}
@@ -243,9 +243,9 @@ export default function DocumentsAdminPage() {
                                 {item.label}
                             </option>
                         ))}
-                    </select>
+                    </SelectField>
 
-                    <select
+                    <SelectField
                         value={filters.status}
                         onChange={handleFilterChange("status")}
                         className={filterClass}
@@ -257,7 +257,7 @@ export default function DocumentsAdminPage() {
                                 {item.label}
                             </option>
                         ))}
-                    </select>
+                    </SelectField>
                 </div>
             </div>
 

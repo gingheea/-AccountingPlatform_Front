@@ -1,5 +1,6 @@
 "use client";
 
+import SelectField from "../ui/SelectField";
 import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { Button, Input } from "@relume_io/relume-ui";
@@ -19,8 +20,7 @@ const emptyForm = {
     note: "",
 };
 
-const fieldClass =
-    "min-h-12 w-full rounded-button border border-brand-border bg-brand-pampas px-4 text-brand-ink outline-none transition-colors focus:border-brand-madison focus:ring-2 focus:ring-brand-madison/20";
+const fieldClass = "min-h-12";
 
 /**
  * Shared by the portal and the admin panel. Passing `users` switches it into
@@ -164,7 +164,7 @@ export default function UploadDocumentModal({
                                 Клієнт *
                             </label>
 
-                            <select
+                            <SelectField
                                 value={form.userId}
                                 onChange={handleChange("userId")}
                                 className={fieldClass}
@@ -176,7 +176,7 @@ export default function UploadDocumentModal({
                                         {user.fullName || user.email} ({user.email})
                                     </option>
                                 ))}
-                            </select>
+                            </SelectField>
                         </div>
                     )}
 
@@ -200,7 +200,7 @@ export default function UploadDocumentModal({
                                 Категорія *
                             </label>
 
-                            <select
+                            <SelectField
                                 value={form.category}
                                 onChange={handleChange("category")}
                                 className={fieldClass}
@@ -210,7 +210,7 @@ export default function UploadDocumentModal({
                                         {category.label}
                                     </option>
                                 ))}
-                            </select>
+                            </SelectField>
                         </div>
 
                         {isAdminMode && (
@@ -219,7 +219,7 @@ export default function UploadDocumentModal({
                                     Напрямок *
                                 </label>
 
-                                <select
+                                <SelectField
                                     value={form.direction}
                                     onChange={handleChange("direction")}
                                     className={fieldClass}
@@ -229,7 +229,7 @@ export default function UploadDocumentModal({
                                             {direction.label}
                                         </option>
                                     ))}
-                                </select>
+                                </SelectField>
                             </div>
                         )}
                     </div>

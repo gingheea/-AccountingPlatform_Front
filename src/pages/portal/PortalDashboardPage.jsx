@@ -5,6 +5,11 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { getMyClientRequests, getPortalMe } from "../../services/portalService";
 import { getMyDocuments } from "../../services/documentsService";
+import { getMySubscriptions } from "../../services/subscriptionsService";
+import {
+    SUBSCRIPTION_STATUS,
+    subscriptionTitle,
+} from "../../constants/subscriptions";
 
 import {
     REQUEST_STATUS,
@@ -17,7 +22,13 @@ export default function PortalDashboardPage() {
     const [me, setMe] = useState(null);
     const [requests, setRequests] = useState([]);
     const [documents, setDocuments] = useState([]);
+    const [subscriptions, setSubscriptions] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const activeSubscriptions = useMemo(
+        () => subscriptions.filter((s) => s.status === SUBSCRIPTION_STATUS.Active),
+        [subscriptions],
+    );
 
     const sortedRequests = useMemo(() => {
         return [...requests].sort(
@@ -42,15 +53,18 @@ export default function PortalDashboardPage() {
             try {
                 setIsLoading(true);
 
-                const [meData, requestsData, documentsData] = await Promise.all([
-                    getPortalMe(),
-                    getMyClientRequests(),
-                    getMyDocuments(),
-                ]);
+                const [meData, requestsData, documentsData, subscriptionsData] =
+                    await Promise.all([
+                        getPortalMe(),
+                        getMyClientRequests(),
+                        getMyDocuments(),
+                        getMySubscriptions(),
+                    ]);
 
                 setMe(meData);
                 setRequests(requestsData);
                 setDocuments(documentsData);
+                setSubscriptions(subscriptionsData);
             } catch (error) {
                 console.error("Failed to load portal dashboard:", error);
                 toast.error("Не вдалося завантажити портал.");
@@ -85,6 +99,44 @@ export default function PortalDashboardPage() {
                     Тут зібрані ваші заявки, документи та основна інформація для
                     роботи з бухгалтером.
                 </p>
+            </section>
+
+            {/* Найголовніше для клієнта — за яким пакетом його ведуть. */}
+            <section className="rounded-card border border-brand-border bg-brand-madison p-6 text-white shadow-soft">
+                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-brand-tan">
+                    Ваше обслуговування
+                </p>
+
+                {activeSubscriptions.length === 0 ? (
+                    <>
+                        <h3 className="mt-3 font-heading text-2xl font-bold">
+                            Поки що нічого не підключено
+                        </h3>
+
+                        <p className="mt-2 leading-7 text-white/75">
+                            Коли бухгалтер візьме вас на супровід, тут зʼявиться ваш пакет.
+                        </p>
+                    </>
+                ) : (
+                    <>
+                        <h3 className="mt-3 font-heading text-2xl font-bold">
+                            {activeSubscriptions.map(subscriptionTitle).join(", ")}
+                        </h3>
+
+                        <p className="mt-2 leading-7 text-white/75">
+                            {activeSubscriptions.length === 1
+                                ? "Активний пакет супроводу."
+                                : `Активних послуг: ${activeSubscriptions.length}.`}
+                        </p>
+                    </>
+                )}
+
+                <Link
+                    to="/portal/services"
+                    className="mt-5 inline-flex rounded-button bg-white px-4 py-2 text-sm font-semibold text-brand-madison transition hover:bg-brand-pampas"
+                >
+                    Мої послуги
+                </Link>
             </section>
 
             <section className="grid gap-5 md:grid-cols-3">
