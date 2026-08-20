@@ -12,7 +12,6 @@ import { authorInitials } from "../../constants/testimonials";
 const TONES = [
     {
         card: "border-brand-border bg-brand-pampas",
-        badge: "bg-white text-brand-madison",
         quote: "text-brand-ink",
         avatar: "bg-brand-madison text-white",
         name: "text-brand-ink",
@@ -20,7 +19,6 @@ const TONES = [
     },
     {
         card: "border-brand-border bg-white",
-        badge: "bg-brand-pampas text-brand-madison",
         quote: "text-brand-ink",
         avatar: "bg-brand-tan text-brand-ink",
         name: "text-brand-ink",
@@ -28,7 +26,6 @@ const TONES = [
     },
     {
         card: "border-brand-border bg-brand-madison shadow-card",
-        badge: "bg-white/10 text-brand-tan",
         quote: "text-white",
         avatar: "bg-white text-brand-madison",
         name: "text-white",
@@ -43,8 +40,14 @@ const TestimonialCard = ({ testimonial, tone }) => (
     <div
         className={`flex h-full w-full flex-col rounded-card border p-6 shadow-soft ${tone.card}`}
     >
+        {/*
+          text-md → text-lg, а не text-lg → text-xl: у пресеті Relume
+          text-lg і text-xl обидва дають 20px, тож такий «крок» нічого
+          б не змінював. Пресет підміняє власну шкалу поверх стандартної
+          тайлвіндівської — так само, як він робить з max-w-*.
+        */}
         <blockquote
-            className={`font-heading text-lg font-semibold leading-relaxed md:text-xl ${tone.quote}`}
+            className={`font-heading text-md font-semibold leading-relaxed md:text-lg ${tone.quote}`}
         >
             “{testimonial.content}”
         </blockquote>
@@ -67,15 +70,14 @@ const TestimonialCard = ({ testimonial, tone }) => (
                 </p>
 
                 {/*
-                  Рід занять показуємо лише тут. Раніше він дублювався ще й
-                  значком угорі картки — і в кого ролі не було, у того текст
-                  починався вище за сусідів.
+                  Рядок ролі малюємо завжди, навіть коли її не вказали: інакше
+                  підпис стає на один рядок нижчим, і на тлі сусідів імʼя
+                  «стрибає» вниз на 11 пікселів. Запасне слово чесне —
+                  автор відгуку справді клієнт.
                 */}
-                {testimonial.authorRole && (
-                    <p className={`truncate text-sm ${tone.role}`}>
-                        {testimonial.authorRole}
-                    </p>
-                )}
+                <p className={`truncate text-sm ${tone.role}`}>
+                    {testimonial.authorRole || "Клієнт"}
+                </p>
             </div>
         </div>
     </div>
@@ -125,12 +127,14 @@ export function TestimonialsSection({
     return (
         <section className={`px-[5%] py-16 md:py-24 lg:py-28 ${background}`}>
             <div className="container">
-                <div className="mb-12 max-w-3xl md:mb-18 lg:mb-20">
+                <div className="mb-10 max-w-3xl md:mb-14">
                     <p className="mb-3 text-sm font-semibold uppercase tracking-[0.16em] text-brand-madison md:mb-4">
                         Відгуки
                     </p>
 
-                    <h2 className="mb-5 font-heading text-4xl font-bold leading-tight text-brand-ink md:mb-6 md:text-6xl lg:text-7xl">
+                    {/* На крок менший за заголовки інших секцій: відгуки —
+                        доповнення до сторінки, а не її головна заява. */}
+                    <h2 className="mb-5 font-heading text-3xl font-bold leading-tight text-brand-ink md:mb-6 md:text-5xl">
                         {title}
                     </h2>
 
