@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { Button, Input } from "@relume_io/relume-ui";
+import { Button } from "@relume_io/relume-ui";
 import toast from "react-hot-toast";
 import { resetPassword } from "../../services/authService";
 import { getApiErrorMessage } from "../../utils/apiError";
+import PasswordInput from "../../components/ui/PasswordInput";
 
 export default function ResetPasswordPage() {
     const [searchParams] = useSearchParams();
@@ -97,8 +98,8 @@ export default function ResetPasswordPage() {
                                         Новий пароль
                                     </label>
 
-                                    <Input
-                                        type="password"
+                                    <PasswordInput
+                                        
                                         value={password}
                                         onChange={(event) => setPassword(event.target.value)}
                                         required
@@ -112,8 +113,8 @@ export default function ResetPasswordPage() {
                                         Повторіть пароль
                                     </label>
 
-                                    <Input
-                                        type="password"
+                                    <PasswordInput
+                                        
                                         value={confirmation}
                                         onChange={(event) => setConfirmation(event.target.value)}
                                         required

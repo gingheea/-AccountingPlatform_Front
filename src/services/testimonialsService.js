@@ -2,10 +2,19 @@ import api from "../api/axiosInstance";
 
 /* ---------- Публічні сторінки ---------- */
 
-export async function getPublishedTestimonials(take = 6) {
-    const { data } = await api.get("/testimonials/published", { params: { take } });
+/**
+ * Повертає { items, total }. Total потрібен, щоб сторінка знала, чи є
+ * що довантажувати — інакше довелось би вгадувати за розміром відповіді.
+ */
+export async function getPublishedTestimonials({ skip = 0, take = 6 } = {}) {
+    const { data } = await api.get("/testimonials/published", {
+        params: { skip, take },
+    });
 
-    return data;
+    return {
+        items: Array.isArray(data?.items) ? data.items : [],
+        total: Number(data?.total ?? 0),
+    };
 }
 
 /* ---------- Кабінет клієнта ---------- */

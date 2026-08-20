@@ -7,6 +7,7 @@ import { RxArrowLeft } from "react-icons/rx";
 import {loginRequest} from "../../services/authService.js";
 import {useAuth} from "../../hooks/useAuth.js";
 import { getHomeRouteForRoles, getRolesFromToken } from "../../utils/jwt";
+import PasswordInput from "../../components/ui/PasswordInput";
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -113,8 +114,8 @@ export default function LoginPage() {
                                 Пароль
                             </label>
 
-                            <Input
-                                type="password"
+                            <PasswordInput
+                                
                                 value={form.password}
                                 onChange={handleChange("password")}
                                 required

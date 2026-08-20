@@ -1,8 +1,9 @@
 "use client";
 
-import { Button, Input } from "@relume_io/relume-ui";
+import { Button } from "@relume_io/relume-ui";
 import React, { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
+import PasswordInput from "../../ui/PasswordInput";
 
 export default function ResetPasswordModal({
                                                isOpen,
@@ -62,8 +63,8 @@ export default function ResetPasswordModal({
                             Новий пароль *
                         </label>
 
-                        <Input
-                            type="password"
+                        <PasswordInput
+                            
                             value={newPassword}
                             onChange={(event) => setNewPassword(event.target.value)}
                             required

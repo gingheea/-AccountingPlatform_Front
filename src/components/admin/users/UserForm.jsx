@@ -2,6 +2,7 @@
 
 import { Button, Input } from "@relume_io/relume-ui";
 import React, { useEffect, useState } from "react";
+import PasswordInput from "../../ui/PasswordInput";
 
 const ROLES = ["Admin", "User"];
 
@@ -130,8 +131,8 @@ export default function UserForm({
                         Пароль *
                     </label>
 
-                    <Input
-                        type="password"
+                    <PasswordInput
+                        
                         value={form.password}
                         onChange={handleChange("password")}
                         required

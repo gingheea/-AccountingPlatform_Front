@@ -13,6 +13,7 @@ import HomePage from "./pages/public/HomePage";
 import ServicesPage from "./pages/public/ServicesPage";
 import AboutMePage from "./pages/public/AboutPage.jsx";
 import BlogPage from "./pages/public/BlogPage";
+import TestimonialsPage from "./pages/public/TestimonialsPage";
 import PrivacyPage from "./pages/public/PrivacyPage.jsx";
 import TermsPage from "./pages/public/TermsPage.jsx";
 import CookiesPage from "./pages/public/CookiesPage.jsx";
@@ -56,6 +57,7 @@ createRoot(document.getElementById("root")).render(
                         <Route path="/services" element={<ServicesPage />} />
                         <Route path="/about" element={<AboutMePage />} />
                         <Route path="/blog" element={<BlogPage />} />
+                        <Route path="/testimonials" element={<TestimonialsPage />} />
                         <Route path="/privacy" element={<PrivacyPage />} />
                         <Route path="/terms" element={<TermsPage />} />
                         <Route path="/cookies" element={<CookiesPage />} />

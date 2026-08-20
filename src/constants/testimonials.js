@@ -41,3 +41,36 @@ export function authorInitials(name) {
         .map((part) => part[0]?.toUpperCase() ?? "")
         .join("");
 }
+
+/**
+ * Три оформлення карток по колу — світла, біла й темна. Раніше кожна була
+ * прописана в розмітці окремо; тепер відгуків може бути будь-скільки,
+ * тому вигляд обираємо за позицією.
+ */
+export const TESTIMONIAL_TONES = [
+    {
+        card: "border-brand-border bg-brand-pampas",
+        quote: "text-brand-ink",
+        avatar: "bg-brand-madison text-white",
+        name: "text-brand-ink",
+        role: "text-brand-muted",
+        more: "text-brand-madison hover:text-brand-madisonDark",
+    },
+    {
+        card: "border-brand-border bg-white",
+        quote: "text-brand-ink",
+        avatar: "bg-brand-tan text-brand-ink",
+        name: "text-brand-ink",
+        role: "text-brand-muted",
+        more: "text-brand-madison hover:text-brand-madisonDark",
+    },
+    {
+        card: "border-brand-border bg-brand-madison shadow-card",
+        quote: "text-white",
+        avatar: "bg-white text-brand-madison",
+        name: "text-white",
+        role: "text-white/65",
+        more: "text-brand-tan hover:text-white",
+    },
+];
+

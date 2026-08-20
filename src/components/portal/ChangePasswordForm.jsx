@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { Button, Input } from "@relume_io/relume-ui";
 import { changeOwnPassword } from "../../services/portalService";
 import { getApiErrorMessage } from "../../utils/apiError";
+import PasswordInput from "../ui/PasswordInput";
 
 const inputClass =
     "min-h-12 rounded-button border-brand-border bg-brand-pampas px-4 text-brand-ink placeholder:text-brand-gothic focus:border-brand-madison focus:ring-brand-madison";
@@ -65,8 +66,8 @@ export default function ChangePasswordForm() {
                         Поточний пароль
                     </label>
 
-                    <Input
-                        type="password"
+                    <PasswordInput
+                        
                         value={form.current}
                         onChange={handleChange("current")}
                         required
@@ -81,8 +82,8 @@ export default function ChangePasswordForm() {
                         Новий пароль
                     </label>
 
-                    <Input
-                        type="password"
+                    <PasswordInput
+                        
                         value={form.next}
                         onChange={handleChange("next")}
                         required
@@ -97,8 +98,8 @@ export default function ChangePasswordForm() {
                         Повторіть новий пароль
                     </label>
 
-                    <Input
-                        type="password"
+                    <PasswordInput
+                        
                         value={form.confirmation}
                         onChange={handleChange("confirmation")}
                         required
