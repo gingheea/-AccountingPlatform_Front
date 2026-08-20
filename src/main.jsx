@@ -27,6 +27,7 @@ import RequestsAdminPage from "./pages/admin/RequestsAdminPage";
 import UsersAdminPage from "./pages/admin/UsersAdminPage";
 import DocumentsAdminPage from "./pages/admin/DocumentsAdminPage";
 import SubscriptionsAdminPage from "./pages/admin/SubscriptionsAdminPage";
+import TestimonialsAdminPage from "./pages/admin/TestimonialsAdminPage";
 
 import PortalLayout from "./components/layout/PortalLayout.jsx";
 import PortalDashboardPage from "./pages/portal/PortalDashboardPage";
@@ -34,6 +35,7 @@ import PortalRequestsPage from "./pages/portal/PortalRequestsPage";
 import PortalServicesPage from "./pages/portal/PortalServicesPage";
 import PortalDocumentsPage from "./pages/portal/PortalDocumentsPage";
 import PortalProfilePage from "./pages/portal/PortalProfilePage";
+import PortalTestimonialPage from "./pages/portal/PortalTestimonialPage";
 
 import "./index.css";
 
@@ -79,6 +81,7 @@ createRoot(document.getElementById("root")).render(
                         <Route path="/admin/users" element={<UsersAdminPage />} />
                         <Route path="/admin/documents" element={<DocumentsAdminPage />} />
                         <Route path="/admin/subscriptions" element={<SubscriptionsAdminPage />} />
+                        <Route path="/admin/testimonials" element={<TestimonialsAdminPage />} />
                     </Route>
 
                     {/* Portal */}
@@ -94,6 +97,7 @@ createRoot(document.getElementById("root")).render(
                         <Route path="services" element={<PortalServicesPage />} />
                         <Route path="requests" element={<PortalRequestsPage />} />
                         <Route path="documents" element={<PortalDocumentsPage />} />
+                        <Route path="testimonial" element={<PortalTestimonialPage />} />
                         <Route path="profile" element={<PortalProfilePage />} />
                     </Route>
                 </Routes>

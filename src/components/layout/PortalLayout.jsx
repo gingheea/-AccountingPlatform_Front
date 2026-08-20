@@ -24,6 +24,10 @@ const navItems = [
         to: "/portal/documents",
     },
     {
+        label: "Мій відгук",
+        to: "/portal/testimonial",
+    },
+    {
         label: "Профіль",
         to: "/portal/profile",
     },
