@@ -22,11 +22,15 @@ function buildPortalLinks({ isAuthenticated, isAdmin, roles }) {
     return [{ label: "Вхід", href: "/login" }];
   }
 
+  // Адміну показуємо тільки його панель. Посилання на кабінет клієнта вело
+  // в чужий за призначенням розділ: сторінки порталу показують дані того,
+  // хто увійшов, тож адмін бачив там свої власні порожні заявки й документи.
+  if (isAdmin) {
+    return [{ label: "Панель керування", href: getHomeRouteForRoles(roles) }];
+  }
+
   return [
-    {
-      label: isAdmin ? "Панель керування" : "Мій кабінет",
-      href: getHomeRouteForRoles(roles),
-    },
+    { label: "Мій кабінет", href: getHomeRouteForRoles(roles) },
     { label: "Документи", href: "/portal/documents" },
     { label: "Мої заявки", href: "/portal/requests" },
   ];

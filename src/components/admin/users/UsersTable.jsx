@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { RxPencil1, RxReload, RxLockClosed } from "react-icons/rx";
+import { RxPencil1, RxReload, RxLockClosed, RxTrash } from "react-icons/rx";
 import UserRolesBadge from "./UserRolesBadge";
 
 function formatDate(date) {
@@ -21,16 +21,23 @@ export default function UsersTable({
                                        onEdit,
                                        onToggleActive,
                                        onResetPassword,
+                                       onDelete,
+                                       currentUserEmail,
+                                       isFiltered = false,
                                    }) {
     if (users.length === 0) {
+        // Порожньо через фільтр і порожньо взагалі — різні речі. «Створіть
+        // першого користувача» під час пошуку виглядало б як помилка.
         return (
             <div className="rounded-card border border-brand-border bg-white p-8 text-center shadow-soft">
                 <h3 className="font-heading text-2xl font-bold text-brand-ink">
-                    Користувачів ще немає
+                    {isFiltered ? "Нічого не знайдено" : "Користувачів ще немає"}
                 </h3>
 
                 <p className="mt-3 text-brand-muted">
-                    Створіть першого користувача для доступу до системи.
+                    {isFiltered
+                        ? "Спробуйте змінити запит або скинути фільтр статусу."
+                        : "Створіть першого користувача для доступу до системи."}
                 </p>
             </div>
         );
@@ -134,6 +141,20 @@ export default function UsersTable({
                                         <RxReload className="size-4" />
                                         {user.isActive ? "Deactivate" : "Activate"}
                                     </button>
+
+                                    {/* Себе видалити не можна — інакше легко
+                                        лишитись без доступу до адмінки. Це саме
+                                        правило продубльоване на сервері. */}
+                                    {user.email !== currentUserEmail && (
+                                        <button
+                                            type="button"
+                                            onClick={() => onDelete(user)}
+                                            className="inline-flex items-center gap-2 rounded-button border border-red-200 bg-white px-3 py-2 text-sm font-semibold text-red-700 transition-colors hover:bg-red-50"
+                                        >
+                                            <RxTrash className="size-4" />
+                                            Delete
+                                        </button>
+                                    )}
                                 </div>
                             </td>
                         </tr>

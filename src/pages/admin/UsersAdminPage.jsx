@@ -1,13 +1,15 @@
 "use client";
 
-import { Button } from "@relume_io/relume-ui";
-import React, { useEffect, useState } from "react";
+import { Button, Input } from "@relume_io/relume-ui";
+import React, { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
+import { RxMagnifyingGlass } from "react-icons/rx";
 import {
     activateUser,
     changeUserRoles,
     createUser,
     deactivateUser,
+    deleteUser,
     getUsers,
     resetUserPassword,
     updateUser,
@@ -15,8 +17,14 @@ import {
 import UsersTable from "../../components/admin/users/UsersTable";
 import UserFormModal from "../../components/admin/users/UserFormModal";
 import ResetPasswordModal from "../../components/admin/users/ResetPasswordModal";
+import { getApiErrorMessage } from "../../utils/apiError";
+import { useAuth } from "../../hooks/useAuth";
+import SelectField from "../../components/ui/SelectField";
 
 export default function UsersAdminPage() {
+    // Пошта поточного адміна — щоб не показувати йому кнопку «видалити себе».
+    const { email } = useAuth();
+
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,6 +39,39 @@ export default function UsersAdminPage() {
         isOpen: false,
         user: null,
     });
+
+    const [search, setSearch] = useState("");
+    const [statusFilter, setStatusFilter] = useState("all");
+
+    /**
+     * Фільтруємо вже завантажений список у браузері, а не запитом на сервер:
+     * користувачів тут десятки, тож ходити по мережі на кожну натиснуту
+     * літеру — марна робота й помітна затримка.
+     */
+    const visibleUsers = useMemo(() => {
+        const query = search.trim().toLowerCase();
+
+        return users.filter((user) => {
+            if (statusFilter === "active" && !user.isActive) return false;
+            if (statusFilter === "inactive" && user.isActive) return false;
+
+            if (!query) return true;
+
+            // Одне поле шукає одразу по імені, пошті, коду й ролях — так не треба
+            // здогадуватись, у яку саме графу вводити те, що памʼятаєш.
+            const haystack = [
+                user.fullName,
+                user.email,
+                user.taxId,
+                ...(user.roles ?? []),
+            ]
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+            return haystack.includes(query);
+        });
+    }, [users, search, statusFilter]);
 
     async function loadUsers() {
         try {
@@ -138,6 +179,29 @@ export default function UsersAdminPage() {
         }
     };
 
+    const handleDelete = async (user) => {
+        // Видалення незворотне, тому запитуємо підтвердження і чесно
+        // перелічуємо, що саме зникне разом з акаунтом.
+        const confirmed = window.confirm(
+            `Видалити користувача «${user.fullName || user.email}»?\n\n` +
+            "Разом з ним будуть видалені його документи, обслуговування та відгук. " +
+            "Заявки залишаться в історії, але втратять звʼязок із клієнтом.\n\n" +
+            "Цю дію не можна скасувати."
+        );
+
+        if (!confirmed) return;
+
+        try {
+            await deleteUser(user.id);
+
+            toast.success("Користувача видалено.");
+            await loadUsers();
+        } catch (error) {
+            console.error("Failed to delete user:", error);
+            toast.error(getApiErrorMessage(error, "Не вдалося видалити користувача."));
+        }
+    };
+
     const handleResetPassword = async (id, newPassword) => {
         try {
             setIsSubmitting(true);
@@ -148,7 +212,10 @@ export default function UsersAdminPage() {
             closeResetPasswordModal();
         } catch (error) {
             console.error("Failed to reset password:", error);
-            toast.error("Не вдалося змінити пароль.");
+
+            // Показуємо саме те, що відповів сервер: «пароль має містити цифру»
+            // куди корисніше за загальне «не вдалося».
+            toast.error(getApiErrorMessage(error, "Не вдалося змінити пароль."));
         } finally {
             setIsSubmitting(false);
         }
@@ -180,6 +247,33 @@ export default function UsersAdminPage() {
                 </Button>
             </div>
 
+            <div className="mb-6 flex flex-col gap-3 rounded-card border border-brand-border bg-white p-4 shadow-soft lg:flex-row lg:items-center">
+                <div className="relative flex-1">
+                    <RxMagnifyingGlass className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-brand-gothic" />
+
+                    <Input
+                        value={search}
+                        onChange={(event) => setSearch(event.target.value)}
+                        placeholder="Пошук за іменем, поштою, Tax ID або роллю"
+                        className="min-h-11 w-full rounded-button border-brand-border bg-brand-pampas pl-11 pr-4 text-brand-ink placeholder:text-brand-gothic focus:border-brand-madison focus:ring-brand-madison"
+                    />
+                </div>
+
+                <SelectField
+                    value={statusFilter}
+                    onChange={(event) => setStatusFilter(event.target.value)}
+                    className="min-h-11 lg:w-48"
+                >
+                    <option value="all">Усі статуси</option>
+                    <option value="active">Тільки активні</option>
+                    <option value="inactive">Тільки неактивні</option>
+                </SelectField>
+
+                <p className="whitespace-nowrap text-sm text-brand-muted lg:pl-2">
+                    Знайдено: {visibleUsers.length} з {users.length}
+                </p>
+            </div>
+
             {isLoading ? (
                 <div className="rounded-card border border-brand-border bg-white p-8 shadow-soft">
                     <p className="text-brand-muted">
@@ -188,10 +282,13 @@ export default function UsersAdminPage() {
                 </div>
             ) : (
                 <UsersTable
-                    users={users}
+                    users={visibleUsers}
                     onEdit={openEditModal}
                     onToggleActive={handleToggleActive}
                     onResetPassword={openResetPasswordModal}
+                    onDelete={handleDelete}
+                    currentUserEmail={email}
+                    isFiltered={search.trim() !== "" || statusFilter !== "all"}
                 />
             )}
 

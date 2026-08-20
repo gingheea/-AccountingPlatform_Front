@@ -37,40 +37,45 @@ const TONES = [
 ];
 
 const TestimonialCard = ({ testimonial, tone }) => (
+    // h-full — щоб картка розтяглась на всю висоту комірки сітки. Без цього
+    // приліпити підпис до низу неможливо: картка закінчується там, де
+    // закінчився текст, а не там, де закінчився рядок.
     <div
-        className={`flex w-full flex-col items-start justify-between rounded-card border p-6 shadow-soft md:p-8 ${tone.card}`}
+        className={`flex h-full w-full flex-col rounded-card border p-6 shadow-soft ${tone.card}`}
     >
-        <div className="rb-5 mb-5 md:mb-6">
-            {testimonial.authorRole && (
-                <div
-                    className={`mb-8 inline-flex rounded-full px-4 py-2 text-sm font-semibold md:mb-10 lg:mb-12 ${tone.badge}`}
-                >
-                    {testimonial.authorRole}
-                </div>
-            )}
+        <blockquote
+            className={`font-heading text-lg font-semibold leading-relaxed md:text-xl ${tone.quote}`}
+        >
+            “{testimonial.content}”
+        </blockquote>
 
-            <blockquote
-                className={`font-heading text-2xl font-semibold leading-snug md:text-3xl ${tone.quote}`}
+        {/*
+          mt-auto з'їдає весь вільний простір над підписом і штовхає його вниз.
+          Саме тому імена в одному рядку тепер стоять на одній лінії незалежно
+          від того, чий відгук довший.
+        */}
+        <div className="mt-auto flex w-full items-center gap-3 pt-6">
+            <div
+                className={`flex size-11 shrink-0 items-center justify-center rounded-full font-heading text-sm font-bold ${tone.avatar}`}
             >
-                “{testimonial.content}”
-            </blockquote>
+                {authorInitials(testimonial.authorName)}
+            </div>
 
-            <div className="mt-6 flex w-full items-center gap-4 md:mt-8">
-                <div
-                    className={`flex size-12 min-h-12 min-w-12 items-center justify-center rounded-full font-heading font-bold ${tone.avatar}`}
-                >
-                    {authorInitials(testimonial.authorName)}
-                </div>
+            <div className="min-w-0">
+                <p className={`truncate font-semibold ${tone.name}`}>
+                    {testimonial.authorName}
+                </p>
 
-                <div>
-                    <p className={`font-semibold ${tone.name}`}>
-                        {testimonial.authorName}
+                {/*
+                  Рід занять показуємо лише тут. Раніше він дублювався ще й
+                  значком угорі картки — і в кого ролі не було, у того текст
+                  починався вище за сусідів.
+                */}
+                {testimonial.authorRole && (
+                    <p className={`truncate text-sm ${tone.role}`}>
+                        {testimonial.authorRole}
                     </p>
-
-                    {testimonial.authorRole && (
-                        <p className={`text-sm ${tone.role}`}>{testimonial.authorRole}</p>
-                    )}
-                </div>
+                )}
             </div>
         </div>
     </div>

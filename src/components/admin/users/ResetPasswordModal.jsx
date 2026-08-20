@@ -73,7 +73,8 @@ export default function ResetPasswordModal({
                         />
 
                         <p className="mt-2 text-xs leading-5 text-brand-muted">
-                            Пароль має відповідати backend-валідації.
+                            Щонайменше 8 символів, велика й мала літери та цифра.
+                            Спецсимвол не обов'язковий.
                         </p>
                     </div>
 

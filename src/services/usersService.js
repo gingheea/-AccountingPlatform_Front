@@ -33,6 +33,14 @@ export async function changeUserRoles(id, roles) {
     });
 }
 
+/**
+ * Видаляє акаунт назовсім. Разом з ним зникають документи (і файли у сховищі),
+ * обслуговування та відгук. Заявки лишаються, але без звʼязку з клієнтом.
+ */
+export async function deleteUser(id) {
+    await api.delete(`/users/${id}`);
+}
+
 export async function resetUserPassword(id, newPassword) {
     await api.patch(`/users/${id}/reset-password`, {
         newPassword,
