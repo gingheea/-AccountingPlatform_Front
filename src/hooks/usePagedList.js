@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { DEFAULT_PAGE_SIZE } from "../services/paging";
 
 /**
@@ -27,8 +27,28 @@ export function usePagedList(fetchPage, {
     // Змінюється після дій (видалення, зміна статусу) і змушує перечитати.
     const [reloadKey, setReloadKey] = useState(0);
 
-    // Фільтри в залежностях мають бути рядком, а не обʼєктом: новий обʼєкт
-    // із тими самими значеннями React вважає іншим, і ефект крутився б
+    /*
+     * Поточні значення для обробників нижче.
+     *
+     * Через ref, а не через залежності useCallback: інакше кожна з цих функцій
+     * створювалась би заново при зміні сторінки чи фільтра. Сторінки кладуть їх
+     * у залежності власних ефектів, і нова функція щоразу означала б
+     * нескінченний цикл рендерів. Саме на цьому я вже спіткнувся.
+     */
+    const stateRef = useRef({ page, pageSize, filters, items });
+
+    // Оновлюємо ref в ефекті, а не під час рендера: запис у ref під час рендера
+    // ламається при повторному рендері (React у режимі розробки малює двічі),
+    // і лінтер справедливо це забороняє.
+    //
+    // Ефект без списку залежностей — виконується після кожного рендера, тож
+    // до моменту, коли спрацює будь-який обробник, значення вже свіжі.
+    useEffect(() => {
+        stateRef.current = { page, pageSize, filters, items };
+    });
+
+    // Фільтри в залежностях ефекту мають бути рядком, а не обʼєктом: новий
+    // обʼєкт із тими самими значеннями React вважає іншим, і ефект крутився б
     // на кожному рендері.
     const filtersKey = JSON.stringify(filters);
 
@@ -67,38 +87,50 @@ export function usePagedList(fetchPage, {
      * Зміна фільтра завжди повертає на першу сторінку. Інакше можна лишитись
      * на сьомій сторінці списку, у якому після фільтра всього дві —
      * і побачити порожнечу замість результатів.
+     *
+     * Ранній вихід обовʼязковий: без нього кожен виклик створював би новий
+     * обʼєкт фільтрів, React вважав би стан зміненим — і сторінка, яка кличе
+     * setFilter з ефекту, зациклилась би.
      */
-    const setFilter = (name, value) => {
+    const setFilter = useCallback((name, value) => {
+        if (stateRef.current.filters[name] === value) return;
+
         setIsLoading(true);
         setPage(1);
         setFilters((current) => ({ ...current, [name]: value }));
-    };
+    }, []);
 
-    const changePage = (next) => {
+    const changePage = useCallback((next) => {
+        if (stateRef.current.page === next) return;
+
         setIsLoading(true);
         setPage(next);
-    };
+    }, []);
 
-    const changePageSize = (next) => {
+    const changePageSize = useCallback((next) => {
+        if (stateRef.current.pageSize === next) return;
+
         setIsLoading(true);
         setPage(1);
         setPageSize(next);
-    };
+    }, []);
 
-    const reload = () => setReloadKey((key) => key + 1);
+    const reload = useCallback(() => setReloadKey((key) => key + 1), []);
 
     /**
      * Після видалення останнього рядка на сторінці залишатись на ній нема сенсу —
      * вона стала порожньою. Відступаємо на попередню.
      */
-    const reloadAfterRemoval = () => {
-        if (items.length === 1 && page > 1) {
-            changePage(page - 1);
+    const reloadAfterRemoval = useCallback(() => {
+        const { page: currentPage, items: currentItems } = stateRef.current;
+
+        if (currentItems.length === 1 && currentPage > 1) {
+            changePage(currentPage - 1);
             return;
         }
 
         reload();
-    };
+    }, [changePage, reload]);
 
     return {
         items,
