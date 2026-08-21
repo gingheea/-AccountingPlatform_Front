@@ -7,13 +7,13 @@ const buttonBase =
     "inline-flex min-h-10 min-w-10 items-center justify-center rounded-button border px-3 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-40";
 
 /**
- * Гортання сторінок для таблиць адмінки й кабінету.
+ * Page navigation for admin and portal tables.
  *
- * @param page       поточна сторінка, від 1
- * @param pageSize   скільки рядків на сторінці
- * @param total      скільки рядків усього (не на сторінці)
- * @param onPageChange     викликається з новим номером сторінки
- * @param onPageSizeChange якщо не передати, вибір розміру не показується
+ * @param page       the current page, starting at 1
+ * @param pageSize   how many rows per page
+ * @param total      how many rows there are overall (not on this page)
+ * @param onPageChange     called with the new page number
+ * @param onPageSizeChange when omitted, the size picker is not shown
  */
 export default function Pagination({
                                        page,
@@ -25,11 +25,11 @@ export default function Pagination({
                                    }) {
     const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
-    // Порожній список — ховаємо все: там уже є свій напис «нічого немає».
+    // Empty list: hide everything, the list already shows its own "nothing here".
     if (total === 0) return null;
 
-    // Усе вмістилось на одну сторінку. Смугу лишаємо тільки заради вибору
-    // розміру — інакше вона нічого не дає й лише займає місце.
+    // Everything fits on one page. The bar stays only for the size picker;
+    // otherwise it adds nothing and merely takes up space.
     if (totalPages <= 1 && !onPageSizeChange) return null;
 
     const from = total === 0 ? 0 : (page - 1) * pageSize + 1;

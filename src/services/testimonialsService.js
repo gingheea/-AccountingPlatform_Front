@@ -1,11 +1,11 @@
 import api from "../api/axiosInstance";
 import { buildParams, toPage } from "./paging";
 
-/* ---------- Публічні сторінки ---------- */
+/* ---------- Public pages ---------- */
 
 /**
- * Повертає { items, total }. Total потрібен, щоб сторінка знала, чи є
- * що довантажувати — інакше довелось би вгадувати за розміром відповіді.
+ * Returns { items, total }. Total lets the page know whether anything is left
+ * to load; otherwise it would have to guess from the response size.
  */
 export async function getPublishedTestimonials({ skip = 0, take = 6 } = {}) {
     const { data } = await api.get("/testimonials/published", {
@@ -18,9 +18,9 @@ export async function getPublishedTestimonials({ skip = 0, take = 6 } = {}) {
     };
 }
 
-/* ---------- Кабінет клієнта ---------- */
+/* ---------- Client portal ---------- */
 
-/** Повертає null, якщо клієнт ще не лишав відгуку. */
+/** Returns null when the client has not left a testimonial yet. */
 export async function getMyTestimonial() {
     const { data } = await api.get("/portal/testimonial");
 
@@ -33,9 +33,9 @@ export async function submitMyTestimonial(payload) {
     return data;
 }
 
-/* ---------- Адмінка ---------- */
+/* ---------- Admin panel ---------- */
 
-/** Повертає { items, total }. */
+/** Returns { items, total }. */
 export async function getTestimonials(params = {}) {
     const { data } = await api.get("/testimonials", { params: buildParams(params) });
 

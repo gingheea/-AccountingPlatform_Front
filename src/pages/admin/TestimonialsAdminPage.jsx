@@ -34,8 +34,8 @@ function formatDate(value) {
 export default function TestimonialsAdminPage() {
     const [busyId, setBusyId] = useState(null);
 
-    // За замовчуванням показуємо саме те, заради чого сюди заходять —
-    // нерозглянуті відгуки.
+    // The default shows exactly what people come here for:
+    // testimonials awaiting review.
     const list = usePagedList(getTestimonials, {
         initialFilters: { status: String(TESTIMONIAL_STATUS.Pending) },
         onError: (error) =>
@@ -47,8 +47,8 @@ export default function TestimonialsAdminPage() {
     const status = list.filters.status;
 
     /**
-     * Спільна обгортка для трьох дій. Кожна з них однаково: блокує кнопки саме
-     * цієї картки, показує підсумок і перезавантажує список.
+     * A shared wrapper for the three actions. Each one does the same: disables
+     * that card's buttons, reports the outcome and reloads the list.
      */
     const runAction = async (id, action, successMessage, failureMessage) => {
         try {
@@ -80,8 +80,8 @@ export default function TestimonialsAdminPage() {
             testimonial.moderationNote ?? ""
         );
 
-        // prompt повертає null, якщо натиснули «Скасувати» — це не порожня
-        // причина, а відмова від дії, тому нічого не робимо.
+        // prompt returns null when "Cancel" was clicked. That is not an empty
+        // reason but a refusal to act, so nothing happens.
         if (note === null) return;
 
         return runAction(

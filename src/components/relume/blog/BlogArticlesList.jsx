@@ -100,7 +100,7 @@ const BlogVisual = ({ number, category, tone = "light" }) => {
   );
 };
 
-/** Сірі заглушки на час завантаження — сторінка не «стрибає», коли прийдуть дані. */
+/** Grey placeholders while loading, so the page does not jump when data arrives. */
 const ArticleSkeleton = () => (
     <div className="grid animate-pulse gap-x-8 gap-y-6 rounded-card border border-brand-border bg-white p-5 shadow-soft md:grid-cols-[0.42fr_1fr] md:gap-x-10 md:p-6">
       <div className="aspect-square w-full rounded-card bg-brand-pampas" />
@@ -116,7 +116,7 @@ const ArticleSkeleton = () => (
 );
 
 const ArticleCard = ({ article, index }) => {
-  // Перша картка темна, далі чергуємо фон — щоб список не був монотонним.
+  // The first card is dark, then backgrounds alternate so the list is not monotonous.
   const isFirst = index === 0;
   const isOdd = index % 2 === 1;
 
@@ -127,8 +127,8 @@ const ArticleCard = ({ article, index }) => {
           }`}
       >
         {/*
-          rel="noopener noreferrer" обовʼязковий для target="_blank": без нього
-          відкрита сторінка отримує доступ до нашої через window.opener.
+          rel="noopener noreferrer" is mandatory with target="_blank": without it
+          the opened page gets access to ours through window.opener.
         */}
         <a
             href={article.url}
@@ -193,12 +193,12 @@ export function BlogArticlesList() {
   const [hasError, setHasError] = useState(false);
   const [activeCategory, setActiveCategory] = useState(ALL_CATEGORIES);
 
-  // reloadKey змінюється по кнопці «Спробувати ще раз» і перезапускає ефект.
+  // reloadKey is bumped by the "Try again" button and restarts the effect.
   const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
-    // Прапорець проти оновлення стану вже прибраного компонента: якщо користувач
-    // піде зі сторінки, поки запит у дорозі, відповідь ми просто ігноруємо.
+    // A guard against updating an unmounted component's state: if the user leaves
+    // while the request is in flight, the response is simply ignored.
     let isActive = true;
 
     getLatestNews(9)
@@ -222,24 +222,24 @@ export function BlogArticlesList() {
     };
   }, [reloadKey]);
 
-  // Категорії будуємо з того, що реально прийшло, а не зі списку «на око»:
-  // інакше у фільтрі були б рубрики, під якими нема жодної новини.
+  // Categories are built from what actually arrived rather than a guessed list:
+  // otherwise the filter would offer sections with no articles at all.
   const categories = useMemo(() => {
     const unique = [...new Set(articles.map((a) => a.category).filter(Boolean))];
 
     return unique.sort((a, b) => a.localeCompare(b, "uk"));
   }, [articles]);
 
-  // Якщо обрана категорія зникла після оновлення стрічки — вважаємо обраними «всі».
-  // Це рахується прямо під час рендера, а не окремим useEffect: інакше був би
-  // зайвий прохід рендера, у якому список уже порожній, а фільтр ще старий.
+  // If the chosen category disappeared after a feed refresh, treat it as "all".
+  // Computed during render rather than in a useEffect: otherwise there would be
+  // an extra render pass with an empty list and a stale filter.
   const effectiveCategory =
       activeCategory !== ALL_CATEGORIES && !categories.includes(activeCategory)
           ? ALL_CATEGORIES
           : activeCategory;
 
-  // Скидаємо стан тут, у обробнику кліку, а не в useEffect:
-  // всередині ефекту setState спричиняє зайвий каскад рендерів.
+  // State is reset here, in the click handler, not in a useEffect:
+  // setState inside an effect causes a needless cascade of renders.
   const handleRetry = () => {
     setIsLoading(true);
     setHasError(false);
@@ -302,10 +302,10 @@ export function BlogArticlesList() {
             )}
 
             {/*
-              Порожній список і помилка запиту — для відвідувача те саме:
-              новин не видно. Коли лежить саме джерело, наш бек віддає 200 і
-              порожній масив, тож без цієї гілки кнопки повтору не було б
-              якраз у найчастішому випадку збою.
+              An empty list and a failed request look the same to a visitor:
+              no news. When the source itself is down our backend returns 200 and an
+              empty array, so without this branch there would be no retry button
+              in exactly the most common failure case.
             */}
             {!isLoading && (hasError || visibleArticles.length === 0) && (
                 <div className="mx-auto max-w-xl rounded-card border border-brand-border bg-brand-pampas p-8 text-center shadow-soft">
@@ -349,7 +349,7 @@ export function BlogArticlesList() {
                     </motion.div>
                   </AnimatePresence>
 
-                  {/* Джерело має бути назване явно — ми показуємо лише анонси. */}
+                  {/* The source has to be credited explicitly: we only show teasers. */}
                   <p className="mt-12 text-center text-sm text-brand-gothic">
                     Джерело новин:{" "}
                     <a

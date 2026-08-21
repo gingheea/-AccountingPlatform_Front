@@ -1,11 +1,11 @@
 /**
- * Зовнішні посилання сайту в одному місці.
+ * The site's external links in one place.
  *
- * Порожній рядок означає «акаунта немає» — такі іконки просто не
- * відмальовуються. Це краще за посилання в нікуди: відвідувач не тисне
- * на те, що не працює, і нам не треба вигадувати неіснуючі адреси.
+ * An empty string means "no such account": those icons are simply not
+ * rendered. Better than a link to nowhere: a visitor does not click something
+ * broken, and we do not have to invent addresses that do not exist.
  *
- * Заповни ті, що реально існують, — вони зʼявляться самі.
+ * Fill in the ones that really exist and they will appear by themselves.
  */
 export const SOCIAL_LINKS = {
     facebook: "",
@@ -15,7 +15,7 @@ export const SOCIAL_LINKS = {
     telegram: "",
 };
 
-/** Тільки заповнені — саме їх і рендеримо. */
+/** Only the filled-in ones; those are what gets rendered. */
 export function activeSocialLinks() {
     return Object.entries(SOCIAL_LINKS)
         .filter(([, url]) => Boolean(url))

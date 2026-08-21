@@ -12,7 +12,7 @@ export default function ResetPasswordPage() {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
-    // Пошта й код приходять у посиланні з листа.
+    // The address and the code arrive in the link from the email.
     const email = searchParams.get("email") ?? "";
     const token = searchParams.get("token") ?? "";
 
@@ -32,8 +32,8 @@ export default function ResetPasswordPage() {
             return;
         }
 
-        // Друге поле — щоб людина не зберегла пароль із випадковою помилкою
-        // й одразу не змогла увійти. Перевіряємо на фронті: беку це не потрібно.
+        // The second field stops someone saving a password with an accidental typo
+        // and being locked out. Checked on the frontend; the backend does not need it.
         if (password !== confirmation) {
             setErrorMessage("Паролі не збігаються.");
             return;

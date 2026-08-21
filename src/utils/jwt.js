@@ -1,4 +1,4 @@
-// Бек віддає ролі у клеймі ClaimTypes.Role, який у токен потрапляє повним URI.
+// The backend puts roles in the ClaimTypes.Role claim, which lands in the token as a full URI.
 const ROLE_CLAIM = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
 
 export const ROLES = {
@@ -16,7 +16,7 @@ export function decodeToken(token) {
 
         const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
 
-        // atob повертає байти, тому кирилицю треба окремо декодувати як UTF-8.
+        // atob returns bytes, so non-Latin text has to be decoded as UTF-8 separately.
         const json = new TextDecoder().decode(
             Uint8Array.from(atob(base64), (char) => char.charCodeAt(0)),
         );
@@ -33,7 +33,7 @@ export function getRolesFromToken(token) {
 
     if (!claim) return [];
 
-    // Одна роль приходить рядком, кілька — масивом.
+    // A single role arrives as a string, several as an array.
     return Array.isArray(claim) ? claim : [claim];
 }
 
@@ -46,8 +46,8 @@ export function isTokenExpired(token) {
 }
 
 /**
- * Куди вести користувача після входу. Адмін і клієнт мають різні кабінети,
- * і без цього клієнт потрапляв в адмінку, де всі запити віддають 403.
+ * Where to send a user after login. Admin and client have different areas,
+ * and without this a client landed in the admin panel where everything is 403.
  */
 export function getHomeRouteForRoles(roles) {
     return roles.includes(ROLES.admin) ? "/admin" : "/portal";

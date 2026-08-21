@@ -2,16 +2,16 @@ import api from "../api/axiosInstance";
 import { buildParams, toPage } from "./paging";
 
 /**
- * axiosInstance виставляє Content-Type: application/json для всіх запитів, а
- * transformRequest в axios при JSON-заголовку серіалізує FormData у JSON —
- * файл при цьому втрачається. Тому для завантажень заголовок треба перебити:
- * побачивши FormData, axios далі сам підставить boundary.
+ * axiosInstance sets Content-Type: application/json on every request, and with
+ * a JSON header axios' transformRequest serialises FormData into JSON, losing
+ * the file. So uploads must override the header: once axios sees FormData it
+ * fills in the boundary itself.
  */
 const multipart = { headers: { "Content-Type": "multipart/form-data" } };
 
 /* ---------- Portal (client) ---------- */
 
-/** Повертає { items, total }. */
+/** Returns { items, total }. */
 export async function getMyDocuments(filters) {
     const response = await api.get("/portal/documents", {
         params: buildParams(filters),
@@ -43,7 +43,7 @@ export async function getMyDocumentDownloadUrl(id) {
 
 /* ---------- Admin ---------- */
 
-/** Повертає { items, total }. */
+/** Returns { items, total }. */
 export async function getDocuments(filters) {
     const response = await api.get("/client-documents", {
         params: buildParams(filters),

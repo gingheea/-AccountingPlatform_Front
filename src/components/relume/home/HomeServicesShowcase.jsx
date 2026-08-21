@@ -256,8 +256,8 @@ export function HomeServicesShowcase() {
                   деталей.
                 </p>
 
-                {/* Було два <Button> без дії: перший тепер веде на послуги,
-                    другий прибрано — завантажувати поки нема чого. */}
+                {/* There were two <Button>s doing nothing: the first now leads to services,
+                    the second is gone, as there is nothing to download yet. */}
                 <div className="mt-8 flex flex-wrap items-center gap-4">
                   <Link
                       to="/services"

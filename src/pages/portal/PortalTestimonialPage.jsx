@@ -19,7 +19,7 @@ import { getApiErrorMessage } from "../../utils/apiError";
 const inputClass =
     "min-h-12 rounded-button border-brand-border bg-brand-pampas px-4 text-brand-ink placeholder:text-brand-gothic focus:border-brand-madison focus:ring-brand-madison";
 
-/** Пояснення під заголовком, різне для кожного стану розгляду. */
+/** The line under the heading, different for each review state. */
 const STATUS_HINTS = {
     [TESTIMONIAL_STATUS.Pending]:
         "Відгук надіслано. Він з'явиться на сайті після того, як бухгалтер його перегляне.",
@@ -63,8 +63,8 @@ export default function PortalTestimonialPage() {
         };
     }, []);
 
-    // Опублікований відгук редагувати не можна — це правило стоїть і в домені,
-    // на сервері. Тут ми лише не показуємо форму, щоб не вести до відмови.
+    // A published testimonial cannot be edited; the rule also lives in the domain,
+    // on the server. Here we merely hide the form so nobody is led into a refusal.
     const isLocked = testimonial?.status === TESTIMONIAL_STATUS.Approved;
 
     const trimmedLength = content.trim().length;

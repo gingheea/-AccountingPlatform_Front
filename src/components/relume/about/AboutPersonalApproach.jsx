@@ -50,7 +50,7 @@ export function AboutPersonalApproach() {
                   </p>
                 </div>
 
-                {/* Іконка зʼявляється лише коли акаунт заданий у constants/site.js */}
+                {/* The icon appears only when the account is set in constants/site.js */}
                 <div className="mt-10 flex items-center gap-4">
                   {SOCIAL_LINKS.linkedin && (
                       <a

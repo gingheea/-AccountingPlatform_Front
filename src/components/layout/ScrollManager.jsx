@@ -2,20 +2,20 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 /**
- * React Router сам не керує прокруткою. Без цього компонента:
- *  - перехід на іншу сторінку лишає тебе на тій самій висоті, де ти був;
- *  - посилання з якорем (наприклад /#contact) з іншої сторінки просто
- *    відкриває головну зверху й нікуди не прокручує.
+ * React Router does not manage scrolling. Without this component:
+ *  - navigating leaves you at the same scroll offset you were at;
+ *  - an anchor link (say /#contact) from another page simply opens the
+ *    home page at the top and scrolls nowhere.
  *
- * Нічого не малює — тільки стежить за зміною адреси.
+ * Renders nothing; it only watches the address for changes.
  */
 export default function ScrollManager() {
     const { pathname, hash } = useLocation();
 
     useEffect(() => {
         if (hash) {
-            // Елемент зʼявляється в DOM лише після того, як сторінка
-            // відмалюється, тому чекаємо наступного кадру.
+            // The element appears in the DOM only after the page has rendered,
+            // so we wait for the next frame.
             const id = hash.slice(1);
 
             requestAnimationFrame(() => {

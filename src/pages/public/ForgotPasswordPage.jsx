@@ -27,8 +27,8 @@ export default function ForgotPasswordPage() {
 
             await requestPasswordReset(email.trim());
 
-            // Показуємо успіх завжди — навіть якщо такої пошти немає.
-            // Інакше цією формою можна було б перевіряти чужі адреси.
+            // Success is shown regardless, even when no such address exists.
+            // Otherwise this form could be used to probe other people's addresses.
             setIsSent(true);
         } catch (error) {
             console.error("Failed to request password reset:", error);

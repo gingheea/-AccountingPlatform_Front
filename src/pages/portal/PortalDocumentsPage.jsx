@@ -46,7 +46,7 @@ export default function PortalDocumentsPage() {
 
     const [counts, setCounts] = useState({ fromAccountant: 0, fromClient: 0 });
 
-    // Змінюється після завантаження документа, щоб лічильники перечитались.
+    // Bumped after a document upload so the counters are re-read.
     const [countsKey, setCountsKey] = useState(0);
 
     async function loadDocuments() {
@@ -71,13 +71,13 @@ export default function PortalDocumentsPage() {
     }, [direction, category, page, pageSize]);
 
     /**
-     * Лічильники беремо двома окремими запитами й читаємо з них лише total.
+     * The counters come from two separate requests, and we read only total.
      *
-     * Рахувати з завантаженого списку більше не можна: у ньому тепер одна
-     * сторінка, і клієнт бачив би «3 документи» замість «47» — помилка,
-     * яка виглядає як робоча цифра.
+     * Counting from the loaded list is no longer possible: it now holds a single
+     * page, and the client would see "3 documents" instead of "47": a mistake
+     * that looks like a working number.
      *
-     * pageSize: 1 — самі записи нам не потрібні, потрібна тільки кількість.
+     * pageSize: 1, because we do not need the rows themselves, only the count.
      */
     useEffect(() => {
         let isActive = true;
@@ -170,8 +170,8 @@ export default function PortalDocumentsPage() {
                 <div className="rounded-card border border-brand-border bg-white p-6 shadow-soft">
                     <p className="text-sm font-semibold text-brand-muted">Усього документів</p>
 
-                    {/* Не documents.length: там лише поточна сторінка. Напрямків
-                        рівно два, тож їхня сума і є повна кількість. */}
+                    {/* Not documents.length: that is only the current page. There are
+                        exactly two directions, so their sum is the full count. */}
                     <p className="mt-3 font-heading text-4xl font-bold text-brand-madison">
                         {counts.fromAccountant + counts.fromClient}
                     </p>

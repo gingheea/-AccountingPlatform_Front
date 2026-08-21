@@ -1,21 +1,21 @@
 /**
- * Скільки номерів показувати навколо поточного. 1 означає «попередній,
- * поточний, наступний» — плюс завжди перша й остання сторінки.
+ * How many numbers to show around the current one. 1 means previous, current
+ * and next, plus the first and last pages, which are always shown.
  */
 const SIBLINGS = 1;
 
-/** Скільки сторінок ще вміщається без пропусків. */
+/** How many pages still fit without any gaps. */
 const MAX_WITHOUT_GAPS = 7;
 
 /**
- * Будує список кнопок гортання: числа й рядки-заглушки там, де сторінки
- * пропущені.
+ * Builds the list of pagination buttons: numbers, and placeholder strings
+ * where pages are skipped.
  *
- * Без цього при 40 сторінках у рядок вишикувалось би 40 кнопок. Перша й
- * остання лишаються завжди — до них найчастіше й хочуть стрибнути.
+ * Without this, 40 pages would line up 40 buttons. The first and last always
+ * stay: they are the ones people most often jump to.
  *
- * Живе окремим файлом, а не всередині компонента, бо це чиста логіка:
- * її можна перевірити, не малюючи жодної кнопки.
+ * Kept in its own file rather than inside the component because it is pure
+ * logic: it can be tested without rendering a single button.
  */
 export function buildPageNumbers(currentPage, totalPages) {
     if (totalPages <= MAX_WITHOUT_GAPS) {
@@ -33,7 +33,7 @@ export function buildPageNumbers(currentPage, totalPages) {
         .filter((page) => page >= 1 && page <= totalPages)
         .sort((a, b) => a - b);
 
-    // Уставляємо заглушку там, де між сусідніми номерами є розрив.
+    // Insert a placeholder wherever neighbouring numbers have a gap between them.
     const result = [];
 
     sorted.forEach((page, index) => {

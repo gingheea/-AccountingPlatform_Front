@@ -25,7 +25,7 @@ import { usePagedList } from "../../hooks/usePagedList";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 
 export default function UsersAdminPage() {
-    // Пошта поточного адміна — щоб не показувати йому кнопку «видалити себе».
+    // The current admin's email, so they are not offered a "delete yourself" button.
     const { email } = useAuth();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -41,8 +41,8 @@ export default function UsersAdminPage() {
         user: null,
     });
 
-    // Те, що набирають у полі, і те, що вже пішло на сервер, — різні речі.
-    // Запит вилітає лише коли користувач зупинився.
+    // What is being typed and what has already gone to the server differ.
+    // The request fires only once the user has stopped.
     const [searchInput, setSearchInput] = useState("");
     const search = useDebouncedValue(searchInput);
 
@@ -53,8 +53,8 @@ export default function UsersAdminPage() {
 
     const { setFilter } = list;
 
-    // Пошук тепер виконує сервер, тож змінений текст треба віддати списку.
-    // Це не синхронний setState у тілі ефекту: значення вже «відлежалось».
+    // Search now runs on the server, so the changed text is handed to the list.
+    // This is not a synchronous setState in an effect body: the value has settled.
     React.useEffect(() => {
         setFilter("search", search);
     }, [search, setFilter]);
@@ -148,8 +148,8 @@ export default function UsersAdminPage() {
     };
 
     const handleDelete = async (user) => {
-        // Видалення незворотне, тому запитуємо підтвердження і чесно
-        // перелічуємо, що саме зникне разом з акаунтом.
+        // Deletion cannot be undone, so we ask for confirmation and spell out
+        // exactly what disappears along with the account.
         const confirmed = window.confirm(
             `Видалити користувача «${user.fullName || user.email}»?\n\n` +
             "Разом з ним будуть видалені його документи, обслуговування та відгук. " +
@@ -181,8 +181,8 @@ export default function UsersAdminPage() {
         } catch (error) {
             console.error("Failed to reset password:", error);
 
-            // Показуємо саме те, що відповів сервер: «пароль має містити цифру»
-            // куди корисніше за загальне «не вдалося».
+            // Show what the server actually said: "the password must contain a digit"
+            // is far more useful than a generic "it failed".
             toast.error(getApiErrorMessage(error, "Не вдалося змінити пароль."));
         } finally {
             setIsSubmitting(false);

@@ -21,7 +21,7 @@ export default function LoginPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-    // Показувати форму входу тому, хто вже увійшов, немає сенсу — ведемо в кабінет.
+    // Showing the login form to someone already signed in makes no sense; redirect.
     if (isAuthenticated) {
         return <Navigate to={getHomeRouteForRoles(roles)} replace />;
     }
@@ -48,7 +48,7 @@ export default function LoginPage() {
 
             login(accessToken);
 
-            // Клієнта ведемо в його кабінет, адміна — в адмінку.
+            // A client goes to their portal, an admin to the admin panel.
             navigate(getHomeRouteForRoles(getRolesFromToken(accessToken)), {
                 replace: true,
             });

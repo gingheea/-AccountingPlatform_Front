@@ -25,8 +25,8 @@ export function HomeHero() {
               і без зайвої бюрократії.
             </p>
 
-            {/* Раніше тут було поле пошти, яке нікуди не вело. Заявку приймає
-                повноцінна форма нижче — тому шапка просто веде до неї. */}
+            {/* This used to be an email field that led nowhere. The full form below
+                takes requests, so the hero simply points at it. */}
             <div className="mt-8 max-w-xl md:mt-10">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <Link

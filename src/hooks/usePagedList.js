@@ -2,15 +2,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { DEFAULT_PAGE_SIZE } from "../services/paging";
 
 /**
- * Стан посторінкового списку: сама сторінка, фільтри й перезавантаження.
+ * State of a paged list: the page itself, the filters and reloading.
  *
- * Шість сторінок адмінки й кабінету робили б це однаково, тому логіка живе
- * одним місцем. Сторінці лишається намалювати рядки й смугу гортання.
+ * Six admin and portal pages would do this identically, so the logic lives in
+ * one place. A page is left to render the rows and the pagination bar.
  *
- * @param fetchPage функція ({ page, pageSize, ...filters }) → { items, total }
- * @param options.initialFilters початкові значення фільтрів
- * @param options.initialPageSize скільки рядків на сторінці
- * @param options.onError що робити з помилкою (зазвичай показати toast)
+ * @param fetchPage a function ({ page, pageSize, ...filters }) => { items, total }
+ * @param options.initialFilters initial filter values
+ * @param options.initialPageSize how many rows per page
+ * @param options.onError what to do with an error (usually show a toast)
  */
 export function usePagedList(fetchPage, {
     initialFilters = {},
@@ -24,38 +24,38 @@ export function usePagedList(fetchPage, {
     const [filters, setFilters] = useState(initialFilters);
     const [isLoading, setIsLoading] = useState(true);
 
-    // Змінюється після дій (видалення, зміна статусу) і змушує перечитати.
+    // Bumped after an action (delete, status change) to force a refetch.
     const [reloadKey, setReloadKey] = useState(0);
 
     /*
-     * Поточні значення для обробників нижче.
+     * Current values for the handlers below.
      *
-     * Через ref, а не через залежності useCallback: інакше кожна з цих функцій
-     * створювалась би заново при зміні сторінки чи фільтра. Сторінки кладуть їх
-     * у залежності власних ефектів, і нова функція щоразу означала б
-     * нескінченний цикл рендерів. Саме на цьому я вже спіткнувся.
+     * Held in a ref rather than in useCallback dependencies: otherwise each of
+     * these functions would be recreated whenever the page or a filter changes.
+     * Pages put them in their own effect dependencies, and a new function every
+     * time meant an endless render loop. That bug has already happened here.
      */
     const stateRef = useRef({ page, pageSize, filters, items });
 
-    // Оновлюємо ref в ефекті, а не під час рендера: запис у ref під час рендера
-    // ламається при повторному рендері (React у режимі розробки малює двічі),
-    // і лінтер справедливо це забороняє.
+    // The ref is updated in an effect, not during render: writing to a ref while
+    // rendering breaks on a repeated render (React draws twice in development),
+    // and the linter rightly forbids it.
     //
-    // Ефект без списку залежностей — виконується після кожного рендера, тож
-    // до моменту, коли спрацює будь-який обробник, значення вже свіжі.
+    // An effect with no dependency array runs after every render, so by the time
+    // any handler fires the values are already fresh.
     useEffect(() => {
         stateRef.current = { page, pageSize, filters, items };
     });
 
-    // Фільтри в залежностях ефекту мають бути рядком, а не обʼєктом: новий
-    // обʼєкт із тими самими значеннями React вважає іншим, і ефект крутився б
-    // на кожному рендері.
+    // Filters in the effect dependencies must be a string, not an object: a new
+    // object with the same values counts as different to React, and the effect
+    // would run on every render.
     const filtersKey = JSON.stringify(filters);
 
     useEffect(() => {
-        // Прапорець проти оновлення стану вже прибраного компонента, а заразом
-        // проти «перегонів»: якщо швидко перемкнути дві сторінки, відповідь
-        // першого запиту може прийти після другого й перетерти свіжі дані.
+        // A guard against updating the state of an unmounted component, and against
+        // races: switching pages quickly can let the first response arrive after the
+        // second one and overwrite fresher data.
         let isActive = true;
 
         fetchPage({ page, pageSize, ...JSON.parse(filtersKey) })
@@ -78,19 +78,19 @@ export function usePagedList(fetchPage, {
         return () => {
             isActive = false;
         };
-        // fetchPage і onError навмисно не в залежностях: сторінки передають
-        // їх новими стрілками на кожен рендер, і ефект крутився б без кінця.
+        // fetchPage and onError are deliberately not dependencies: pages pass them
+        // as fresh arrow functions on every render, and the effect would never stop.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page, pageSize, filtersKey, reloadKey]);
 
     /**
-     * Зміна фільтра завжди повертає на першу сторінку. Інакше можна лишитись
-     * на сьомій сторінці списку, у якому після фільтра всього дві —
-     * і побачити порожнечу замість результатів.
+     * Changing a filter always returns to page one. Otherwise you could stay on
+     * page seven of a list that now has only two pages and see emptiness
+     * instead of results.
      *
-     * Ранній вихід обовʼязковий: без нього кожен виклик створював би новий
-     * обʼєкт фільтрів, React вважав би стан зміненим — і сторінка, яка кличе
-     * setFilter з ефекту, зациклилась би.
+     * The early return is essential: without it every call would build a new
+     * filters object, React would treat the state as changed, and a page calling
+     * setFilter from an effect would loop forever.
      */
     const setFilter = useCallback((name, value) => {
         if (stateRef.current.filters[name] === value) return;
@@ -118,8 +118,8 @@ export function usePagedList(fetchPage, {
     const reload = useCallback(() => setReloadKey((key) => key + 1), []);
 
     /**
-     * Після видалення останнього рядка на сторінці залишатись на ній нема сенсу —
-     * вона стала порожньою. Відступаємо на попередню.
+     * After deleting the last row on a page there is no point staying on it:
+     * it is now empty. Step back to the previous one.
      */
     const reloadAfterRemoval = useCallback(() => {
         const { page: currentPage, items: currentItems } = stateRef.current;

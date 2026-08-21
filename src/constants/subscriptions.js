@@ -1,7 +1,7 @@
 /**
- * Дзеркало SubscriptionStatus з беку. УВАГА: нумерація з 1, не з 0.
- * Тримаємо числа тут одним місцем — саме розсинхрон таких мап колись
- * зсунув усі статуси заявок.
+ * Mirrors SubscriptionStatus from the backend. NOTE: numbering starts at 1, not 0.
+ * The numbers live here in one place: a drift between such maps once shifted
+ * every request status.
  */
 export const SUBSCRIPTION_STATUS = {
     Active: 1,
@@ -27,7 +27,7 @@ export const subscriptionStatusLabel = (status) =>
 export const subscriptionStatusClass = (status) =>
     SUBSCRIPTION_STATUS_CLASSES[status] ?? "bg-brand-soft text-brand-muted";
 
-/** Назва того, що обслуговується: пакет або окрема послуга. */
+/** The name of what is being served: a package or a single service. */
 export const subscriptionTitle = (subscription) =>
     subscription?.pricingPackageName || subscription?.serviceName || "Без назви";
 

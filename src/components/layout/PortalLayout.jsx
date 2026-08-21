@@ -100,8 +100,8 @@ export default function PortalLayout() {
                     </nav>
                 </aside>
 
-                {/* min-w-0 — без нього grid-колонка не може стиснутись вужче
-                    за таблицю, і сторінка виїжджає за екран на мобільному. */}
+                {/* min-w-0: without it a grid column cannot shrink below the
+                    table width, and the page overflows the screen on mobile. */}
                 <main className="min-w-0">
                     <Outlet />
                 </main>

@@ -44,14 +44,14 @@ createRoot(document.getElementById("root")).render(
     <StrictMode>
         <BrowserRouter>
             <AuthProvider>
-                {/* Стежить за прокруткою при зміні сторінки — потрібен усім
-                    розділам, тому стоїть тут, а не в конкретному layout. */}
+                {/* Manages scrolling on navigation. Every section needs it,
+                    so it lives here rather than in one particular layout. */}
                 <ScrollManager />
 
                 <Toaster position="top-right" />
 
                 <Routes>
-                    {/* Публічний сайт */}
+                    {/* Public site */}
                     <Route element={<PublicLayout />}>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/services" element={<ServicesPage />} />
@@ -63,12 +63,12 @@ createRoot(document.getElementById("root")).render(
                         <Route path="/cookies" element={<CookiesPage />} />
                     </Route>
 
-                    {/* Логін без layout */}
+                    {/* Login, outside any layout */}
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                     <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-                    {/* Admin — лише для ролі Admin, клієнта відкидає в його кабінет */}
+                    {/* Admin: role Admin only; a client is bounced to their own area */}
                     <Route
                         element={
                             <ProtectedRoute allowedRoles={["Admin"]}>

@@ -72,9 +72,9 @@ export default function RequestsAdminPage() {
                     getAllUsers(),
                 ]);
 
-            // Сортує вже сервер — найновіші зверху. Тут сортувати не можна:
-            // на руках лише одна сторінка, і порядок був би «правильним»
-            // усередині неї, але неправильним у межах усього списку.
+            // The server already sorts, newest first. Sorting here is wrong:
+            // we only hold one page, so the order would be "right" within it
+            // but wrong across the whole list.
             setRequests(requestsData.items);
             setTotal(requestsData.total);
 
@@ -318,8 +318,8 @@ export default function RequestsAdminPage() {
                         Total requests
                     </p>
 
-                    {/* Не requests.length: там лише поточна сторінка.
-                        Total приходить із сервера й рахує всі заявки. */}
+                    {/* Not requests.length: that is only the current page.
+                        Total comes from the server and counts every request. */}
                     <p className="mt-1 font-heading text-3xl font-bold text-brand-madison">
                         {total}
                     </p>

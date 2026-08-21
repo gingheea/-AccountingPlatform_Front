@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
 /**
- * Віддає значення із затримкою після того, як воно перестало змінюватись.
+ * Returns a value only after it has stopped changing for a while.
  *
- * Потрібно для пошуку, який тепер виконує сервер: без затримки запит летів би
- * на кожну натиснуту літеру — десяток запитів замість одного, і відповіді
- * могли б прийти не в тому порядку, у якому їх надіслали.
+ * Needed for the search that now runs on the server: without a delay a request
+ * would fly on every keystroke, a dozen instead of one, and the responses
+ * could arrive in a different order than they were sent.
  */
 export function useDebouncedValue(value, delayMs = 350) {
     const [debounced, setDebounced] = useState(value);
@@ -13,8 +13,8 @@ export function useDebouncedValue(value, delayMs = 350) {
     useEffect(() => {
         const timer = setTimeout(() => setDebounced(value), delayMs);
 
-        // Кожне нове натискання скасовує попередній таймер — саме тому
-        // спрацьовує лише останній, коли користувач зупинився.
+        // Every new keystroke cancels the previous timer, which is why only the
+        // last one fires, once the user has stopped typing.
         return () => clearTimeout(timer);
     }, [value, delayMs]);
 

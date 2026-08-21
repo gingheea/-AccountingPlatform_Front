@@ -64,8 +64,8 @@ export default function PortalDashboardPage() {
 
                 setMe(meData);
 
-                // Списки тепер приходять як { items, total } — на огляді нам
-                // потрібні самі записи, щоб порахувати їх за статусами.
+                // Lists now arrive as { items, total }; the overview needs the records
+                // themselves in order to count them by status.
                 setRequests(requestsData.items);
                 setDocuments(documentsData.items);
                 setSubscriptions(subscriptionsData.items);
@@ -105,7 +105,7 @@ export default function PortalDashboardPage() {
                 </p>
             </section>
 
-            {/* Найголовніше для клієнта — за яким пакетом його ведуть. */}
+            {/* What matters most to a client: which package they are on. */}
             <section className="rounded-card border border-brand-border bg-brand-madison p-6 text-white shadow-soft">
                 <p className="text-sm font-semibold uppercase tracking-[0.16em] text-brand-tan">
                     Ваше обслуговування

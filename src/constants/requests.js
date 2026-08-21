@@ -1,9 +1,9 @@
 /**
- * Дзеркало доменних enum'ів з беку. Тримати числа в одному місці, а не
- * розписувати по компонентах: саме розсинхрон таких мап зсунув усі статуси
- * на одиницю й ламав відображення.
+ * Mirrors the backend domain enums. The numbers live in one place rather than
+ * being spread across components: it was exactly such a drift that shifted
+ * every status by one and broke the display.
  *
- * УВАГА: RequestStatus на беку нумерується з 1, а RequestType — з 0.
+ * NOTE: on the backend RequestStatus starts at 1 while RequestType starts at 0.
  */
 export const REQUEST_STATUS = {
     New: 1,
@@ -29,7 +29,7 @@ export const REQUEST_STATUS_CLASSES = {
     [REQUEST_STATUS.Rejected]: "bg-red-50 text-red-700",
 };
 
-/** Заявки, які ще в роботі — те, що має бути на очах у бухгалтера. */
+/** Requests still in progress: what the accountant needs in front of them. */
 export const ACTIVE_REQUEST_STATUSES = [
     REQUEST_STATUS.New,
     REQUEST_STATUS.InProgress,
@@ -54,8 +54,8 @@ export const REQUEST_TYPE_CLASSES = {
     [REQUEST_TYPE.GeneralConsultation]: "bg-brand-soft text-brand-muted",
 };
 
-// API віддає числа, але historically трапляються й рядкові імена enum'а —
-// приводимо до числа, щоб мапи працювали в обох випадках.
+// The API returns numbers, but historically string enum names occur too,
+// so we coerce to a number to make the maps work either way.
 export function normalizeStatus(status) {
     if (typeof status === "number") return status;
 

@@ -35,9 +35,9 @@ export default function PortalRequestsPage() {
         try {
             setIsLoading(true);
 
-            // Сортує вже сервер — найновіші зверху. Тут сортувати не можна:
-            // на руках лише одна сторінка, і порядок вийшов би «правильним»
-            // у межах сторінки, але неправильним у межах усього списку.
+            // The server already sorts, newest first. Sorting here is wrong:
+            // we only hold one page, so the order would come out "right"
+            // within the page but wrong across the whole list.
             const result = await getMyClientRequests({ page, pageSize });
 
             setRequests(result.items);
@@ -53,7 +53,7 @@ export default function PortalRequestsPage() {
     useEffect(() => {
         loadRequests();
 
-        // Імʼя й пошту підставимо у форму, щоб клієнт не вводив їх удруге.
+        // Name and email are prefilled so the client does not type them twice.
         getPortalMe()
             .then(setMe)
             .catch((error) => console.error("Failed to load portal profile:", error));

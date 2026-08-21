@@ -26,8 +26,8 @@ export default function UsersTable({
                                        isFiltered = false,
                                    }) {
     if (users.length === 0) {
-        // Порожньо через фільтр і порожньо взагалі — різні речі. «Створіть
-        // першого користувача» під час пошуку виглядало б як помилка.
+        // Empty because of a filter and empty altogether are different things.
+        // "Create the first user" during a search would look like a bug.
         return (
             <div className="rounded-card border border-brand-border bg-white p-8 text-center shadow-soft">
                 <h3 className="font-heading text-2xl font-bold text-brand-ink">
@@ -142,9 +142,9 @@ export default function UsersTable({
                                         {user.isActive ? "Deactivate" : "Activate"}
                                     </button>
 
-                                    {/* Себе видалити не можна — інакше легко
-                                        лишитись без доступу до адмінки. Це саме
-                                        правило продубльоване на сервері. */}
+                                    {/* You cannot delete yourself: it is an easy way to end up
+                                        locked out of the admin panel. The same rule is
+                                        enforced on the server. */}
                                     {user.email !== currentUserEmail && (
                                         <button
                                             type="button"

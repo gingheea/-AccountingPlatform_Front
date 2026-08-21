@@ -6,7 +6,7 @@ export async function getPortalMe() {
     return response.data;
 }
 
-/** Повертає { items, total }. */
+/** Returns { items, total }. */
 export async function getMyClientRequests(params = {}) {
     const response = await api.get("/portal/client-requests", {
         params: buildParams(params),

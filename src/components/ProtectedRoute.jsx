@@ -3,9 +3,9 @@ import { useAuth } from "../hooks/useAuth";
 import { getHomeRouteForRoles } from "../utils/jwt";
 
 /**
- * @param allowedRoles Якщо задано, у маршрут пускає лише власників цих ролей.
- *                     Решту відправляє в їхній власний кабінет, а не на логін —
- *                     вони автентифіковані, просто не сюди.
+ * @param allowedRoles When set, only holders of these roles are let through.
+ *                     Everyone else is sent to their own area, not to login:
+ *                     they are authenticated, just not for this route.
  */
 export default function ProtectedRoute({ children, allowedRoles }) {
     const { isAuthenticated, roles } = useAuth();

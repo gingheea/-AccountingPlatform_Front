@@ -1,13 +1,13 @@
 /**
- * Спільні дрібниці для посторінкових запитів.
+ * Shared helpers for paged requests.
  *
- * Бек віддає { items, total }. Тут ми це нормалізуємо, щоб жодна сторінка
- * не мусила перевіряти, чи прийшов масив, чи null.
+ * The backend returns { items, total }. Normalised here so that no page has
+ * to check whether an array or null came back.
  */
 
 export const DEFAULT_PAGE_SIZE = 20;
 
-/** Стеля на боці сервера. Просити більше немає сенсу — він однаково обріже. */
+/** The server-side cap. Asking for more is pointless: it truncates anyway. */
 export const MAX_PAGE_SIZE = 200;
 
 export function toPage(data) {
@@ -17,7 +17,7 @@ export function toPage(data) {
     };
 }
 
-/** Прибирає порожні значення, щоб у запит не летіло ?status=&userId= */
+/** Strips empty values so the request does not carry ?status=&userId= */
 export function buildParams(filters = {}) {
     const params = {};
 
@@ -31,15 +31,15 @@ export function buildParams(filters = {}) {
 }
 
 /**
- * Збирає ВЕСЬ список, гортаючи сторінки самостійно.
+ * Collects the ENTIRE list by walking the pages itself.
  *
- * Потрібно там, де список використовується не для показу, а як довідник:
- * підставити імʼя клієнта в рядок, порахувати статистику на дашборді.
- * Такі місця не можна обмежити однією сторінкою — вони мовчки показували б
- * неповну картину.
+ * Needed where a list is used as a lookup rather than for display: filling in
+ * a client name in a row, counting dashboard statistics.
+ * Such places cannot be limited to one page: they would silently show an
+ * incomplete picture.
  *
- * Цикл, а не один запит із великим pageSize: сервер має стелю, і при
- * зростанні бази запит із pageSize=99999 просто мовчки обрізався б.
+ * A loop rather than one request with a huge pageSize: the server has a cap,
+ * and as the data grows pageSize=99999 would simply be truncated in silence.
  */
 export async function fetchAllPages(fetchPage, pageSize = MAX_PAGE_SIZE) {
     const all = [];
@@ -51,8 +51,8 @@ export async function fetchAllPages(fetchPage, pageSize = MAX_PAGE_SIZE) {
 
         all.push(...result.items);
 
-        // Порожня сторінка — вихід навіть якщо total більший за зібране:
-        // інакше при розбіжності це був би нескінченний цикл.
+        // An empty page means stop, even if total exceeds what was collected:
+        // otherwise a mismatch would turn this into an endless loop.
         if (result.items.length === 0 || all.length >= result.total) break;
 
         page += 1;

@@ -90,8 +90,8 @@ export default function DocumentsAdminPage() {
     const handleFilterChange = (field) => (event) => {
         const { value } = event.target;
 
-        // Зміна фільтра завжди повертає на першу сторінку: інакше можна лишитись
-        // на пʼятій сторінці списку, у якому після фільтра всього одна.
+        // Changing a filter always returns to page one: otherwise you could stay on
+        // page five of a list that now has only one page.
         setCurrentPage(1);
         setFilters((prev) => ({ ...prev, [field]: value }));
     };

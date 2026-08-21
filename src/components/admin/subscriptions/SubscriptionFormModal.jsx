@@ -36,7 +36,7 @@ export default function SubscriptionFormModal({
         setForm((prev) => ({ ...prev, [field]: event.target.value }));
     };
 
-    // Зміна типу скидає вибір: id пакета в полі послуги був би сміттям.
+    // Switching the type clears the choice: a package id in the service field would be junk.
     const handleKindChange = (event) => {
         setForm((prev) => ({ ...prev, kind: event.target.value, targetId: "" }));
     };

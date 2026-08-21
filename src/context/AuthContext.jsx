@@ -26,8 +26,8 @@ export function AuthProvider({ children }) {
     }, []);
 
     const value = useMemo(() => {
-        // Протермінований токен — це не автентифікація: інакше користувач
-        // потрапляв би в кабінет, де кожен запит одразу віддає 401.
+        // An expired token is not authentication: otherwise the user would land in
+        // their area where every request immediately returns 401.
         const isValid = Boolean(token) && !isTokenExpired(token);
         const roles = isValid ? getRolesFromToken(token) : [];
 

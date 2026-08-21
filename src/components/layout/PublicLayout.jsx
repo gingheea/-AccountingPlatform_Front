@@ -12,10 +12,10 @@ export default function PublicLayout() {
             <Navbar1 />
 
             {/*
-              key={pathname} змушує React пересоздати цей блок при переході
-              на іншу сторінку — і анімація появи програється заново.
-              Тільки поява, без анімації зникнення: інакше нова сторінка
-              чекала б, поки зникне стара, і перехід відчувався б повільним.
+              key={pathname} makes React recreate this block on navigation,
+              so the entrance animation plays again.
+              Entrance only, no exit animation: otherwise the new page would
+              wait for the old one to fade and the transition would feel slow.
             */}
             <motion.main
                 key={pathname}

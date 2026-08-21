@@ -36,11 +36,11 @@ const REQUEST_TYPES = {
 };
 
 /**
- * @param initialContact  дані залогіненого клієнта — щоб у кабінеті не вводити
- *                        імʼя й пошту вдруге. Поля лишаються редагованими.
- * @param onCreated       викликається після успішної відправки: кабінету треба
- *                        оновити список заявок і закрити вікно.
- * @param compact         у кабінеті великий заголовок форми зайвий.
+ * @param initialContact  the signed-in client's details, so the portal does not
+ *                        ask for name and email twice. Fields stay editable.
+ * @param onCreated       called after a successful submit: the portal has to
+ *                        refresh the request list and close the dialog.
+ * @param compact         inside the portal the large form heading is redundant.
  */
 export function ClientRequestForm({ initialContact, onCreated, compact = false }) {
     const [services, setServices] = useState([]);

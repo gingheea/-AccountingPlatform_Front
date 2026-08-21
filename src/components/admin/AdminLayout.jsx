@@ -11,8 +11,8 @@ export default function AdminLayout() {
                 <div className="flex min-w-0 flex-1 flex-col">
                     <AdminTopbar />
 
-                    {/* Без стелі таблиці розтягуються на всю ширину монітора
-                        і очі бігають від краю до краю. */}
+                    {/* Without a cap, tables stretch across the whole monitor
+                        and the eyes have to travel from edge to edge. */}
                     <main className="mx-auto w-full max-w-[1600px] flex-1 px-[5%] py-8 lg:px-8 lg:py-10">
                         <Outlet />
                     </main>

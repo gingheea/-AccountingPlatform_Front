@@ -87,8 +87,8 @@ export default function DashboardPage() {
         };
     }, [requests, services, pricingPackages]);
 
-    // Завершені й відхилені сюди не потрапляють: дешборд показує те,
-    // що ще потребує уваги, а не весь архів.
+    // Completed and rejected ones are left out: the dashboard shows what still
+    // needs attention, not the whole archive.
     const latestRequests = useMemo(() => {
         return [...requests]
             .filter((request) => isActiveRequest(request.status))

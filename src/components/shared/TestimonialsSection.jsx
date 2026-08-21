@@ -8,10 +8,10 @@ import TestimonialCard from "./TestimonialCard";
 import { TESTIMONIAL_TONES } from "../../constants/testimonials";
 
 /**
- * Секція зі схваленими відгуками для головної та «Про мене».
+ * The approved-testimonials section for the home and About pages.
  *
- * Показує лише кілька найсвіжіших: сторінка не має розтягуватись на екран
- * прокрутки, коли відгуків стане півсотні. Решта живе на /testimonials.
+ * Shows only the few newest: the page must not grow into a wall of scrolling
+ * once there are fifty testimonials. The rest live at /testimonials.
  */
 export function TestimonialsSection({
                                         title,
@@ -24,7 +24,7 @@ export function TestimonialsSection({
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Прапорець проти оновлення стану вже прибраного компонента.
+        // A guard against updating the state of an unmounted component.
         let isActive = true;
 
         getPublishedTestimonials({ take })
@@ -37,8 +37,8 @@ export function TestimonialsSection({
             .catch((error) => {
                 if (!isActive) return;
 
-                // Відгуки — прикраса, а не суть сторінки. Якщо не завантажились,
-                // мовчки ховаємо секцію, а не лякаємо відвідувача помилкою.
+                // Testimonials decorate the page rather than carry it. If they fail to load,
+                // the section is hidden quietly instead of alarming the visitor.
                 console.error("Failed to load testimonials:", error);
             })
             .finally(() => {
@@ -50,8 +50,8 @@ export function TestimonialsSection({
         };
     }, [take]);
 
-    // Порожня секція «Що кажуть клієнти» без жодного відгуку виглядає гірше,
-    // ніж її відсутність, тому не малюємо нічого, поки нема що показати.
+    // An empty "What clients say" section looks worse than no section at all,
+    // so nothing is rendered until there is something to show.
     if (isLoading || testimonials.length === 0) return null;
 
     const hasMore = total > testimonials.length;
@@ -64,8 +64,8 @@ export function TestimonialsSection({
                         Відгуки
                     </p>
 
-                    {/* На крок менший за заголовки інших секцій: відгуки —
-                        доповнення до сторінки, а не її головна заява. */}
+                    {/* One step smaller than other section headings: testimonials
+                        complement the page rather than make its main claim. */}
                     <h2 className="mb-5 font-heading text-3xl font-bold leading-tight text-brand-ink md:mb-6 md:text-5xl">
                         {title}
                     </h2>

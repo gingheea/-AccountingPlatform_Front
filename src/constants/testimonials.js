@@ -1,7 +1,7 @@
 /**
- * Дзеркало TestimonialStatus з беку. УВАГА: нумерація з 1, не з 0.
- * Тримаємо числа одним місцем — саме розсинхрон таких мап колись
- * зсунув усі статуси заявок.
+ * Mirrors TestimonialStatus from the backend. NOTE: numbering starts at 1, not 0.
+ * The numbers live in one place: a drift between such maps once shifted
+ * every request status.
  */
 export const TESTIMONIAL_STATUS = {
     Pending: 1,
@@ -30,7 +30,7 @@ export const testimonialStatusClass = (status) =>
 export const TESTIMONIAL_MIN_LENGTH = 20;
 export const TESTIMONIAL_MAX_LENGTH = 1000;
 
-/** Ініціали для кружечка-аватара: «Марія Петренко» → «МП». */
+/** Initials for the avatar circle: "Maria Petrenko" becomes "MP". */
 export function authorInitials(name) {
     if (!name) return "?";
 
@@ -43,9 +43,9 @@ export function authorInitials(name) {
 }
 
 /**
- * Три оформлення карток по колу — світла, біла й темна. Раніше кожна була
- * прописана в розмітці окремо; тепер відгуків може бути будь-скільки,
- * тому вигляд обираємо за позицією.
+ * Three card styles cycled in turn: light, white and dark. Each used to be
+ * written out separately in the markup; now there can be any number of
+ * testimonials, so the style is picked by position.
  */
 export const TESTIMONIAL_TONES = [
     {

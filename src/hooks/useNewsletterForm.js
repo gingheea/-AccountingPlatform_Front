@@ -4,11 +4,11 @@ import { subscribeToNewsletter } from "../services/newsletterService";
 import { getApiErrorMessage } from "../utils/apiError";
 
 /**
- * Форм підписки на сайті три, і вони мають різну верстку. Тому спільною
- * робимо не саму форму, а логіку: стан поля, відправку, повідомлення.
- * Кожна форма лишається зі своїм оформленням.
+ * There are three newsletter forms on the site with different markup. So what
+ * is shared is not the form but the logic: field state, submit, messages.
+ * Each form keeps its own styling.
  *
- * @param source звідки підписались — щоб потім було видно, яка форма працює
+ * @param source where the signup came from, so it is visible which form works
  */
 export function useNewsletterForm(source) {
     const [email, setEmail] = useState("");

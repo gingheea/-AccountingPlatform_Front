@@ -23,7 +23,7 @@ const SOCIAL_META = {
 
 
 export function Footer1() {
-  // Показуємо лише ті соцмережі, які реально заповнені в constants/site.js.
+  // Only the social links actually filled in inside constants/site.js are shown.
   const socialLinks = activeSocialLinks();
 
   const formState = useNewsletterForm("footer");

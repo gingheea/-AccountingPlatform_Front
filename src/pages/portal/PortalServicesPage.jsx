@@ -28,7 +28,7 @@ export default function PortalServicesPage() {
         load();
     }, []);
 
-    // Активне й на паузі — зверху, завершене — окремим блоком нижче.
+    // Active and paused on top, finished in a separate block below.
     const { current, past } = useMemo(() => {
         return {
             current: subscriptions.filter((s) => s.status !== SUBSCRIPTION_STATUS.Ended),

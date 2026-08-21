@@ -7,7 +7,7 @@ import { getPublishedTestimonials } from "../../services/testimonialsService";
 import TestimonialCard from "../../components/shared/TestimonialCard";
 import { TESTIMONIAL_TONES } from "../../constants/testimonials";
 
-/** Скільки відгуків довантажуємо за одне натискання. */
+/** How many testimonials one click loads. */
 const PAGE_SIZE = 9;
 
 export default function TestimonialsPage() {
@@ -17,7 +17,7 @@ export default function TestimonialsPage() {
     const [isLoadingMore, setIsLoadingMore] = useState(false);
     const [hasError, setHasError] = useState(false);
 
-    // Змінюється кнопкою повтору й перезапускає перше завантаження.
+    // Bumped by the retry button, restarting the initial load.
     const [reloadKey, setReloadKey] = useState(0);
 
     useEffect(() => {
@@ -49,8 +49,8 @@ export default function TestimonialsPage() {
         try {
             setIsLoadingMore(true);
 
-            // skip рахуємо від того, скільки вже показано — так наступна
-            // сторінка продовжує список, а не починає його заново.
+            // skip is derived from how many are already shown, so the next page
+            // continues the list instead of starting it over.
             const page = await getPublishedTestimonials({
                 skip: testimonials.length,
                 take: PAGE_SIZE,

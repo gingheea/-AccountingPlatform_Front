@@ -1,7 +1,7 @@
 import api from "../api/axiosInstance";
 import { buildParams, fetchAllPages, toPage } from "./paging";
 
-/** Повертає { items, total }. Пошук і фільтр статусу виконує сервер. */
+/** Returns { items, total }. Search and status filtering run on the server. */
 export async function getUsers(params = {}) {
     const response = await api.get("/users", { params: buildParams(params) });
 
@@ -9,8 +9,8 @@ export async function getUsers(params = {}) {
 }
 
 /**
- * Увесь список без сторінок — для випадних списків і підстановки імен
- * у таблицях заявок, документів та обслуговування.
+ * The whole list, unpaged: for dropdowns and for filling in client names in
+ * the request, document and engagement tables.
  */
 export async function getAllUsers() {
     return fetchAllPages(({ page, pageSize }) => getUsers({ page, pageSize }));
@@ -45,8 +45,8 @@ export async function changeUserRoles(id, roles) {
 }
 
 /**
- * Видаляє акаунт назовсім. Разом з ним зникають документи (і файли у сховищі),
- * обслуговування та відгук. Заявки лишаються, але без звʼязку з клієнтом.
+ * Deletes the account for good. Documents (and their files in storage),
+ * engagements and the testimonial go with it. Requests stay, but unlinked.
  */
 export async function deleteUser(id) {
     await api.delete(`/users/${id}`);

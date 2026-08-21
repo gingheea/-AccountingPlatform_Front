@@ -14,17 +14,17 @@ const dropdownLinkClass =
     "block rounded-xl px-4 py-2.5 text-base font-medium text-brand-muted transition-colors hover:bg-brand-pampas hover:text-brand-madison";
 
 /**
- * Гостю показуємо вхід, залогіненому — його власний кабінет. Інакше клік по
- * «Вхід» відправляв на форму логіну людину, яка вже увійшла.
+ * A guest sees the login link, a signed-in user their own area. Otherwise
+ * "Log in" sent someone who was already logged in back to the login form.
  */
 function buildPortalLinks({ isAuthenticated, isAdmin, roles }) {
   if (!isAuthenticated) {
     return [{ label: "Вхід", href: "/login" }];
   }
 
-  // Адміну показуємо тільки його панель. Посилання на кабінет клієнта вело
-  // в чужий за призначенням розділ: сторінки порталу показують дані того,
-  // хто увійшов, тож адмін бачив там свої власні порожні заявки й документи.
+  // An admin sees only their panel. The client portal link led into a section
+  // meant for someone else: portal pages show the data of whoever is signed in,
+  // so an admin found their own empty requests and documents there.
   if (isAdmin) {
     return [{ label: "Панель керування", href: getHomeRouteForRoles(roles) }];
   }
@@ -45,7 +45,7 @@ export function Navbar1() {
 
   const dropdownRef = useRef(null);
 
-  // На тач-екранах меню відкривається кліком, тож потрібен спосіб його закрити.
+  // On touch screens the menu opens on tap, so there has to be a way to close it.
   useEffect(() => {
     if (!isDropdownOpen) return;
 
@@ -62,8 +62,8 @@ export function Navbar1() {
 
   return (
       <section className="sticky top-0 z-50 flex w-full items-center border-b border-brand-border bg-white/95 backdrop-blur-md lg:min-h-[76px]">
-        {/* container + px-[5%] — та сама сітка, що й у секцій сторінки,
-            інакше на широких екранах шапка розповзається на всю ширину. */}
+        {/* container + px-[5%] is the same grid the page sections use;
+            without it the header sprawls across wide screens. */}
         <div className="container px-[5%] lg:flex lg:items-center lg:justify-between">
           <div className="flex min-h-16 items-center justify-between md:min-h-18 lg:min-h-full">
             <Link to="/" className="flex items-center gap-3">
@@ -105,9 +105,9 @@ export function Navbar1() {
           </div>
 
           {/*
-            overflow-hidden потрібен лише для анімації висоти на мобільному.
-            На lg його треба зняти, інакше він обріже випадайку «Портал»,
-            а inline-висоту від motion перебиває lg:!h-auto.
+            overflow-hidden is only needed for the height animation on mobile.
+            At lg it has to go, otherwise it clips the "Portal" dropdown,
+            and lg:!h-auto overrides the inline height set by motion.
           */}
           <motion.div
               initial={false}

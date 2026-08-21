@@ -16,8 +16,8 @@ export function logoutRequest()
 }
 
 /**
- * Відповідь однакова незалежно від того, чи існує така пошта — так задумано
- * на беку, щоб через цю форму не можна було перевіряти чужі адреси.
+ * The response is the same whether or not the address exists. That is by
+ * design on the backend, so this form cannot be used to probe other addresses.
  */
 export async function requestPasswordReset(email) {
     await api.post("/auth/forgot-password", { email });

@@ -1,16 +1,16 @@
 import api from "../api/axiosInstance";
 import { toPage } from "./paging";
 
-/* ---------- Кабінет клієнта ---------- */
+/* ---------- Client portal ---------- */
 
-/** Повертає { items, total }. */
+/** Returns { items, total }. */
 export async function getMySubscriptions(params = {}) {
     const response = await api.get("/portal/subscriptions", { params });
 
     return toPage(response.data);
 }
 
-/* ---------- Адмінка ---------- */
+/* ---------- Admin panel ---------- */
 
 export async function getSubscriptions(filters = {}) {
     const params = {};

@@ -5,16 +5,16 @@ import { createPortal } from "react-dom";
 import { RxChevronDown } from "react-icons/rx";
 
 /**
- * Меню дій для рядка таблиці.
+ * An action menu for a table row.
  *
- * Чому не <select>: там обрання пункту не «значення поля», а команда —
- * натиснув «Завершити» і воно виконалось. Селект для цього не призначений
- * і виглядає як чужий елемент серед наших кнопок.
+ * Why not a <select>: picking an item here is a command, not a field value.
+ * You click "Complete" and it happens. A select is not meant for that
+ * and looks alien among our buttons.
  *
- * Чому список малюється через createPortal, тобто окремо від таблиці:
- * у таблиці стоїть overflow-x-auto для горизонтальної прокрутки, а він
- * обрізає все, що виходить за межі — випадне меню зникало б наполовину.
- * Portal виносить його прямо в <body>, де обрізати нема чому.
+ * Why the list is rendered through createPortal, outside the table:
+ * the table uses overflow-x-auto for horizontal scrolling, and that clips
+ * anything sticking out, so the dropdown would be cut in half.
+ * A portal moves it straight into <body>, where nothing clips it.
  */
 export default function ActionMenu({ label, items, disabled = false }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -23,8 +23,8 @@ export default function ActionMenu({ label, items, disabled = false }) {
     const buttonRef = useRef(null);
     const menuRef = useRef(null);
 
-    // useLayoutEffect, а не useEffect: координати треба порахувати до того,
-    // як браузер намалює меню, інакше воно смикнеться з кута екрана.
+    // useLayoutEffect rather than useEffect: the coordinates must be computed
+    // before the browser paints, otherwise the menu jumps in from a corner.
     useLayoutEffect(() => {
         if (!isOpen || !buttonRef.current) return;
 
@@ -51,8 +51,8 @@ export default function ActionMenu({ label, items, disabled = false }) {
             if (event.key === "Escape") setIsOpen(false);
         };
 
-        // Меню має фіксовані координати, тож при прокручуванні сторінки
-        // воно б «відʼїхало» від кнопки — простіше закрити.
+        // The menu has fixed coordinates, so scrolling the page would leave it
+        // floating away from its button; closing it is simpler.
         const onScroll = () => setIsOpen(false);
 
         document.addEventListener("mousedown", close);
