@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { getMyClientRequests, getPortalMe } from "../../services/portalService";
 import { getMyDocuments } from "../../services/documentsService";
 import { getMySubscriptions } from "../../services/subscriptionsService";
+import { MAX_PAGE_SIZE } from "../../services/paging";
 import {
     SUBSCRIPTION_STATUS,
     subscriptionTitle,
@@ -56,15 +57,18 @@ export default function PortalDashboardPage() {
                 const [meData, requestsData, documentsData, subscriptionsData] =
                     await Promise.all([
                         getPortalMe(),
-                        getMyClientRequests(),
-                        getMyDocuments(),
-                        getMySubscriptions(),
+                        getMyClientRequests({ pageSize: MAX_PAGE_SIZE }),
+                        getMyDocuments({ pageSize: MAX_PAGE_SIZE }),
+                        getMySubscriptions({ pageSize: MAX_PAGE_SIZE }),
                     ]);
 
                 setMe(meData);
-                setRequests(requestsData);
-                setDocuments(documentsData);
-                setSubscriptions(subscriptionsData);
+
+                // Списки тепер приходять як { items, total } — на огляді нам
+                // потрібні самі записи, щоб порахувати їх за статусами.
+                setRequests(requestsData.items);
+                setDocuments(documentsData.items);
+                setSubscriptions(subscriptionsData.items);
             } catch (error) {
                 console.error("Failed to load portal dashboard:", error);
                 toast.error("Не вдалося завантажити портал.");

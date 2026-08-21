@@ -16,7 +16,7 @@ export default function PortalServicesPage() {
         async function load() {
             try {
                 setIsLoading(true);
-                setSubscriptions(await getMySubscriptions());
+                setSubscriptions((await getMySubscriptions()).items);
             } catch (error) {
                 console.error("Failed to load subscriptions:", error);
                 toast.error(getApiErrorMessage(error, "Не вдалося завантажити ваші послуги."));

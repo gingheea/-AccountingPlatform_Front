@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { getClientRequests } from "../../services/clientRequestsService";
+import { getAllClientRequests } from "../../services/clientRequestsService";
 import { getServices } from "../../services/servicesService";
 import { getPricingPackages } from "../../services/pricingPackagesService";
 import RequestStatusBadge from "../../components/admin/requests/RequestStatusBadge";
@@ -38,7 +38,7 @@ export default function DashboardPage() {
 
                 const [requestsData, servicesData, packagesData] =
                     await Promise.all([
-                        getClientRequests(),
+                        getAllClientRequests(),
                         getServices(),
                         getPricingPackages(),
                     ]);

@@ -1,10 +1,13 @@
 import api from "../api/axiosInstance";
+import { toPage } from "./paging";
 
 /* ---------- Кабінет клієнта ---------- */
 
-export async function getMySubscriptions() {
-    const response = await api.get("/portal/subscriptions");
-    return response.data;
+/** Повертає { items, total }. */
+export async function getMySubscriptions(params = {}) {
+    const response = await api.get("/portal/subscriptions", { params });
+
+    return toPage(response.data);
 }
 
 /* ---------- Адмінка ---------- */
@@ -19,7 +22,8 @@ export async function getSubscriptions(filters = {}) {
     });
 
     const response = await api.get("/client-subscriptions", { params });
-    return response.data;
+
+    return toPage(response.data);
 }
 
 export async function createSubscription(payload) {

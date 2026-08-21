@@ -16,12 +16,18 @@ import { REQUEST_STATUS } from "../../constants/requests";
 import { getApiErrorMessage } from "../../utils/apiError";
 import { getServices } from "../../services/servicesService";
 import { getPricingPackages } from "../../services/pricingPackagesService";
-import { getUsers } from "../../services/usersService";
+import { getAllUsers } from "../../services/usersService";
 import RequestsTable from "../../components/admin/requests/RequestsTable";
+import Pagination from "../../components/ui/Pagination";
+import { DEFAULT_PAGE_SIZE } from "../../services/paging";
 import RequestDetailsModal from "../../components/admin/requests/RequestDetailsModal";
 import AssignRequestUserModal from "../../components/admin/requests/AssignRequestUserModal";
 
 export default function RequestsAdminPage() {
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+    const [total, setTotal] = useState(0);
+
     const [requests, setRequests] = useState([]);
     const [services, setServices] = useState([]);
     const [pricingPackages, setPricingPackages] = useState([]);
@@ -60,17 +66,17 @@ export default function RequestsAdminPage() {
 
             const [requestsData, servicesData, packagesData, usersData] =
                 await Promise.all([
-                    getClientRequests(),
+                    getClientRequests({ page, pageSize }),
                     getServices(),
                     getPricingPackages(),
-                    getUsers(),
+                    getAllUsers(),
                 ]);
 
-            setRequests(
-                [...requestsData].sort(
-                    (a, b) => new Date(b.createdAtUtc) - new Date(a.createdAtUtc)
-                )
-            );
+            // Сортує вже сервер — найновіші зверху. Тут сортувати не можна:
+            // на руках лише одна сторінка, і порядок був би «правильним»
+            // усередині неї, але неправильним у межах усього списку.
+            setRequests(requestsData.items);
+            setTotal(requestsData.total);
 
             setServices(servicesData);
             setPricingPackages(packagesData);
@@ -85,7 +91,8 @@ export default function RequestsAdminPage() {
 
     useEffect(() => {
         loadData();
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [page, pageSize]);
 
     const closeModal = () => {
         setSelectedRequest(null);
@@ -310,8 +317,11 @@ export default function RequestsAdminPage() {
                     <p className="text-sm font-semibold text-brand-muted">
                         Total requests
                     </p>
+
+                    {/* Не requests.length: там лише поточна сторінка.
+                        Total приходить із сервера й рахує всі заявки. */}
                     <p className="mt-1 font-heading text-3xl font-bold text-brand-madison">
-                        {requests.length}
+                        {total}
                     </p>
                 </div>
             </div>
@@ -321,6 +331,7 @@ export default function RequestsAdminPage() {
                     <p className="text-brand-muted">Завантаження заявок...</p>
                 </div>
             ) : (
+                <>
                 <RequestsTable
                     requests={requests}
                     servicesMap={servicesMap}
@@ -332,6 +343,18 @@ export default function RequestsAdminPage() {
                     onDelete={handleDelete}
                     isSubmitting={isSubmitting}
                 />
+
+                <Pagination
+                    page={page}
+                    pageSize={pageSize}
+                    total={total}
+                    onPageChange={setPage}
+                    onPageSizeChange={(size) => {
+                        setPage(1);
+                        setPageSize(size);
+                    }}
+                />
+                </>
             )}
 
             <RequestDetailsModal

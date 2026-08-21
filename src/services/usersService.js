@@ -1,8 +1,19 @@
 import api from "../api/axiosInstance";
+import { buildParams, fetchAllPages, toPage } from "./paging";
 
-export async function getUsers() {
-    const response = await api.get("/users");
-    return response.data;
+/** Повертає { items, total }. Пошук і фільтр статусу виконує сервер. */
+export async function getUsers(params = {}) {
+    const response = await api.get("/users", { params: buildParams(params) });
+
+    return toPage(response.data);
+}
+
+/**
+ * Увесь список без сторінок — для випадних списків і підстановки імен
+ * у таблицях заявок, документів та обслуговування.
+ */
+export async function getAllUsers() {
+    return fetchAllPages(({ page, pageSize }) => getUsers({ page, pageSize }));
 }
 
 export async function getUserById(id) {

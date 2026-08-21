@@ -1,4 +1,5 @@
 import api from "../api/axiosInstance";
+import { buildParams, toPage } from "./paging";
 
 /* ---------- Публічні сторінки ---------- */
 
@@ -34,16 +35,11 @@ export async function submitMyTestimonial(payload) {
 
 /* ---------- Адмінка ---------- */
 
-export async function getTestimonials(status) {
-    const params = {};
+/** Повертає { items, total }. */
+export async function getTestimonials(params = {}) {
+    const { data } = await api.get("/testimonials", { params: buildParams(params) });
 
-    if (status !== null && status !== undefined && status !== "") {
-        params.status = status;
-    }
-
-    const { data } = await api.get("/testimonials", { params });
-
-    return data;
+    return toPage(data);
 }
 
 export async function approveTestimonial(id) {

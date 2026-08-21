@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "@relume_io/relume-ui";
 import { RxCheck, RxCross2, RxTrash } from "react-icons/rx";
@@ -18,6 +18,8 @@ import {
     testimonialStatusLabel,
 } from "../../constants/testimonials";
 import SelectField from "../../components/ui/SelectField";
+import Pagination from "../../components/ui/Pagination";
+import { usePagedList } from "../../hooks/usePagedList";
 
 function formatDate(value) {
     if (!value) return "—";
@@ -30,39 +32,19 @@ function formatDate(value) {
 }
 
 export default function TestimonialsAdminPage() {
-    const [testimonials, setTestimonials] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
     const [busyId, setBusyId] = useState(null);
 
     // За замовчуванням показуємо саме те, заради чого сюди заходять —
     // нерозглянуті відгуки.
-    const [status, setStatus] = useState(String(TESTIMONIAL_STATUS.Pending));
+    const list = usePagedList(getTestimonials, {
+        initialFilters: { status: String(TESTIMONIAL_STATUS.Pending) },
+        onError: (error) =>
+            toast.error(getApiErrorMessage(error, "Не вдалося завантажити відгуки.")),
+    });
 
-    // Змінюється після кожної дії й змушує ефект перечитати список.
-    const [reloadKey, setReloadKey] = useState(0);
-
-    useEffect(() => {
-        // Прапорець проти оновлення стану вже прибраного компонента.
-        let isActive = true;
-
-        getTestimonials(status)
-            .then((data) => {
-                if (isActive) setTestimonials(Array.isArray(data) ? data : []);
-            })
-            .catch((error) => {
-                if (!isActive) return;
-
-                console.error("Failed to load testimonials:", error);
-                toast.error(getApiErrorMessage(error, "Не вдалося завантажити відгуки."));
-            })
-            .finally(() => {
-                if (isActive) setIsLoading(false);
-            });
-
-        return () => {
-            isActive = false;
-        };
-    }, [status, reloadKey]);
+    const testimonials = list.items;
+    const isLoading = list.isLoading;
+    const status = list.filters.status;
 
     /**
      * Спільна обгортка для трьох дій. Кожна з них однаково: блокує кнопки саме
@@ -75,7 +57,7 @@ export default function TestimonialsAdminPage() {
             await action();
 
             toast.success(successMessage);
-            setReloadKey((key) => key + 1);
+            list.reloadAfterRemoval();
         } catch (error) {
             console.error(failureMessage, error);
             toast.error(getApiErrorMessage(error, failureMessage));
@@ -146,10 +128,7 @@ export default function TestimonialsAdminPage() {
 
                     <SelectField
                         value={status}
-                        onChange={(event) => {
-                            setIsLoading(true);
-                            setStatus(event.target.value);
-                        }}
+                        onChange={(event) => list.setFilter("status", event.target.value)}
                         className="min-h-11 lg:w-56"
                     >
                         <option value="">Усі стани</option>
@@ -254,6 +233,14 @@ export default function TestimonialsAdminPage() {
                         </section>
                     );
                 })}
+
+            <Pagination
+                page={list.page}
+                pageSize={list.pageSize}
+                total={list.total}
+                onPageChange={list.changePage}
+                onPageSizeChange={list.changePageSize}
+            />
         </div>
     );
 }

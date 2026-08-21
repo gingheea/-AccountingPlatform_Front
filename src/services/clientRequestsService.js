@@ -1,8 +1,16 @@
 import api from "../api/axiosInstance";
+import { buildParams, fetchAllPages, toPage } from "./paging";
 
-export async function getClientRequests() {
-    const response = await api.get("/client-requests");
-    return response.data;
+/** Повертає { items, total }. */
+export async function getClientRequests(params = {}) {
+    const response = await api.get("/client-requests", { params: buildParams(params) });
+
+    return toPage(response.data);
+}
+
+/** Усі заявки без сторінок — дашборду вони потрібні цілком, щоб рахувати статуси. */
+export async function getAllClientRequests() {
+    return fetchAllPages(({ page, pageSize }) => getClientRequests({ page, pageSize }));
 }
 
 export async function getClientRequestById(id) {

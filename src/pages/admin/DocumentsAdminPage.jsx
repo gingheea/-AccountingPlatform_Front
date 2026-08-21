@@ -12,7 +12,9 @@ import {
     triggerDownload,
     uploadDocument,
 } from "../../services/documentsService";
-import { getUsers } from "../../services/usersService";
+import { getAllUsers } from "../../services/usersService";
+import Pagination from "../../components/ui/Pagination";
+import { DEFAULT_PAGE_SIZE } from "../../services/paging";
 import DocumentsTable from "../../components/admin/documents/DocumentsTable";
 import RejectDocumentModal from "../../components/admin/documents/RejectDocumentModal";
 import UploadDocumentModal from "../../components/documents/UploadDocumentModal";
@@ -43,6 +45,10 @@ export default function DocumentsAdminPage() {
         status: "",
     });
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+    const [total, setTotal] = useState(0);
+
     const usersById = useMemo(
         () => Object.fromEntries(users.map((user) => [user.id, user])),
         [users],
@@ -52,9 +58,10 @@ export default function DocumentsAdminPage() {
         try {
             setIsLoading(true);
 
-            const data = await getDocuments(filters);
+            const page = await getDocuments({ ...filters, page: currentPage, pageSize });
 
-            setDocuments(data);
+            setDocuments(page.items);
+            setTotal(page.total);
         } catch (error) {
             console.error("Failed to load documents:", error);
             toast.error("Не вдалося завантажити документи.");
@@ -66,7 +73,7 @@ export default function DocumentsAdminPage() {
     useEffect(() => {
         async function loadUsers() {
             try {
-                setUsers(await getUsers());
+                setUsers(await getAllUsers());
             } catch (error) {
                 console.error("Failed to load users:", error);
             }
@@ -78,10 +85,15 @@ export default function DocumentsAdminPage() {
     useEffect(() => {
         loadDocuments();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filters]);
+    }, [filters, currentPage, pageSize]);
 
     const handleFilterChange = (field) => (event) => {
-        setFilters((prev) => ({ ...prev, [field]: event.target.value }));
+        const { value } = event.target;
+
+        // Зміна фільтра завжди повертає на першу сторінку: інакше можна лишитись
+        // на пʼятій сторінці списку, у якому після фільтра всього одна.
+        setCurrentPage(1);
+        setFilters((prev) => ({ ...prev, [field]: value }));
     };
 
     const handleUpload = async (payload) => {
@@ -266,6 +278,7 @@ export default function DocumentsAdminPage() {
                     <p className="text-brand-muted">Завантаження документів...</p>
                 </div>
             ) : (
+                <>
                 <DocumentsTable
                     documents={documents}
                     usersById={usersById}
@@ -274,6 +287,18 @@ export default function DocumentsAdminPage() {
                     onDelete={handleDelete}
                     downloadingId={downloadingId}
                 />
+
+                <Pagination
+                    page={currentPage}
+                    pageSize={pageSize}
+                    total={total}
+                    onPageChange={setCurrentPage}
+                    onPageSizeChange={(size) => {
+                        setCurrentPage(1);
+                        setPageSize(size);
+                    }}
+                />
+                </>
             )}
 
             <UploadDocumentModal

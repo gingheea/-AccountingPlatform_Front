@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Input } from "@relume_io/relume-ui";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { RxMagnifyingGlass } from "react-icons/rx";
 import {
@@ -20,13 +20,14 @@ import ResetPasswordModal from "../../components/admin/users/ResetPasswordModal"
 import { getApiErrorMessage } from "../../utils/apiError";
 import { useAuth } from "../../hooks/useAuth";
 import SelectField from "../../components/ui/SelectField";
+import Pagination from "../../components/ui/Pagination";
+import { usePagedList } from "../../hooks/usePagedList";
+import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 
 export default function UsersAdminPage() {
     // Пошта поточного адміна — щоб не показувати йому кнопку «видалити себе».
     const { email } = useAuth();
 
-    const [users, setUsers] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [formModalState, setFormModalState] = useState({
@@ -40,63 +41,30 @@ export default function UsersAdminPage() {
         user: null,
     });
 
-    const [search, setSearch] = useState("");
-    const [statusFilter, setStatusFilter] = useState("all");
+    // Те, що набирають у полі, і те, що вже пішло на сервер, — різні речі.
+    // Запит вилітає лише коли користувач зупинився.
+    const [searchInput, setSearchInput] = useState("");
+    const search = useDebouncedValue(searchInput);
 
-    /**
-     * Фільтруємо вже завантажений список у браузері, а не запитом на сервер:
-     * користувачів тут десятки, тож ходити по мережі на кожну натиснуту
-     * літеру — марна робота й помітна затримка.
-     */
-    const visibleUsers = useMemo(() => {
-        const query = search.trim().toLowerCase();
+    const list = usePagedList(getUsers, {
+        initialFilters: { search: "", isActive: "" },
+        onError: () => toast.error("Не вдалося завантажити користувачів."),
+    });
 
-        return users.filter((user) => {
-            if (statusFilter === "active" && !user.isActive) return false;
-            if (statusFilter === "inactive" && user.isActive) return false;
+    const { setFilter } = list;
 
-            if (!query) return true;
+    // Пошук тепер виконує сервер, тож змінений текст треба віддати списку.
+    // Це не синхронний setState у тілі ефекту: значення вже «відлежалось».
+    React.useEffect(() => {
+        setFilter("search", search);
+    }, [search, setFilter]);
 
-            // Одне поле шукає одразу по імені, пошті, коду й ролях — так не треба
-            // здогадуватись, у яку саме графу вводити те, що памʼятаєш.
-            const haystack = [
-                user.fullName,
-                user.email,
-                user.taxId,
-                ...(user.roles ?? []),
-            ]
-                .filter(Boolean)
-                .join(" ")
-                .toLowerCase();
+    const users = list.items;
+    const isLoading = list.isLoading;
+    const statusFilter =
+        list.filters.isActive === "" ? "all" : list.filters.isActive ? "active" : "inactive";
 
-            return haystack.includes(query);
-        });
-    }, [users, search, statusFilter]);
-
-    async function loadUsers() {
-        try {
-            setIsLoading(true);
-
-            const data = await getUsers();
-
-            setUsers(
-                [...data].sort(
-                    (a, b) =>
-                        new Date(b.createdAtUtc).getTime() -
-                        new Date(a.createdAtUtc).getTime()
-                )
-            );
-        } catch (error) {
-            console.error("Failed to load users:", error);
-            toast.error("Не вдалося завантажити користувачів.");
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
-    useEffect(() => {
-        loadUsers();
-    }, []);
+    const loadUsers = list.reload;
 
     const openCreateModal = () => {
         setFormModalState({
@@ -153,7 +121,7 @@ export default function UsersAdminPage() {
             }
 
             closeFormModal();
-            await loadUsers();
+            loadUsers();
         } catch (error) {
             console.error("Failed to save user:", error);
             toast.error("Не вдалося зберегти користувача.");
@@ -172,7 +140,7 @@ export default function UsersAdminPage() {
                 toast.success("Користувача активовано.");
             }
 
-            await loadUsers();
+            loadUsers();
         } catch (error) {
             console.error("Failed to change user status:", error);
             toast.error("Не вдалося змінити статус користувача.");
@@ -195,7 +163,7 @@ export default function UsersAdminPage() {
             await deleteUser(user.id);
 
             toast.success("Користувача видалено.");
-            await loadUsers();
+            list.reloadAfterRemoval();
         } catch (error) {
             console.error("Failed to delete user:", error);
             toast.error(getApiErrorMessage(error, "Не вдалося видалити користувача."));
@@ -252,8 +220,8 @@ export default function UsersAdminPage() {
                     <RxMagnifyingGlass className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-brand-gothic" />
 
                     <Input
-                        value={search}
-                        onChange={(event) => setSearch(event.target.value)}
+                        value={searchInput}
+                        onChange={(event) => setSearchInput(event.target.value)}
                         placeholder="Пошук за іменем, поштою, Tax ID або роллю"
                         className="min-h-11 w-full rounded-button border-brand-border bg-brand-pampas pl-11 pr-4 text-brand-ink placeholder:text-brand-gothic focus:border-brand-madison focus:ring-brand-madison"
                     />
@@ -261,7 +229,11 @@ export default function UsersAdminPage() {
 
                 <SelectField
                     value={statusFilter}
-                    onChange={(event) => setStatusFilter(event.target.value)}
+                    onChange={(event) => {
+                        const value = event.target.value;
+
+                        setFilter("isActive", value === "all" ? "" : value === "active");
+                    }}
                     className="min-h-11 lg:w-48"
                 >
                     <option value="all">Усі статуси</option>
@@ -270,7 +242,7 @@ export default function UsersAdminPage() {
                 </SelectField>
 
                 <p className="whitespace-nowrap text-sm text-brand-muted lg:pl-2">
-                    Знайдено: {visibleUsers.length} з {users.length}
+                    Знайдено: {list.total}
                 </p>
             </div>
 
@@ -281,8 +253,9 @@ export default function UsersAdminPage() {
                     </p>
                 </div>
             ) : (
+                <>
                 <UsersTable
-                    users={visibleUsers}
+                    users={users}
                     onEdit={openEditModal}
                     onToggleActive={handleToggleActive}
                     onResetPassword={openResetPasswordModal}
@@ -290,6 +263,15 @@ export default function UsersAdminPage() {
                     currentUserEmail={email}
                     isFiltered={search.trim() !== "" || statusFilter !== "all"}
                 />
+
+                <Pagination
+                    page={list.page}
+                    pageSize={list.pageSize}
+                    total={list.total}
+                    onPageChange={list.changePage}
+                    onPageSizeChange={list.changePageSize}
+                />
+                </>
             )}
 
             <UserFormModal

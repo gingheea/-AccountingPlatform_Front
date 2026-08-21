@@ -1,7 +1,7 @@
 "use client";
 
 import SelectField from "../../components/ui/SelectField";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "@relume_io/relume-ui";
 import { RxDownload } from "react-icons/rx";
@@ -12,6 +12,8 @@ import {
     uploadMyDocument,
 } from "../../services/documentsService";
 import UploadDocumentModal from "../../components/documents/UploadDocumentModal";
+import Pagination from "../../components/ui/Pagination";
+import { DEFAULT_PAGE_SIZE } from "../../services/paging";
 import { getApiErrorMessage } from "../../utils/apiError";
 import {
     DOCUMENT_CATEGORIES,
@@ -38,13 +40,23 @@ export default function PortalDocumentsPage() {
     const [direction, setDirection] = useState("");
     const [category, setCategory] = useState("");
 
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+    const [total, setTotal] = useState(0);
+
+    const [counts, setCounts] = useState({ fromAccountant: 0, fromClient: 0 });
+
+    // Змінюється після завантаження документа, щоб лічильники перечитались.
+    const [countsKey, setCountsKey] = useState(0);
+
     async function loadDocuments() {
         try {
             setIsLoading(true);
 
-            const data = await getMyDocuments({ direction, category });
+            const result = await getMyDocuments({ direction, category, page, pageSize });
 
-            setDocuments(data);
+            setDocuments(result.items);
+            setTotal(result.total);
         } catch (error) {
             console.error("Failed to load documents:", error);
             toast.error("Не вдалося завантажити документи.");
@@ -56,15 +68,38 @@ export default function PortalDocumentsPage() {
     useEffect(() => {
         loadDocuments();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [direction, category]);
+    }, [direction, category, page, pageSize]);
 
-    const counts = useMemo(
-        () => ({
-            fromAccountant: documents.filter((doc) => doc.direction === 1).length,
-            fromClient: documents.filter((doc) => doc.direction === 0).length,
-        }),
-        [documents],
-    );
+    /**
+     * Лічильники беремо двома окремими запитами й читаємо з них лише total.
+     *
+     * Рахувати з завантаженого списку більше не можна: у ньому тепер одна
+     * сторінка, і клієнт бачив би «3 документи» замість «47» — помилка,
+     * яка виглядає як робоча цифра.
+     *
+     * pageSize: 1 — самі записи нам не потрібні, потрібна тільки кількість.
+     */
+    useEffect(() => {
+        let isActive = true;
+
+        Promise.all([
+            getMyDocuments({ direction: 1, pageSize: 1 }),
+            getMyDocuments({ direction: 0, pageSize: 1 }),
+        ])
+            .then(([fromAccountant, fromClient]) => {
+                if (!isActive) return;
+
+                setCounts({
+                    fromAccountant: fromAccountant.total,
+                    fromClient: fromClient.total,
+                });
+            })
+            .catch((error) => console.error("Failed to load document counts:", error));
+
+        return () => {
+            isActive = false;
+        };
+    }, [countsKey]);
 
     const handleUpload = async (payload) => {
         try {
@@ -75,6 +110,7 @@ export default function PortalDocumentsPage() {
             toast.success("Документ завантажено.");
             setIsModalOpen(false);
             await loadDocuments();
+            setCountsKey((key) => key + 1);
 
             return true;
         } catch (error) {
@@ -134,8 +170,10 @@ export default function PortalDocumentsPage() {
                 <div className="rounded-card border border-brand-border bg-white p-6 shadow-soft">
                     <p className="text-sm font-semibold text-brand-muted">Усього документів</p>
 
+                    {/* Не documents.length: там лише поточна сторінка. Напрямків
+                        рівно два, тож їхня сума і є повна кількість. */}
                     <p className="mt-3 font-heading text-4xl font-bold text-brand-madison">
-                        {documents.length}
+                        {counts.fromAccountant + counts.fromClient}
                     </p>
                 </div>
 
@@ -163,7 +201,10 @@ export default function PortalDocumentsPage() {
                             <button
                                 key={tab.label}
                                 type="button"
-                                onClick={() => setDirection(tab.value)}
+                                onClick={() => {
+                                    setPage(1);
+                                    setDirection(tab.value);
+                                }}
                                 className={`rounded-button px-4 py-2 text-sm font-semibold transition ${
                                     direction === tab.value
                                         ? "bg-brand-madison text-white"
@@ -177,7 +218,10 @@ export default function PortalDocumentsPage() {
 
                     <SelectField
                         value={category}
-                        onChange={(event) => setCategory(event.target.value)}
+                        onChange={(event) => {
+                            setPage(1);
+                            setCategory(event.target.value);
+                        }}
                         className="min-h-11"
                     >
                         <option value="">Усі категорії</option>
@@ -295,6 +339,19 @@ export default function PortalDocumentsPage() {
                             ))}
                             </tbody>
                         </table>
+                    </div>
+
+                    <div className="px-5 pb-5">
+                        <Pagination
+                            page={page}
+                            pageSize={pageSize}
+                            total={total}
+                            onPageChange={setPage}
+                            onPageSizeChange={(size) => {
+                                setPage(1);
+                                setPageSize(size);
+                            }}
+                        />
                     </div>
                 </div>
             )}

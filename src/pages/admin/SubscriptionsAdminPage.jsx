@@ -10,7 +10,7 @@ import {
     deleteSubscription,
     getSubscriptions,
 } from "../../services/subscriptionsService";
-import { getUsers } from "../../services/usersService";
+import { getAllUsers } from "../../services/usersService";
 import { getServices } from "../../services/servicesService";
 import { getPricingPackages } from "../../services/pricingPackagesService";
 import { getApiErrorMessage } from "../../utils/apiError";
@@ -26,6 +26,8 @@ import {
 import SubscriptionFormModal from "../../components/admin/subscriptions/SubscriptionFormModal";
 import ActionMenu from "../../components/ui/ActionMenu";
 import SelectField from "../../components/ui/SelectField";
+import Pagination from "../../components/ui/Pagination";
+import { DEFAULT_PAGE_SIZE } from "../../services/paging";
 
 const filterClass = "min-h-11";
 
@@ -41,6 +43,10 @@ export default function SubscriptionsAdminPage() {
 
     const [filters, setFilters] = useState({ userId: "", status: "" });
 
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+    const [total, setTotal] = useState(0);
+
     const usersById = useMemo(
         () => Object.fromEntries(users.map((user) => [user.id, user])),
         [users],
@@ -49,7 +55,11 @@ export default function SubscriptionsAdminPage() {
     async function loadSubscriptions() {
         try {
             setIsLoading(true);
-            setSubscriptions(await getSubscriptions(filters));
+
+            const result = await getSubscriptions({ ...filters, page, pageSize });
+
+            setSubscriptions(result.items);
+            setTotal(result.total);
         } catch (error) {
             console.error("Failed to load subscriptions:", error);
             toast.error(getApiErrorMessage(error, "Не вдалося завантажити обслуговування."));
@@ -62,7 +72,7 @@ export default function SubscriptionsAdminPage() {
         async function loadReferences() {
             try {
                 const [usersData, servicesData, packagesData] = await Promise.all([
-                    getUsers(),
+                    getAllUsers(),
                     getServices(),
                     getPricingPackages(),
                 ]);
@@ -81,7 +91,7 @@ export default function SubscriptionsAdminPage() {
     useEffect(() => {
         loadSubscriptions();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filters]);
+    }, [filters, page, pageSize]);
 
     const handleCreate = async (payload) => {
         try {
@@ -322,6 +332,19 @@ export default function SubscriptionsAdminPage() {
                             })}
                             </tbody>
                         </table>
+                    </div>
+
+                    <div className="px-5 pb-5">
+                        <Pagination
+                            page={page}
+                            pageSize={pageSize}
+                            total={total}
+                            onPageChange={setPage}
+                            onPageSizeChange={(size) => {
+                                setPage(1);
+                                setPageSize(size);
+                            }}
+                        />
                     </div>
                 </div>
             )}

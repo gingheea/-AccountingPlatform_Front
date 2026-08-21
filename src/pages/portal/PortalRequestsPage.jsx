@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 import { Button } from "@relume_io/relume-ui";
 import { RxCross2 } from "react-icons/rx";
 import { getMyClientRequests, getPortalMe } from "../../services/portalService";
+import Pagination from "../../components/ui/Pagination";
+import { DEFAULT_PAGE_SIZE } from "../../services/paging";
 import { ClientRequestForm } from "../../components/shared/ClientRequestForm";
 
 import { statusClass, statusLabel, typeLabel } from "../../constants/requests";
@@ -25,24 +27,28 @@ export default function PortalRequestsPage() {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [me, setMe] = useState(null);
 
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+    const [total, setTotal] = useState(0);
+
     const loadRequests = useCallback(async () => {
         try {
             setIsLoading(true);
 
-            const data = await getMyClientRequests();
+            // Сортує вже сервер — найновіші зверху. Тут сортувати не можна:
+            // на руках лише одна сторінка, і порядок вийшов би «правильним»
+            // у межах сторінки, але неправильним у межах усього списку.
+            const result = await getMyClientRequests({ page, pageSize });
 
-            setRequests(
-                [...data].sort(
-                    (a, b) => new Date(b.createdAtUtc) - new Date(a.createdAtUtc)
-                )
-            );
+            setRequests(result.items);
+            setTotal(result.total);
         } catch (error) {
             console.error("Failed to load portal requests:", error);
             toast.error("Не вдалося завантажити ваші заявки.");
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [page, pageSize]);
 
     useEffect(() => {
         loadRequests();
@@ -194,6 +200,19 @@ export default function PortalRequestsPage() {
                             ))}
                             </tbody>
                         </table>
+                    </div>
+
+                    <div className="px-5 pb-5">
+                        <Pagination
+                            page={page}
+                            pageSize={pageSize}
+                            total={total}
+                            onPageChange={setPage}
+                            onPageSizeChange={(size) => {
+                                setPage(1);
+                                setPageSize(size);
+                            }}
+                        />
                     </div>
                 </div>
             )}

@@ -1,4 +1,5 @@
 import api from "../api/axiosInstance";
+import { buildParams, toPage } from "./paging";
 
 /**
  * axiosInstance виставляє Content-Type: application/json для всіх запитів, а
@@ -8,26 +9,15 @@ import api from "../api/axiosInstance";
  */
 const multipart = { headers: { "Content-Type": "multipart/form-data" } };
 
-function buildParams(filters = {}) {
-    const params = {};
-
-    Object.entries(filters).forEach(([key, value]) => {
-        if (value !== null && value !== undefined && value !== "") {
-            params[key] = value;
-        }
-    });
-
-    return params;
-}
-
 /* ---------- Portal (client) ---------- */
 
+/** Повертає { items, total }. */
 export async function getMyDocuments(filters) {
     const response = await api.get("/portal/documents", {
         params: buildParams(filters),
     });
 
-    return response.data;
+    return toPage(response.data);
 }
 
 export async function uploadMyDocument({ file, title, category, note }) {
@@ -53,12 +43,13 @@ export async function getMyDocumentDownloadUrl(id) {
 
 /* ---------- Admin ---------- */
 
+/** Повертає { items, total }. */
 export async function getDocuments(filters) {
     const response = await api.get("/client-documents", {
         params: buildParams(filters),
     });
 
-    return response.data;
+    return toPage(response.data);
 }
 
 export async function uploadDocument({ file, userId, title, category, direction, note }) {
