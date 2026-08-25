@@ -2,7 +2,6 @@
 
 import { Link } from "react-router-dom";
 import { Button, Input } from "@relume_io/relume-ui";
-import React, { useState } from "react";
 import {
   BiLogoFacebookCircle,
   BiLogoInstagram,
@@ -108,12 +107,6 @@ export function Footer1() {
                   <li className="py-2">
                     <Link to="/#contact" className={footerLinkClass}>
                       <span>Консультації</span>
-                    </Link>
-                  </li>
-
-                  <li className="py-2">
-                    <Link to="/portal" className={footerLinkClass}>
-                      <span>Портал клієнта</span>
                     </Link>
                   </li>
 

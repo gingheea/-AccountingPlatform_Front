@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, useMediaQuery } from "@relume_io/relume-ui";
+import { useMediaQuery } from "@relume_io/relume-ui";
 import {
   AnimatePresence,
   motion,
@@ -270,8 +270,12 @@ export function HomeServicesShowcase() {
               </div>
 
               <div className="flex flex-col justify-start gap-y-8">
+                {/* Every direct child of AnimatePresence needs its own key: it
+                    tracks children by key to know which one left. A missing key
+                    becomes "", so all four blocks shared one key and React
+                    warned about duplicates on every render of the home page. */}
                 <AnimatePresence>
-                  <Fragment>
+                  <Fragment key="fop">
                     <ConditionalRender condition={render.isMobile}>
                       <div className="rounded-card border border-brand-border bg-brand-pampas p-6">
                         <h5 className="mb-3 font-heading text-2xl font-bold text-brand-ink">
@@ -315,7 +319,7 @@ export function HomeServicesShowcase() {
                     </ConditionalRender>
                   </Fragment>
 
-                  <Fragment>
+                  <Fragment key="small-business">
                     <ConditionalRender condition={render.isMobile}>
                       <div className="rounded-card border border-brand-border bg-brand-pampas p-6">
                         <h5 className="mb-3 font-heading text-2xl font-bold text-brand-ink">
@@ -360,7 +364,7 @@ export function HomeServicesShowcase() {
                     </ConditionalRender>
                   </Fragment>
 
-                  <Fragment>
+                  <Fragment key="tax-advice">
                     <ConditionalRender condition={render.isMobile}>
                       <div className="rounded-card border border-brand-border bg-brand-pampas p-6">
                         <h5 className="mb-3 font-heading text-2xl font-bold text-brand-ink">
@@ -402,7 +406,7 @@ export function HomeServicesShowcase() {
                     </ConditionalRender>
                   </Fragment>
 
-                  <Fragment>
+                  <Fragment key="reporting">
                     <ConditionalRender condition={render.isMobile}>
                       <div className="rounded-card border border-brand-border bg-brand-pampas p-6">
                         <h5 className="mb-3 font-heading text-2xl font-bold text-brand-ink">

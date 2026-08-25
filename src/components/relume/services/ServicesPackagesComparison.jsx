@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { BiCheck, BiX } from "react-icons/bi";
 
 export function ServicesPackagesComparison() {

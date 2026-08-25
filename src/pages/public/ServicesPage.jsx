@@ -3,7 +3,6 @@ import {ServicesList} from "../../components/relume/services/ServicesList.jsx";
 import {ServicesPricing} from "../../components/relume/services/ServicesPricing.jsx";
 import {ServicesBenefits} from "../../components/relume/services/ServicesBenefits.jsx";
 import { ContactSection } from "../../components/shared/ContactSection.jsx";
-import {ServicesCta} from "../../components/relume/services/ServicesCta.jsx";
 import {ServicesPackagesComparison} from "../../components/relume/services/ServicesPackagesComparison.jsx";
 
 export default function ServicesPage() {
@@ -13,7 +12,6 @@ export default function ServicesPage() {
             <ServicesList />
             <ServicesPricing />
             <ServicesBenefits />
-            {/* <ServicesCta /> */}
             <ContactSection
                 sectionId="services-contact"
                 title="Обговоримо ваш формат супроводу"

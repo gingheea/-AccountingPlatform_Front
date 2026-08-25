@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { RxExit, RxHome } from "react-icons/rx";
 import {useAuth} from "../../hooks/useAuth.js";

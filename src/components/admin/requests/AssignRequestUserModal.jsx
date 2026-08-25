@@ -1,7 +1,7 @@
 "use client";
 
 import SelectField from "../../ui/SelectField";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function AssignRequestUserModal({
                                                    isOpen,

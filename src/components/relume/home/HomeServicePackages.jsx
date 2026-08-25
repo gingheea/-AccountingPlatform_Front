@@ -1,8 +1,7 @@
 "use client";
 
 import { Link } from "react-router-dom";
-import { Button } from "@relume_io/relume-ui";
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import { BiCheck, BiX } from "react-icons/bi";
 import { RxChevronRight } from "react-icons/rx";
 

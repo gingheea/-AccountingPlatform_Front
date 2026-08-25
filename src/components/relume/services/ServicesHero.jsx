@@ -1,8 +1,6 @@
 "use client";
 
 import { Link } from "react-router-dom";
-import { Button } from "@relume_io/relume-ui";
-import React from "react";
 
 export function ServicesHero() {
   return (

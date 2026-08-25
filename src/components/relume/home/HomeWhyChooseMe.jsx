@@ -3,7 +3,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@relume_io/relume-ui";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useState } from "react";
+import { useState } from "react";
 import { RxChevronRight } from "react-icons/rx";
 
 const useRelume = () => {

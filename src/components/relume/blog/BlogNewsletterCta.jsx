@@ -2,7 +2,6 @@
 
 import { useNewsletterForm } from "../../../hooks/useNewsletterForm";
 import { Button, Input } from "@relume_io/relume-ui";
-import React from "react";
 
 export function BlogNewsletterCta() {
   const formState = useNewsletterForm("blog");

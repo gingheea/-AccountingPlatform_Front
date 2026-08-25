@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { RxDownload, RxTrash } from "react-icons/rx";
 import ActionMenu from "../../ui/ActionMenu";
 import {

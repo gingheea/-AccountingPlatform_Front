@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "@relume_io/relume-ui";
 import { RxCross2 } from "react-icons/rx";

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Button, Input } from "@relume_io/relume-ui";
+import { Button } from "@relume_io/relume-ui";
 import { changeOwnPassword } from "../../services/portalService";
 import { getApiErrorMessage } from "../../utils/apiError";
 import PasswordInput from "../ui/PasswordInput";

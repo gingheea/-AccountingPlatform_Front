@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { RxChevronRight } from "react-icons/rx";
 import { getServices } from "../../../services/servicesService";
 

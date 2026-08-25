@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { BiEnvelope, BiMap, BiPhone } from "react-icons/bi";
 import { RxChevronRight } from "react-icons/rx";
 import { ClientRequestForm } from "./ClientRequestForm";

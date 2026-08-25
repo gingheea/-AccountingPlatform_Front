@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { RxPencil1, RxTrash } from "react-icons/rx";
 
 export default function PricingPackagesTable({

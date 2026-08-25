@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@relume_io/relume-ui";
-import React from "react";
 import { BiLogoLinkedinSquare } from "react-icons/bi";
 import { FaXTwitter } from "react-icons/fa6";
 import { SOCIAL_LINKS } from "../../../constants/site";

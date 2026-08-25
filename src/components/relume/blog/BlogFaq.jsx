@@ -7,7 +7,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@relume_io/relume-ui";
-import React from "react";
 import { RxPlus } from "react-icons/rx";
 
 export function BlogFaq() {

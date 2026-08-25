@@ -1,7 +1,7 @@
 "use client";
 
 import SelectField from "../../components/ui/SelectField";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "@relume_io/relume-ui";
 import {

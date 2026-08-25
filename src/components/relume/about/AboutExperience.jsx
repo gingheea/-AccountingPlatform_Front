@@ -2,7 +2,6 @@
 
 import { SOCIAL_LINKS } from "../../../constants/site";
 import { Link } from "react-router-dom";
-import { Button } from "@relume_io/relume-ui";
 import { RxChevronRight } from "react-icons/rx";
 
 export function AboutExperience() {

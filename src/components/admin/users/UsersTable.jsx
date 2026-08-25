@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { RxPencil1, RxReload, RxLockClosed, RxTrash } from "react-icons/rx";
 import UserRolesBadge from "./UserRolesBadge";
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { Link } from "react-router-dom";
-import { Button } from "@relume_io/relume-ui";
 
 export function HomeAboutIntro() {
   return (

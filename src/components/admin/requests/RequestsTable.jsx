@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { statusClass, statusLabel, typeLabel } from "../../../constants/requests";
 
 function formatDate(value) {

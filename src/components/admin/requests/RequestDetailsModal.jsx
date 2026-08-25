@@ -1,7 +1,7 @@
 "use client";
 
 import SelectField from "../../ui/SelectField";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@relume_io/relume-ui";
 import { RxCross2 } from "react-icons/rx";
 import RequestStatusBadge from "./RequestStatusBadge";

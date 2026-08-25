@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { getAllClientRequests } from "../../services/clientRequestsService";
 import { getServices } from "../../services/servicesService";
