@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Button, Input } from "@relume_io/relume-ui";
 import { RxCross2 } from "react-icons/rx";
 import SelectField from "../../ui/SelectField";
-import { PERIOD_KIND, periodNumberOptions } from "../../../constants/periods";
+import { periodKindLabel, periodNumberOptions } from "../../../constants/periods";
 
 const inputClass =
     "min-h-11 rounded-button border-brand-border bg-brand-pampas px-4 text-brand-ink placeholder:text-brand-gothic focus:border-brand-madison focus:ring-brand-madison";
@@ -32,16 +32,34 @@ export default function CreatePeriodModal({
 
     const [errorMessage, setErrorMessage] = useState("");
 
-    // The month/quarter picker has to follow the chosen template: offering
-    // "December" for a quarterly template would produce a period the backend
-    // rejects, and the user would not know why.
-    const selectedTemplate = useMemo(
-        () => templates.find((x) => x.id === form.templateId) ?? null,
-        [templates, form.templateId]
-    );
+    /**
+     * Which template this period will actually be built from: the one picked by
+     * hand, or the client's default when nothing is picked.
+     *
+     * Resolving it here matters because the periodicity comes from the template.
+     * Guessing "monthly" instead used to show months for a quarterly client, so
+     * choosing "January" quietly created Q1 — the label said one thing and the
+     * period was another.
+     */
+    const effectiveTemplate = useMemo(() => {
+        if (form.templateId)
+            return templates.find((x) => x.id === form.templateId) ?? null;
 
-    const kind = selectedTemplate?.kind ?? PERIOD_KIND.Monthly;
-    const numberOptions = useMemo(() => periodNumberOptions(kind), [kind]);
+        const client = users.find((x) => x.id === form.userId);
+
+        if (!client?.defaultChecklistTemplateId) return null;
+
+        return templates.find((x) => x.id === client.defaultChecklistTemplateId) ?? null;
+    }, [templates, users, form.templateId, form.userId]);
+
+    // Until a template is known the periodicity is unknown too, so the period
+    // picker stays disabled rather than offering a guess.
+    const kind = effectiveTemplate?.kind ?? null;
+
+    const numberOptions = useMemo(
+        () => (kind === null ? [] : periodNumberOptions(kind)),
+        [kind]
+    );
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -49,6 +67,14 @@ export default function CreatePeriodModal({
 
         if (!form.userId) {
             setErrorMessage("Оберіть клієнта.");
+            return;
+        }
+
+        if (!effectiveTemplate) {
+            setErrorMessage(
+                "Не зрозуміло, за яким шаблоном створювати період. Оберіть шаблон вручну " +
+                "або призначте клієнту типовий у розділі Users."
+            );
             return;
         }
 
@@ -94,7 +120,13 @@ export default function CreatePeriodModal({
                         <SelectField
                             value={form.userId}
                             onChange={(event) =>
-                                setForm((prev) => ({ ...prev, userId: event.target.value }))
+                                // The new client may run on a different periodicity, so the
+                                // number goes back to 1 rather than staying on "December".
+                                setForm((prev) => ({
+                                    ...prev,
+                                    userId: event.target.value,
+                                    number: 1,
+                                }))
                             }
                             className="min-h-11"
                         >
@@ -135,9 +167,26 @@ export default function CreatePeriodModal({
                             ))}
                         </SelectField>
 
-                        <p className="mt-2 text-xs leading-5 text-brand-gothic">
-                            Якщо не обирати — візьметься шаблон, призначений клієнту.
-                        </p>
+                        {/* Says out loud which template and which periodicity will
+                            actually be used, so the period picker below is never a
+                            surprise. */}
+                        {!form.userId ? (
+                            <p className="mt-2 text-xs leading-5 text-brand-gothic">
+                                Спершу оберіть клієнта.
+                            </p>
+                        ) : effectiveTemplate ? (
+                            <p className="mt-2 text-xs leading-5 text-brand-gothic">
+                                Буде використано <span className="font-semibold">{effectiveTemplate.name}</span>
+                                {" — "}
+                                {periodKindLabel(effectiveTemplate.kind).toLowerCase()}
+                                {!form.templateId && " (типовий для клієнта)"}
+                            </p>
+                        ) : (
+                            <p className="mt-2 rounded-button bg-yellow-50 px-3 py-2 text-xs leading-5 text-yellow-800">
+                                У цього клієнта не задано типового шаблону. Оберіть шаблон
+                                вручну або призначте типовий у розділі Users.
+                            </p>
+                        )}
                     </div>
 
                     <div className="grid gap-4 md:grid-cols-3">
@@ -170,12 +219,17 @@ export default function CreatePeriodModal({
                                     setForm((prev) => ({ ...prev, number: event.target.value }))
                                 }
                                 className="min-h-11"
+                                disabled={kind === null}
                             >
-                                {numberOptions.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
+                                {kind === null ? (
+                                    <option value="">Оберіть шаблон</option>
+                                ) : (
+                                    numberOptions.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
+                                    ))
+                                )}
                             </SelectField>
                         </div>
 
