@@ -3,6 +3,7 @@
 import { Button, Input } from "@relume_io/relume-ui";
 import React, { useEffect, useState } from "react";
 import PasswordInput from "../../ui/PasswordInput";
+import SelectField from "../../ui/SelectField";
 
 const ROLES = ["Admin", "User"];
 
@@ -13,10 +14,12 @@ const initialForm = {
     taxId: "",
     isActive: true,
     roles: ["User"],
+    defaultChecklistTemplateId: "",
 };
 
 export default function UserForm({
                                      initialValue,
+                                     templates = [],
                                      mode = "create",
                                      onSubmit,
                                      onCancel,
@@ -37,6 +40,9 @@ export default function UserForm({
             taxId: initialValue.taxId ?? "",
             isActive: Boolean(initialValue.isActive),
             roles: initialValue.roles?.length ? initialValue.roles : ["User"],
+            // A select cannot hold null, so "no template" is the empty string here
+            // and is turned back into null on the way out.
+            defaultChecklistTemplateId: initialValue.defaultChecklistTemplateId ?? "",
         });
     }, [initialValue]);
 
@@ -91,6 +97,7 @@ export default function UserForm({
             taxId: form.taxId.trim() || null,
             isActive: form.isActive,
             roles: form.roles,
+            defaultChecklistTemplateId: form.defaultChecklistTemplateId || null,
         });
     };
 
@@ -159,6 +166,38 @@ export default function UserForm({
                     className="min-h-12 rounded-button border-brand-border bg-brand-pampas px-4 text-brand-ink placeholder:text-brand-gothic focus:border-brand-madison focus:ring-brand-madison"
                 />
             </div>
+
+            {/*
+              Only on edit: a brand new account has no accounting set up yet, and
+              the create form already asks for enough. The field is also pointless
+              until at least one template exists.
+            */}
+            {mode !== "create" && templates.length > 0 && (
+                <div>
+                    <label className="mb-2 block text-sm font-semibold text-brand-ink">
+                        Типовий чеклист
+                    </label>
+
+                    <SelectField
+                        value={form.defaultChecklistTemplateId}
+                        onChange={handleChange("defaultChecklistTemplateId")}
+                        className="min-h-12"
+                    >
+                        <option value="">Не задано</option>
+
+                        {templates.map((template) => (
+                            <option key={template.id} value={template.id}>
+                                {template.name}
+                            </option>
+                        ))}
+                    </SelectField>
+
+                    <p className="mt-2 text-xs leading-5 text-brand-muted">
+                        З цього шаблону створюватимуться звітні періоди клієнта, якщо
+                        не обрати інший вручну.
+                    </p>
+                </div>
+            )}
 
             <div className="rounded-card border border-brand-border bg-brand-pampas p-4">
                 <p className="mb-3 text-sm font-semibold text-brand-ink">

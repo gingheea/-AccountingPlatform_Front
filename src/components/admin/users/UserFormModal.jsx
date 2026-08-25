@@ -8,6 +8,7 @@ export default function UserFormModal({
                                           isOpen,
                                           mode,
                                           user,
+                                          templates,
                                           onClose,
                                           onSubmit,
                                           isSubmitting,
@@ -42,6 +43,7 @@ export default function UserFormModal({
 
                 <UserForm
                     initialValue={user}
+                    templates={templates}
                     mode={mode}
                     onSubmit={onSubmit}
                     onCancel={onClose}

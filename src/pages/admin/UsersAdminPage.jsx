@@ -23,12 +23,27 @@ import SelectField from "../../components/ui/SelectField";
 import Pagination from "../../components/ui/Pagination";
 import { usePagedList } from "../../hooks/usePagedList";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
+import {
+    getAllActiveTemplates,
+    setClientDefaultTemplate,
+} from "../../services/reportingPeriodsService";
 
 export default function UsersAdminPage() {
     // The current admin's email, so they are not offered a "delete yourself" button.
     const { email } = useAuth();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Only needed to fill the "default checklist" picker in the edit form.
+    const [templates, setTemplates] = useState([]);
+
+    React.useEffect(() => {
+        getAllActiveTemplates()
+            .then(setTemplates)
+            // Templates are a nice-to-have here: if they fail to load the picker
+            // is simply hidden and the rest of the screen still works.
+            .catch((error) => console.error("Failed to load templates:", error));
+    }, []);
 
     const [formModalState, setFormModalState] = useState({
         isOpen: false,
@@ -109,10 +124,23 @@ export default function UsersAdminPage() {
             setIsSubmitting(true);
 
             if (formModalState.mode === "edit" && formModalState.user) {
-                const { roles, ...updatePayload } = payload;
+                const { roles, defaultChecklistTemplateId, ...updatePayload } = payload;
 
+                // Three separate endpoints: the user record, the roles, and the
+                // periods setting. The last one is sent only when it actually
+                // changed, so renaming someone does not touch their template.
                 await updateUser(formModalState.user.id, updatePayload);
                 await changeUserRoles(formModalState.user.id, roles);
+
+                const previousTemplateId =
+                    formModalState.user.defaultChecklistTemplateId ?? null;
+
+                if (defaultChecklistTemplateId !== previousTemplateId) {
+                    await setClientDefaultTemplate(
+                        formModalState.user.id,
+                        defaultChecklistTemplateId
+                    );
+                }
 
                 toast.success("Користувача оновлено.");
             } else {
@@ -278,6 +306,7 @@ export default function UsersAdminPage() {
                 isOpen={formModalState.isOpen}
                 mode={formModalState.mode}
                 user={formModalState.user}
+                templates={templates}
                 onClose={closeFormModal}
                 onSubmit={handleSubmit}
                 isSubmitting={isSubmitting}
