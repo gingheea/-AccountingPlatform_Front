@@ -29,6 +29,8 @@ import UsersAdminPage from "./pages/admin/UsersAdminPage";
 import DocumentsAdminPage from "./pages/admin/DocumentsAdminPage";
 import SubscriptionsAdminPage from "./pages/admin/SubscriptionsAdminPage";
 import TestimonialsAdminPage from "./pages/admin/TestimonialsAdminPage";
+import ChecklistTemplatesAdminPage from "./pages/admin/ChecklistTemplatesAdminPage";
+import ReportingPeriodsAdminPage from "./pages/admin/ReportingPeriodsAdminPage";
 
 import PortalLayout from "./components/layout/PortalLayout.jsx";
 import PortalDashboardPage from "./pages/portal/PortalDashboardPage";
@@ -37,6 +39,7 @@ import PortalServicesPage from "./pages/portal/PortalServicesPage";
 import PortalDocumentsPage from "./pages/portal/PortalDocumentsPage";
 import PortalProfilePage from "./pages/portal/PortalProfilePage";
 import PortalTestimonialPage from "./pages/portal/PortalTestimonialPage";
+import PortalPeriodsPage from "./pages/portal/PortalPeriodsPage";
 
 import "./index.css";
 
@@ -84,6 +87,8 @@ createRoot(document.getElementById("root")).render(
                         <Route path="/admin/documents" element={<DocumentsAdminPage />} />
                         <Route path="/admin/subscriptions" element={<SubscriptionsAdminPage />} />
                         <Route path="/admin/testimonials" element={<TestimonialsAdminPage />} />
+                        <Route path="/admin/checklist-templates" element={<ChecklistTemplatesAdminPage />} />
+                        <Route path="/admin/reporting-periods" element={<ReportingPeriodsAdminPage />} />
                     </Route>
 
                     {/* Portal */}
@@ -99,6 +104,7 @@ createRoot(document.getElementById("root")).render(
                         <Route path="services" element={<PortalServicesPage />} />
                         <Route path="requests" element={<PortalRequestsPage />} />
                         <Route path="documents" element={<PortalDocumentsPage />} />
+                        <Route path="periods" element={<PortalPeriodsPage />} />
                         <Route path="testimonial" element={<PortalTestimonialPage />} />
                         <Route path="profile" element={<PortalProfilePage />} />
                     </Route>

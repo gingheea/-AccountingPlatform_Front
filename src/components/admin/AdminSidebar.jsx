@@ -1,7 +1,9 @@
 import { NavLink } from "react-router-dom";
 import {
     RxArchive,
+    RxCalendar,
     RxChatBubble,
+    RxCheckbox,
     RxDashboard,
     RxIdCard,
     RxFileText,
@@ -50,6 +52,16 @@ const navItems = [
         label: "Testimonials",
         href: "/admin/testimonials",
         icon: RxChatBubble,
+    },
+    {
+        label: "Checklists",
+        href: "/admin/checklist-templates",
+        icon: RxCheckbox,
+    },
+    {
+        label: "Periods",
+        href: "/admin/reporting-periods",
+        icon: RxCalendar,
     },
 ];
 
