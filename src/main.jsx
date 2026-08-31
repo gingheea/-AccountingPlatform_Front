@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import { AuthProvider } from "./context/AuthContext";
@@ -11,7 +11,6 @@ import AdminLayout from "./components/admin/AdminLayout.jsx";
 
 import HomePage from "./pages/public/HomePage";
 import ServicesPage from "./pages/public/ServicesPage";
-import AboutMePage from "./pages/public/AboutPage.jsx";
 import BlogPage from "./pages/public/BlogPage";
 import TestimonialsPage from "./pages/public/TestimonialsPage";
 import PrivacyPage from "./pages/public/PrivacyPage.jsx";
@@ -58,7 +57,12 @@ createRoot(document.getElementById("root")).render(
                     <Route element={<PublicLayout />}>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/services" element={<ServicesPage />} />
-                        <Route path="/about" element={<AboutMePage />} />
+                        {/* "Про мене" is hidden until it is rewritten for the
+                            accountant it is actually about. The page component is
+                            kept in the repository; only the route is redirected, so
+                            any link already out there lands on the home page rather
+                            than on a dead end. */}
+                        <Route path="/about" element={<Navigate to="/" replace />} />
                         <Route path="/blog" element={<BlogPage />} />
                         <Route path="/testimonials" element={<TestimonialsPage />} />
                         <Route path="/privacy" element={<PrivacyPage />} />

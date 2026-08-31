@@ -55,11 +55,14 @@ export function HomeAboutIntro() {
               </div>
 
               <div className="mt-8 flex flex-wrap gap-4">
+                {/* Pointed at the contact form while "Про мене" is hidden: a
+                    button labelled "read more" that leads nowhere is worse than
+                    no button at all. */}
                 <Link
-                    to="/about"
+                    to="/#contact"
                     className="rounded-button bg-brand-madison px-6 py-3 font-semibold text-white shadow-soft transition-colors hover:bg-brand-madisonDark"
                 >
-                  Дізнатися більше
+                  Звʼязатися зі мною
                 </Link>
 
                 <Link

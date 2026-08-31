@@ -123,12 +123,6 @@ export function Footer1() {
 
                 <ul>
                   <li className="py-2">
-                    <Link to="/about" className={footerLinkClass}>
-                      <span>Про мене</span>
-                    </Link>
-                  </li>
-
-                  <li className="py-2">
                     <Link to="/blog" className={footerLinkClass}>
                       <span>Блог</span>
                     </Link>

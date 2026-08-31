@@ -115,10 +115,6 @@ export function Navbar1() {
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="overflow-hidden bg-white shadow-lg lg:!h-auto lg:flex lg:items-center lg:overflow-visible lg:bg-transparent lg:shadow-none"
           >
-            <Link to="/about" className={navLinkClass}>
-              Про мене
-            </Link>
-
             <Link to="/services" className={navLinkClass}>
               Послуги
             </Link>
